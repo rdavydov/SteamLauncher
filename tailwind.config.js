@@ -1,7 +1,6 @@
 /** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig} */
 module.exports = {
-  mode: 'jit',
-  purge: ['./src/render/**/*.{js,ts,html}'],
+  content: ['./src/render/**/*.{js,ts,html}'],
   theme: {
     extend: {
       colors: {

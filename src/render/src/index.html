@@ -3,21 +3,19 @@
 
 <head>
   <title>Sak32009</title>
+  <link rel="icon" href="./public/favicon.ico" />
   <meta charset="utf-8" />
   <meta name="color-scheme" content="dark" />
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <!-- https://www.electronjs.org/docs/latest/tutorial/security/#7-define-a-content-security-policy -->
   <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
-  <link rel="icon" href="/favicon.ico" />
-  <!-- JQUERY (loaded externally by vitejs) -->
-  <script src="assets/js/jquery.min.js"></script>
 </head>
 
 <body>
   <div class="main">
     <div class="main-titlebar">
       <div class="main-titlebar-header">
-        <img class="img" src="assets/images/steamlauncher.svg" alt="Logo" />
+        <img class="img" src="./public/assets/images/steamlauncher.svg" alt="Logo" />
         <span class="text">&nbsp;</span>
       </div>
       <div class="main-titlebar-container">
@@ -61,6 +59,9 @@
     </div>
     <div class="main-container"></div>
   </div>
+  <!-- JQUERY (loaded externally by vitejs) -->
+  <script src="./public/assets/js/jquery.min.js" type="module"></script>
+  <!-- MAIN -->
   <script src="./main.ts" type="module"></script>
 </body>
 
