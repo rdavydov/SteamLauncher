@@ -90,6 +90,5 @@
     "vite-plugin-externals": "^0.3.2",
     "vite-plugin-purge-icons": "^0.7.0",
     "xo": "^0.47.0"
-  },
-  "dependencies": {}
+  }
 }

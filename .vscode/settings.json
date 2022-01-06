@@ -1,14 +1,20 @@
 {
   "xo.format.enable": true,
   "[javascript]": {
-    "editor.defaultFormatter": "spence-s.linter-xo"
+    "editor.defaultFormatter": "samverschueren.linter-xo"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "spence-s.linter-xo"
+    "editor.defaultFormatter": "samverschueren.linter-xo"
   },
   "files.exclude": {
     "**/node_modules": true,
     "**/build/release": true,
     "**/src/**/dist": true
-  }
+  },
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  },
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
