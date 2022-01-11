@@ -1,13 +1,13 @@
-import serializeObject from './serialize-object';
-import showToast from './show-toast';
-import steamDbGetData from './steamdb-get-data';
+import serializeObject from './serialize-object.js';
+import showToast from './show-toast.js';
+import steamDbGetData from './steamdb-get-data.js';
 
 const nowTimeBySeconds = () => Math.floor(Date.now() / 1000);
 
 const gamePostData = async (
   $dom: JQuery<Element>,
   channel: string,
-  oldAppId: string | null = null,
+  oldAppId: string | undefined = undefined,
 ) => {
   const isEditChannel = channel === 'game-edit';
   const serialize = serializeObject($dom);

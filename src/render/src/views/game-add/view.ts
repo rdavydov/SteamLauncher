@@ -1,8 +1,9 @@
 import type Navigo from 'navigo';
 import type {Match} from 'navigo';
+import $ from 'jquery';
 import mustache from 'mustache';
-import {decodeUriObject} from '../../functions/encoded-decode-uri-object';
-import gamePostData from '../../functions/game-post-data';
+import {decodeUriObject} from '../../functions/encoded-decode-uri-object.js';
+import gamePostData from '../../functions/game-post-data.js';
 
 class GameAddView {
   public match: Match | undefined;
@@ -50,8 +51,11 @@ class GameAddView {
   }
 
   private async setDom() {
-    const html = (await import('./main.html?raw')).default;
-    const dom = mustache.render(html, {params: decodeUriObject(this.match!.params)});
+    const {default: html} = await import('./main.html?raw');
+    const parameters = this.match?.params === null ? undefined : this.match?.params;
+    const dom = mustache.render(html, {
+      params: decodeUriObject(parameters),
+    });
     this.$dom = $(dom);
   }
 }

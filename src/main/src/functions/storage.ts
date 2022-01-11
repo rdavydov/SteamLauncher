@@ -1,6 +1,6 @@
 import ElectronStore from 'electron-store';
 import {appId as packageAppId} from '../../../../electron-builder.json';
-import config from '../config';
+import config from '../config.js';
 
 const environments = import.meta.env;
 const defaults = {

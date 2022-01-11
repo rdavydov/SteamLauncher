@@ -1,5 +1,6 @@
-import settingsSetNetwork from './functions/settings-set-network';
-import showToast from './functions/show-toast';
+import $ from 'jquery';
+import settingsSetNetwork from './functions/settings-set-network.js';
+import showToast from './functions/show-toast.js';
 
 (async () => {
   await window.api.invoke('settings-get-network').then((is) => {

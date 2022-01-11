@@ -3,9 +3,6 @@ import {join, basename} from 'node:path';
 import {builtinModules} from 'node:module';
 import {defineConfig} from 'vite';
 import type {UserConfig} from 'vite';
-import vitePurgeIconsPlugin from 'vite-plugin-purge-icons';
-import {viteExternalsPlugin} from 'vite-plugin-externals';
-import {name as packageName} from './package.json';
 
 const builtinModulesNodeProtocol = builtinModules.map((value) => 'node:' + value);
 const externalModules = [
@@ -42,19 +39,9 @@ export default function createConfig(packagePath: string) {
       viteConfig.build!.minify = false;
     }
 
-    if (viteDistName === 'render') {
-      viteConfig.plugins?.push(
-        viteExternalsPlugin({
-          jquery: 'jQuery',
-        }),
-        vitePurgeIconsPlugin(),
-      );
-    }
-
     if (viteDistName === 'main' || viteDistName === 'preload') {
       viteConfig.build!.lib = {
         entry: join(viteRoot, 'index.ts'),
-        name: packageName,
         formats: ['cjs'],
         fileName: () => 'index.js',
       };

@@ -1,12 +1,12 @@
 import type {IpcMainEvent} from 'electron';
 import {Buffer} from 'node:buffer';
 import {readFileSync} from 'node:fs';
-import config from '../config';
-import fetch from './fetch';
-import showToast from './show-toast';
+import config from '../config.js';
+import showToast from './show-toast.js';
 
 const gameDownloadHeaderImage = async (event: IpcMainEvent, url: string) => {
   const dataUri = 'data:image/jpg;charset=utf-8;base64,';
+  const {default: fetch} = await import('node-fetch');
 
   try {
     const request = await fetch(url);

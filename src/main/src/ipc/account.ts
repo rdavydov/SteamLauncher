@@ -1,8 +1,8 @@
 import {ipcMain} from 'electron';
 import {randomInt} from 'node:crypto';
 import {fromIndividualAccountID} from 'steamid';
-import storage from '../functions/storage';
-import showToast from '../functions/show-toast';
+import storage from '../functions/storage.js';
+import showToast from '../functions/show-toast.js';
 
 const closeModalEvent = 'account-view-close-modal';
 const maxSafeInt = 281_474_976_710_655;
@@ -19,8 +19,8 @@ ipcMain.on('account-edit', (event, inputs) => {
   event.sender.send(closeModalEvent);
 });
 
-ipcMain.handle('account-data', (): Record<string, string> | null => {
-  return storage.get('account', null);
+ipcMain.handle('account-data', (): Record<string, string> | undefined => {
+  return storage.get('account');
 });
 
 ipcMain.handle('account-exist', () => {

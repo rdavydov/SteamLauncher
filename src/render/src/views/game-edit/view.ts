@@ -1,8 +1,9 @@
 import type Navigo from 'navigo';
 import type {Match} from 'navigo';
+import $ from 'jquery';
 import mustache from 'mustache';
-import gamePostData from '../../functions/game-post-data';
-import dlcsToMustacheTemplate from '../../functions/dlcs-to-mustache-template';
+import gamePostData from '../../functions/game-post-data.js';
+import dlcsToMustacheTemplate from '../../functions/dlcs-to-mustache-template.js';
 
 class GameEditView {
   public match: Match | undefined;
@@ -51,7 +52,7 @@ class GameEditView {
 
   private async setDom() {
     const appId = this.match!.data!.appId;
-    const html = (await import('./main.html?raw')).default;
+    const {default: html} = await import('./main.html?raw');
     const gameData = (await window.api.invoke('game-data', appId)) as Record<
       string,
       Record<string, string>

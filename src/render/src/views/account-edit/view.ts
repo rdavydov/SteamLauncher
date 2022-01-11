@@ -1,7 +1,8 @@
 import type Navigo from 'navigo';
+import $ from 'jquery';
 import mustache from 'mustache';
-import serializeObject from '../../functions/serialize-object';
-import config from '../../config';
+import serializeObject from '../../functions/serialize-object.js';
+import config from '../../config.js';
 
 class AccountEditView {
   private $dom: JQuery | undefined;
@@ -46,7 +47,7 @@ class AccountEditView {
   }
 
   private async setDom() {
-    const html = (await import('./main.html?raw')).default;
+    const {default: html} = await import('./main.html?raw');
     const getLanguageOptions = await this.getLanguageOptions();
     const dom = mustache.render(html, {
       accountData: this.accountData,

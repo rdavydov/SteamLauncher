@@ -1,8 +1,8 @@
-import gamesGetData from './games-get-data';
+import gamesGetData from './games-get-data.js';
 
-const gameGetData = (appId: string): Record<string, unknown> | null => {
+const gameGetData = (appId: string): Record<string, unknown> | undefined => {
   const data = gamesGetData();
-  return data === null ? null : data[appId];
+  return data![appId];
 };
 
 export default gameGetData;

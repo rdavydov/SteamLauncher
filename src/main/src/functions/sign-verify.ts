@@ -1,5 +1,5 @@
 import {execFile} from 'node:child_process';
-import config from '../config';
+import config from '../config.js';
 
 // NOTE: unused
 const signVerify = (filePath: string) => {

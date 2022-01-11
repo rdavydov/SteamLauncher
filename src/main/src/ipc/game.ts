@@ -1,10 +1,10 @@
 import {ipcMain} from 'electron';
-import storage from '../functions/storage';
-import gameDownloadHeaderImage from '../functions/game-download-header-image';
-import gameGetData from '../functions/game-get-data';
-import gamesMerge from '../functions/games-merge';
-import showToast from '../functions/show-toast';
-import gameRemoveHandle from '../functions/game-remove-handle';
+import storage from '../functions/storage.js';
+import gameDownloadHeaderImage from '../functions/game-download-header-image.js';
+import gameGetData from '../functions/game-get-data.js';
+import gamesMerge from '../functions/games-merge.js';
+import showToast from '../functions/show-toast.js';
+import gameRemoveHandle from '../functions/game-remove-handle.js';
 
 const closeModalEvent = 'game-view-close-modal';
 

@@ -1,6 +1,6 @@
 import {app, BrowserWindow} from 'electron';
-import config from '../config';
-import storage from './storage';
+import config from '../config.js';
+import storage from './storage.js';
 
 const environments = import.meta.env;
 

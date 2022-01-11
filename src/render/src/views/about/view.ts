@@ -1,4 +1,5 @@
 import type Navigo from 'navigo';
+import $ from 'jquery';
 import mustache from 'mustache';
 
 class AboutView {
@@ -32,7 +33,7 @@ class AboutView {
     const version = (await window.api.invoke('app-get-version')) as string;
     const description = (await window.api.invoke('app-get-description')) as string;
     const copyright = (await window.api.invoke('app-get-copyright')) as string;
-    const html = (await import('./main.html?raw')).default;
+    const {default: html} = await import('./main.html?raw');
     const dom = mustache.render(html, {name, version, description, copyright});
     this.$dom = $(dom);
   }

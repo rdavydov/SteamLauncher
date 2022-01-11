@@ -1,14 +1,14 @@
 import {mkdirSync, existsSync} from 'node:fs';
-import config from './config';
+import config from './config.js';
 // Set IPC's
-import './ipc/app';
-import './ipc/window';
-import './ipc/contextmenu';
-import './ipc/account';
-import './ipc/settings';
-import './ipc/games';
-import './ipc/game';
-import './ipc/steamdb';
+import './ipc/app.js';
+import './ipc/window.js';
+import './ipc/contextmenu.js';
+import './ipc/account.js';
+import './ipc/settings.js';
+import './ipc/games.js';
+import './ipc/game.js';
+import './ipc/steamdb.js';
 
 const emulatorPath = config.paths.emulator.path;
 

@@ -1,8 +1,8 @@
-import gamesGetData from './games-get-data';
+import gamesGetData from './games-get-data.js';
 
 const gameRemove = (appId: string) => {
   const gamesData = gamesGetData();
-  if (gamesData !== null) {
+  if (typeof gamesData !== 'undefined') {
     // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     delete gamesData[appId];
 

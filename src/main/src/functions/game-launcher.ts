@@ -3,19 +3,19 @@ import {existsSync, mkdirSync, writeFileSync} from 'node:fs';
 import {execFile} from 'node:child_process';
 import ini from 'ini';
 import {emptyDirSync} from 'fs-extra';
-import config from '../config';
-import dlcsToMustacheTemplate from '../../../render/src/functions/dlcs-to-mustache-template';
-import storage from './storage';
-import gameGetData from './game-get-data';
-import showToast from './show-toast';
+import config from '../config.js';
+import dlcsToMustacheTemplate from '../../../render/src/functions/dlcs-to-mustache-template.js';
+import storage from './storage.js';
+import gameGetData from './game-get-data.js';
+import showToast from './show-toast.js';
 
 const gameLauncher = async (event: IpcMainEvent, appId: string, normally = false) => {
   const dataGame = gameGetData(appId);
-  const dataAccount: Record<string, string> | null = storage.get('account', null);
+  const dataAccount: Record<string, string> | undefined = storage.get('account');
   const dataNetwork = storage.get('network');
   const dataSettings = storage.get('settings');
 
-  if (dataGame === null && dataAccount === null) {
+  if (dataGame === null && typeof dataAccount === 'undefined') {
     showToast(event, `Unknown error (dataGame, dataAccount)!`, 'error');
     return;
   }

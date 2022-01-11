@@ -1,9 +1,9 @@
 import {app, session} from 'electron';
 import {appId} from '../../../electron-builder.json';
-import windowNew from './functions/window-new';
-import windowNavigateTo from './functions/window-navigate-to';
-import config from './config';
-import './before-ready';
+import windowNew from './functions/window-new.js';
+import windowNavigateTo from './functions/window-navigate-to.js';
+import config from './config.js';
+import './before-ready.js';
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();

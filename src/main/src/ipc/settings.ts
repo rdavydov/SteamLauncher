@@ -1,6 +1,6 @@
 import {ipcMain} from 'electron';
-import storage from '../functions/storage';
-import showToast from '../functions/show-toast';
+import storage from '../functions/storage.js';
+import showToast from '../functions/show-toast.js';
 
 ipcMain.on('settings-edit', (event, inputs) => {
   storage.set('settings', inputs);

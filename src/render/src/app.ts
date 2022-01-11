@@ -1,4 +1,5 @@
-import settingsSetNetwork from './functions/settings-set-network';
+import $ from 'jquery';
+import settingsSetNetwork from './functions/settings-set-network.js';
 
 (async () => {
   $('.main-titlebar-header > span, title').text(await window.api.invoke('app-get-name'));

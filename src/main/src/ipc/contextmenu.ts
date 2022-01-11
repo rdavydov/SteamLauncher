@@ -1,11 +1,11 @@
 import {ipcMain, Menu, shell} from 'electron';
 import {existsSync} from 'node:fs';
 import {join} from 'node:path';
-import config from '../config';
-import gameGetData from '../functions/game-get-data';
-import gameLauncher from '../functions/game-launcher';
-import gameRemoveHandle from '../functions/game-remove-handle';
-import showToast from '../functions/show-toast';
+import config from '../config.js';
+import gameGetData from '../functions/game-get-data.js';
+import gameLauncher from '../functions/game-launcher.js';
+import gameRemoveHandle from '../functions/game-remove-handle.js';
+import showToast from '../functions/show-toast.js';
 
 const mdiPlayCircle = join(config.paths.contextMenuIcons, 'mdi-play-circle.png');
 const mdiLinkVariant = join(config.paths.contextMenuIcons, 'mdi-link-variant.png');
@@ -41,7 +41,7 @@ ipcMain.on('game-contextmenu-show', (event, appId: string) => {
       icon: mdiLinkVariant,
       click: () => {
         const data = gameGetData(appId);
-        if (data !== null) {
+        if (typeof data !== 'undefined') {
           shell.showItemInFolder(data.path as string);
         }
       },

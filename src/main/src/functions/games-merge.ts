@@ -1,4 +1,4 @@
-import gamesGetData from './games-get-data';
+import gamesGetData from './games-get-data.js';
 
 const normalizeInputs = (inputs: Record<string, string>) => {
   const data: Record<string, Record<string, string>> = {};

@@ -9,7 +9,7 @@ export const encodeUriObject = (queryString: Record<string, string>) => {
   return encoded;
 };
 
-export const decodeUriObject = (queryString: Record<string, string> | null) => {
+export const decodeUriObject = (queryString: Record<string, string> | undefined) => {
   const decoded: Record<string, string> = {};
   for (const key in queryString) {
     if (Object.prototype.hasOwnProperty.call(queryString, key)) {

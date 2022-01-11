@@ -2,7 +2,7 @@ import {BrowserWindow} from 'electron';
 
 const worldId = 999;
 
-const steamDbGetData = async (appId: string): Promise<string | null> => {
+const steamDbGetData = async (appId: string): Promise<string | undefined> => {
   const win = new BrowserWindow({
     show: false,
   });
@@ -23,7 +23,7 @@ const steamDbGetData = async (appId: string): Promise<string | null> => {
         code: `window.alert("The first time wait for the page to load until the application is displayed, close the page and try saving again! Please click ok to confirm.")`,
       },
     ]);
-    return null;
+    return undefined;
   }
 
   win.close();

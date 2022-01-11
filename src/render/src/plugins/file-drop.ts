@@ -1,5 +1,6 @@
-import config from '../config';
-import showToast from '../functions/show-toast';
+import jQuery from 'jquery';
+import config from '../config.js';
+import showToast from '../functions/show-toast.js';
 
 (($) => {
   $.fn.fileDrop = function (callback: (file: Record<string, string>) => void) {

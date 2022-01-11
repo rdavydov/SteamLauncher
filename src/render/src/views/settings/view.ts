@@ -1,6 +1,7 @@
 import type Navigo from 'navigo';
+import $ from 'jquery';
 import mustache from 'mustache';
-import serializeObject from '../../functions/serialize-object';
+import serializeObject from '../../functions/serialize-object.js';
 
 class SettingsView {
   private $dom: JQuery | undefined;
@@ -40,7 +41,7 @@ class SettingsView {
 
   private async setDom() {
     const settingsData = (await window.api.invoke('settings-data')) as Record<string, unknown>;
-    const html = (await import('./main.html?raw')).default;
+    const {default: html} = await import('./main.html?raw');
     const dom = mustache.render(html, {
       settingsData,
     });

@@ -1,7 +1,7 @@
-import storage from './storage';
+import storage from './storage.js';
 
-const gamesGetData = (): Record<string, Record<string, string>> | null => {
-  return storage.get('games', null);
+const gamesGetData = (): Record<string, Record<string, string>> | undefined => {
+  return storage.get('games');
 };
 
 export default gamesGetData;

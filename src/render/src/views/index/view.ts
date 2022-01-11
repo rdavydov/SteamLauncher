@@ -1,6 +1,7 @@
 import type Navigo from 'navigo';
 import mustache from 'mustache';
-import {encodeUriObject} from '../../functions/encoded-decode-uri-object';
+import $ from 'jquery';
+import {encodeUriObject} from '../../functions/encoded-decode-uri-object.js';
 
 class IndexView {
   private $dom: JQuery | undefined;
@@ -70,7 +71,7 @@ class IndexView {
   }
 
   private async setDom() {
-    const html = (await import('./main.html?raw')).default;
+    const {default: html} = await import('./main.html?raw');
     const dom = mustache.render(html, {});
     this.$dom = $(dom);
   }
