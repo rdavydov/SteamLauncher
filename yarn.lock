@@ -349,19 +349,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify/iconify@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@iconify/iconify@npm:2.1.0"
+"@iconify/iconify@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@iconify/iconify@npm:2.1.1"
   dependencies:
     cross-fetch: ^3.1.4
-  checksum: 811d006fd1abac0bdc7a005fbbf8c621300de0474126e6756b2832d0b7c2c9855517b42ed5d9fb65822141221867be8ccebcf3ebfa04c8682d5c83784e95e167
+  checksum: c65ed52a46e28e2d5094d488d5135b2c36c8f4e24b57a454e6e026a7a4c2177e37849d6531c379912c99d69198ca8e528d4cfb51ad48fee1677ddafeaeb59457
   languageName: node
   linkType: hard
 
-"@iconify/json@npm:1.1.454":
-  version: 1.1.454
-  resolution: "@iconify/json@npm:1.1.454"
-  checksum: 152b0bfb12269fd18481d3027fc9312a690b399688ca11ee4fac506cbc765a142ebfb1adc507e952d54d2e0a1ed0ca10374fa64c975ce6c7f6b3da8e0835963b
+"@iconify/json@npm:1.1.455":
+  version: 1.1.455
+  resolution: "@iconify/json@npm:1.1.455"
+  checksum: 704185d7182d184ccaa55fdcf1c0693cd1b6eba8275535a7255006d2be4e20edeb3db321eb241165a8ee945c9c4a9b75ac6d1e6aa26bf16278a348b7cbf0d4dd
   languageName: node
   linkType: hard
 
@@ -469,12 +469,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/line-clamp@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "@tailwindcss/line-clamp@npm:0.3.0"
+"@tailwindcss/line-clamp@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "@tailwindcss/line-clamp@npm:0.3.1"
   peerDependencies:
     tailwindcss: ">=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1"
-  checksum: 9b1d306d1001f6f297ef555cfa5a9e69bd1643a982d0f9dc5a929a2e1afa099ae8844fc02ba3395af229d00bab9c40d1bab79872ca154d9e0e607d49d043b524
+  checksum: 805322a6333f029d6d961e02f23099d16f55d31f4736511bc741efff4097a1ad1574a7dff0530b17dbc974e08138b3beb13766f809e0116ebc192b0edf38b737
   languageName: node
   linkType: hard
 
@@ -567,12 +567,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jquery@npm:^3.5.12":
-  version: 3.5.12
-  resolution: "@types/jquery@npm:3.5.12"
+"@types/jquery@npm:^3.5.13":
+  version: 3.5.13
+  resolution: "@types/jquery@npm:3.5.13"
   dependencies:
     "@types/sizzle": "*"
-  checksum: 8619ca4e7b64e385327dcb163c564cc5067e5223d7e55d9182374f51c0307bfdd12514b0b9e1e8b6a89249e32014dfc7fa4271d8f5c016a11852f9c2ab166033
+  checksum: cb4e6aacaf36905049d5ac93da1fabed17da285fafe38c88feba89d7c9912e108c934ea05c908b87ae199f2830e5e002a72d0cc8aaef4a33539581d0a7a6abe8
   languageName: node
   linkType: hard
 
@@ -2347,16 +2347,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^16.0.6":
-  version: 16.0.6
-  resolution: "electron@npm:16.0.6"
+"electron@npm:^16.0.7":
+  version: 16.0.7
+  resolution: "electron@npm:16.0.7"
   dependencies:
     "@electron/get": ^1.13.0
     "@types/node": ^14.6.2
     extract-zip: ^1.0.3
   bin:
     electron: cli.js
-  checksum: 0b0c7e109c871ced64493bdf7a39b334b732909228375d4bdb268f97de5a487f5e34fe763f72b9ab5be4ba35de861b3bd76efb1417207729b6146877f644fc81
+  checksum: 9ca82da3739ad737b736c9f5ff9d0e4883f69cb55128d65c39b559ad26b95502d7fb54899e01d744ee4d1d8d1414fe0a77750ed30ed187e90737562b823e1ee1
   languageName: node
   linkType: hard
 
@@ -6576,14 +6576,14 @@ __metadata:
   resolution: "steamlauncher@workspace:."
   dependencies:
     "@fontsource/oswald": ^4.5.1
-    "@iconify/iconify": ^2.1.0
-    "@iconify/json": 1.1.454
+    "@iconify/iconify": ^2.1.1
+    "@iconify/json": 1.1.455
     "@tailwindcss/aspect-ratio": ^0.4.0
     "@tailwindcss/forms": ^0.4.0
-    "@tailwindcss/line-clamp": ^0.3.0
+    "@tailwindcss/line-clamp": ^0.3.1
     "@tailwindcss/typography": ^0.5.0
     "@types/ini": ^1.3.31
-    "@types/jquery": ^3.5.12
+    "@types/jquery": ^3.5.13
     "@types/markdown-it": ^12.2.3
     "@types/mustache": ^4.1.2
     "@types/steamid": ^2.0.1
@@ -6591,7 +6591,7 @@ __metadata:
     "@types/toastr": ^2.1.39
     autoprefixer: ^10.4.2
     concurrently: ^7.0.0
-    electron: ^16.0.6
+    electron: ^16.0.7
     electron-builder: ^22.14.13
     electron-store: ^8.0.1
     fs-extra: ^10.0.0
