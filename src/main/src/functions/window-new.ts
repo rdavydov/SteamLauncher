@@ -63,20 +63,21 @@ const windowNew = () => {
 
   if (environments.PROD) {
     win.removeMenu();
-  }
-
-  win
-    .loadFile(config.paths.renderFilePath, {
-      hash: '#/',
-    })
-    .then(() => {
-      if (environments.DEV) {
+    win
+      .loadFile(config.paths.renderFilePath, {
+        hash: '#/',
+      })
+      .catch(console.error);
+  } else {
+    win
+      .loadURL('http://localhost:3000/')
+      .then(() => {
         win.webContents.openDevTools({
           mode: 'undocked',
         });
-      }
-    })
-    .catch(console.error);
+      })
+      .catch(console.error);
+  }
 
   return win;
 };

@@ -23,7 +23,7 @@
     "dev": "yarn concurrently 'yarn:dev:*'",
     "dev:main": "yarn vite build --mode development -w -c ./src/main/vite.config.ts",
     "dev:preload": "yarn vite build --mode development -w -c ./src/preload/vite.config.ts",
-    "dev:render": "yarn vite build --mode development -w -c ./src/render/vite.config.ts",
+    "dev:render": "yarn vite --mode development -c ./src/render/vite.config.ts",
     "dev:electron": "yarn electron .",
     "prod": "yarn run-s 'prod:*'",
     "prod:main": "yarn vite build --mode production -c ./src/main/vite.config.ts",
