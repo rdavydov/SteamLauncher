@@ -1,4 +1,4 @@
-name: Build / Release
+name: Build and Release
 
 on: push
 
@@ -11,20 +11,19 @@ jobs:
         os: [windows-latest]
 
     steps:
-      - name: Actions / Checkout
+      - name: Action / Checkout
         uses: actions/checkout@v2
 
-      - name: Actions / Setup Node
+      - name: Action / Setup Node v16
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: "16"
+          cache: "yarn"
 
-      - name: Install
-        run: |
-          yarn install
+      - name: Install Dependencies
+        run: yarn install
 
-      - name: Build / Release
+      - name: Build and Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          yarn run release
+        run: yarn run release

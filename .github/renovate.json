@@ -1,0 +1,7 @@
+{
+  "extends": ["config:base", "schedule:daily", "group:allNonMajor"],
+  "labels": ["dependencies"],
+  "pin": false,
+  "rangeStrategy": "bump",
+  "node": false
+}
