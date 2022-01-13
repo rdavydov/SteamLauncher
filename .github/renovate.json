@@ -1,3 +1,4 @@
 {
-  "extends": ["github>teppeis/renovate-config:anytime"]
+  "extends": ["github>teppeis/renovate-config:anytime"],
+  "automerge": false
 }
