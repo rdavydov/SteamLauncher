@@ -1,5 +1,6 @@
 import {mkdirSync, existsSync} from 'node:fs';
 import config from './config.js';
+
 // Set IPC's
 import './ipc/app.js';
 import './ipc/window.js';

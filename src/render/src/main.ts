@@ -1,5 +1,4 @@
 import '@fontsource/oswald';
-// Import '@mdi/font/css/materialdesignicons.min.css';
 import 'github-markdown-css/github-markdown-dark.css';
 import './styles/main.css';
 

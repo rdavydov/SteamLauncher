@@ -1,19 +1,11 @@
 import {cwd} from 'node:process';
 import {join, basename} from 'node:path';
 import {builtinModules} from 'node:module';
-import {defineConfig} from 'vite';
-import type {UserConfig} from 'vite';
+import {defineConfig, UserConfigExport} from 'vite';
+import {dependencies} from './package.json';
 
-const builtinModulesNodeProtocol = builtinModules.map((value) => 'node:' + value);
-const externalModules = [
-  'electron',
-  'electron-store',
-  'steamid',
-  'node-fetch',
-  'markdown-it',
-  'ini',
-  'fs-extra',
-];
+const builtinModulesNodeProtocol = builtinModules.map((module) => 'node:' + module);
+const externalModules = [...Object.keys(dependencies), 'electron'];
 
 export default function createConfig(packagePath: string) {
   return defineConfig(({mode}) => {
@@ -22,17 +14,14 @@ export default function createConfig(packagePath: string) {
     const viteDistName = basename(packagePath);
     const viteRoot = join(packagePath, 'src');
     const viteOutDirectory = join(packagePath, 'dist');
-    const viteConfig: UserConfig = {
+    const viteConfig: UserConfigExport = {
       root: viteRoot,
-      base: '',
       envDir: rootPath,
       build: {
         target: 'esnext',
         emptyOutDir: true,
         outDir: viteOutDirectory,
-        polyfillModulePreload: false,
       },
-      plugins: [],
     };
 
     if (isDevelopment) {
