@@ -349,22 +349,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify/iconify@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "@iconify/iconify@npm:2.1.1"
-  dependencies:
-    cross-fetch: ^3.1.4
-  checksum: c65ed52a46e28e2d5094d488d5135b2c36c8f4e24b57a454e6e026a7a4c2177e37849d6531c379912c99d69198ca8e528d4cfb51ad48fee1677ddafeaeb59457
-  languageName: node
-  linkType: hard
-
-"@iconify/json@npm:1.1.456":
-  version: 1.1.456
-  resolution: "@iconify/json@npm:1.1.456"
-  checksum: d970aa22d3f76a51db28f5ad022693ba3124552b54b695e93cdf594a9586c268bc0bc2c8e3a519cfa1df8e4693495618a0228defba78d0918fc8cbd50b70ef03
-  languageName: node
-  linkType: hard
-
 "@malept/cross-spawn-promise@npm:^1.1.0":
   version: 1.1.1
   resolution: "@malept/cross-spawn-promise@npm:1.1.1"
@@ -383,6 +367,13 @@ __metadata:
     lodash: ^4.17.15
     tmp-promise: ^3.0.2
   checksum: 12527e42c2865504eb2a91cc419e52dd7a68c1eda1138c0713a1520a5413ef9dabfa9d21b7908d211998b75c60035d1d5ae87c00fe8ff5be8fa8449525235dd5
+  languageName: node
+  linkType: hard
+
+"@mdi/font@npm:^6.5.95":
+  version: 6.5.95
+  resolution: "@mdi/font@npm:6.5.95"
+  checksum: 6333a2e15462b55e4a981c8f1a249254090a9c0e242f6331f75403897241bbc94d9470a660bf0c596471e47a68e07cd630e0984cb576e1e12a4d6e8bfc02198c
   languageName: node
   linkType: hard
 
@@ -1904,15 +1895,6 @@ __metadata:
   dependencies:
     buffer: ^5.1.0
   checksum: dabbc4eba223b206068b92ca82bb471d583eb6be2384a87f5c3712730cfd6ba4b13a45e8ba3ef62174d5a781a2c5ac5c20bf36cf37bba73926899bd0aa19186f
-  languageName: node
-  linkType: hard
-
-"cross-fetch@npm:^3.1.4":
-  version: 3.1.4
-  resolution: "cross-fetch@npm:3.1.4"
-  dependencies:
-    node-fetch: 2.6.1
-  checksum: 2107e5e633aa327bdacab036b1907c7ddd28651ede0c1d4fd14db04510944d56849a8255e2f5b8f9a1da0e061b6cee943f6819fe29ed9a130195e7fadd82a4ff
   languageName: node
   linkType: hard
 
@@ -5175,13 +5157,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:2.6.1":
-  version: 2.6.1
-  resolution: "node-fetch@npm:2.6.1"
-  checksum: 91075bedd57879117e310fbcc36983ad5d699e522edb1ebcdc4ee5294c982843982652925c3532729fdc86b2d64a8a827797a745f332040d91823c8752ee4d7c
-  languageName: node
-  linkType: hard
-
 "node-fetch@npm:^3.1.0":
   version: 3.1.0
   resolution: "node-fetch@npm:3.1.0"
@@ -6576,8 +6551,7 @@ __metadata:
   resolution: "steamlauncher@workspace:."
   dependencies:
     "@fontsource/oswald": ^4.5.1
-    "@iconify/iconify": ^2.1.1
-    "@iconify/json": 1.1.456
+    "@mdi/font": ^6.5.95
     "@tailwindcss/aspect-ratio": ^0.4.0
     "@tailwindcss/forms": ^0.4.0
     "@tailwindcss/line-clamp": ^0.3.1

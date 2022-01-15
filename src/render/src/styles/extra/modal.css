@@ -15,8 +15,8 @@
         & .modal-header-title {
           @apply flex items-center uppercase;
 
-          & .iconify {
-            @apply w-8 h-auto;
+          & .mdi:before {
+            @apply text-xl;
           }
         }
       }

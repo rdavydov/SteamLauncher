@@ -16,10 +16,6 @@
 
     & .form-input-group-text {
       @apply flex items-center px-2 text-gray-800 bg-white border border-solid border-gray-900 font-bold w-1/4 rounded-md;
-
-      & .iconify {
-        @apply w-5 h-auto;
-      }
     }
 
     & > :not(:first-child) {

@@ -36,26 +36,26 @@
   }
 
   .main-titlebar-container {
-    & .main-titlebar-btn[data-sk-attr='close'] {
+    & .main-titlebar-btn[data-sk-attr="close"] {
       @apply hover:bg-red-600;
     }
 
-    & .main-titlebar-btn[data-sk-attr='restore'] {
+    & .main-titlebar-btn[data-sk-attr="restore"] {
       @apply hidden;
     }
 
-    & .main-titlebar-btn[data-sk='set-network'][data-sk-to='offline'] {
+    & .main-titlebar-btn[data-sk="set-network"][data-sk-to="offline"] {
       @apply text-green-600;
 
-      & .iconify:last-child {
+      & .mdi:last-child {
         @apply hidden;
       }
     }
 
-    & .main-titlebar-btn[data-sk='set-network'][data-sk-to='online'] {
+    & .main-titlebar-btn[data-sk="set-network"][data-sk-to="online"] {
       @apply text-red-600;
 
-      & .iconify:first-child {
+      & .mdi:first-child {
         @apply hidden;
       }
     }
@@ -63,11 +63,11 @@
 
   .main-titlebar-is-maximized {
     & .main-titlebar-container {
-      & .main-titlebar-btn[data-sk-attr='maximize'] {
+      & .main-titlebar-btn[data-sk-attr="maximize"] {
         @apply hidden;
       }
 
-      & .main-titlebar-btn[data-sk-attr='restore'] {
+      & .main-titlebar-btn[data-sk-attr="restore"] {
         @apply flex;
       }
     }

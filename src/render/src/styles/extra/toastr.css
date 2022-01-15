@@ -75,16 +75,16 @@
     }
 
     &.toast-info {
-      background-image: url("images/icons/toastr/info.svg");
+      background-image: url("./assets/images/icons/toastr/info.svg");
     }
     &.toast-error {
-      background-image: url("images/icons/toastr/error.svg");
+      background-image: url("./assets/images/icons/toastr/error.svg");
     }
     &.toast-success {
-      background-image: url("images/icons/toastr/success.svg");
+      background-image: url("./assets/images/icons/toastr/success.svg");
     }
     &.toast-warning {
-      background-image: url("images/icons/toastr/warning.svg");
+      background-image: url("./assets/images/icons/toastr/warning.svg");
     }
   }
 

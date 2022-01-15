@@ -21,6 +21,7 @@ export default function createConfig(packagePath: string) {
         target: 'esnext',
         emptyOutDir: true,
         outDir: viteOutDirectory,
+        polyfillModulePreload: false,
       },
     };
 

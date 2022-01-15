@@ -1,13 +1,13 @@
-import jQuery from 'jquery';
+import $ from 'jquery';
 import config from '../config.js';
 import showToast from '../functions/show-toast.js';
 
-(($) => {
-  $.fn.fileDrop = function (callback: (file: Record<string, string>) => void) {
+(($$) => {
+  $$.fn.fileDrop = function (callback: (file: Record<string, string>) => void) {
     const activeClass = 'drop-highlight';
 
     return this.each(() => {
-      const $dom = $(this);
+      const $dom = $$(this);
       $dom.on('dragenter dragend dragleave dragover drag', (event) => {
         event.preventDefault();
       });
@@ -59,4 +59,4 @@ import showToast from '../functions/show-toast.js';
       });
     });
   };
-})(jQuery);
+})($);
