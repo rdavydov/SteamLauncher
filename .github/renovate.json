@@ -1,4 +1,5 @@
 {
-  "extends": ["github>teppeis/renovate-config:anytime"],
-  "automerge": false
+  "extends": ["config:base", ":ignoreModulesAndTests", "schedule:daily", "group:allNonMajor"],
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump"
 }
