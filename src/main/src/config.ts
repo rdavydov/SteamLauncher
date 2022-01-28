@@ -1,6 +1,5 @@
 import {app} from 'electron';
 import {join} from 'node:path';
-import log from 'electron-log';
 
 const environments = import.meta.env;
 const resourcePath = environments.DEV ? app.getAppPath() : join(app.getAppPath(), '../../');
@@ -25,7 +24,8 @@ const config = {
       publicPath,
       '/assets/images/icons/contextmenu',
     ),
-    signtool: join(resourcePath, '/bin/win/signtool.exe'),
+    signtool: join(resourcePath, '/bin/win/signtool/signtool.exe'),
+    steamRetriever: join(resourcePath, '/bin/win/steam_retriever/steam_retriever.exe'),
     preloadFilePath: join(app.getAppPath(), 'src/preload/dist/index.js'),
     renderFilePath: join(app.getAppPath(), 'src/render/dist/index.html'),
     iconFilePath: join(app.getAppPath(), 'src/render/', publicPath, '/favicon.ico'),
@@ -56,7 +56,5 @@ const config = {
   ]),
   allowedWillNavigateUrls: new Set(['https://steamdb.info', 'http://localhost:3000']),
 };
-
-log.debug(config);
 
 export default config;

@@ -19,13 +19,7 @@
     }
 
     &.btn-github {
-      @apply text-white;
-      background: #444;
-      border-color: rgba(0, 0, 0, 0.2);
-
-      &:hover {
-        background: #2b2b2b;
-      }
+      @apply text-white bg-gray-600 border-slate-500 hover:bg-gray-700;
     }
   }
 }

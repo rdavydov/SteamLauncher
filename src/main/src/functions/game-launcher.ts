@@ -5,7 +5,7 @@ import ini from 'ini';
 import {emptyDirSync} from 'fs-extra';
 import config from '../config.js';
 import dlcsToMustacheTemplate from '../../../render/src/functions/dlcs-to-mustache-template.js';
-import storage from './storage.js';
+import storage from '../storage.js';
 import gameGetData from './game-get-data.js';
 import showToast from './show-toast.js';
 

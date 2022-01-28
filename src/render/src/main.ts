@@ -6,5 +6,5 @@ import './styles/main.css';
 import './plugins/file-drop.js';
 
 import './ipc.js';
-import './app.js';
+import './events.js';
 import './routers.js';

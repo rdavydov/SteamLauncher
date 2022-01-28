@@ -1,17 +1,17 @@
-@import 'tailwindcss/base';
-@import './base';
+@import "tailwindcss/base";
+@import "./base";
 
-@import 'tailwindcss/components';
-@import './components';
+@import "tailwindcss/components";
+@import "./components";
 
-@import 'tailwindcss/utilities';
-@import './utilities';
+@import "tailwindcss/utilities";
+@import "./utilities";
 
-@import './extra/titlebar';
-@import './extra/container';
-@import './extra/loader';
-@import './extra/buttons';
-@import './extra/modal';
-@import './extra/scrollbar';
-@import './extra/form';
-@import './extra/toastr';
+@import "./extra/titlebar";
+@import "./extra/container";
+@import "./extra/buttons";
+@import "./extra/modal";
+@import "./extra/scrollbar";
+@import "./extra/form";
+@import "./extra/toastr";
+@import "./extra/games";

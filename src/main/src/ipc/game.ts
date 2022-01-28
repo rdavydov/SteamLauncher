@@ -1,5 +1,5 @@
 import {ipcMain} from 'electron';
-import storage from '../functions/storage.js';
+import storage from '../storage.js';
 import gameDownloadHeaderImage from '../functions/game-download-header-image.js';
 import gameGetData from '../functions/game-get-data.js';
 import gamesMerge from '../functions/games-merge.js';

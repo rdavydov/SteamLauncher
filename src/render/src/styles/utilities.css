@@ -8,11 +8,10 @@
   }
 
   .font-oswald {
-    font-family: 'Oswald';
+    font-family: "Oswald";
   }
 
   .drop-highlight {
-    @apply outline-white;
-    outline-color: rgb(30, 64, 175);
+    @apply outline-dashed outline-1 outline-blue-900;
   }
 }

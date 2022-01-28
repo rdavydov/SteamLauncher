@@ -1,0 +1,47 @@
+<div class="modal">
+  <div class="modal-dialog modal-dialog-scrollabe">
+    <div class="modal-content">
+      <form action="">
+        <div class="modal-header">
+          <div class="modal-header-title">
+            <span class="mdi mdi-account-edit"></span>
+            <span class="ml-1">Edit account</span>
+          </div>
+          <button type="button" class="btn btn-red" data-sk="modal" data-sk-attr="close">
+            <span class="mdi mdi-close"></span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="form-input-group">
+            <div class="form-input-group-text">
+              <span class="mdi mdi-account-question"></span>
+              <span class="ml-1">Name</span>
+            </div>
+            <input type="text" class="form-input" name="name" value="{{accountData.name}}" placeholder="..." required>
+          </div>
+          <!--<div class="form-input-group">
+            <div class="form-input-group-text">
+              <span class="mdi mdi-translate"></span>
+              <span class="ml-1">Language</span>
+            </div>
+            <select class="form-input" name="language" required>
+              <option value="">...</option>
+              {{{inputLanguageOptions}}}
+            </select>
+          </div>-->
+          <div class="form-input-group">
+            <div class="form-input-group-text">
+              <span class="mdi mdi-identifier"></span>
+              <span class="ml-1">SteamID (auto)</span>
+            </div>
+            <input type="text" class="form-input disabled" name="steamId" value="{{accountData.steamId}}" required
+              readonly>
+          </div>
+        </div>
+        <div class="modal-footer justify-end">
+          <button type="submit" class="btn btn-green">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

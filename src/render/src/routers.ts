@@ -1,12 +1,18 @@
 import Navigo from 'navigo';
 import $ from 'jquery';
-import IndexView from './views/index/view.js';
-import AboutView from './views/about/view.js';
-import AccountEditView from './views/account-edit/view.js';
-import AccountCreateView from './views/account-create/view.js';
-import SettingsView from './views/settings/view.js';
-import GameAddView from './views/game-add/view.js';
-import GameEditView from './views/game-edit/view.js';
+// ONLINE
+import IndexView from './views/online/index/view.js';
+import GameAddView from './views/online/game-add/view.js';
+import GameEditView from './views/online/game-edit/view.js';
+// OFFLINE
+/* import IndexViewOffline from './views/offline/index/view.js';
+import GameAddViewOffline from './views/offline/game-add/view.js';
+import GameEditViewOffline from './views/offline/game-edit/view.js'; */
+// BOTH
+import AboutView from './views/both/about/view.js';
+import SettingsView from './views/both/settings/view.js';
+import AccountEditView from './views/both/account-edit/view.js';
+import AccountCreateView from './views/both/account-create/view.js';
 
 const router = new Navigo('/', {hash: true});
 

@@ -11,12 +11,4 @@
   body {
     @apply h-full;
   }
-
-  /*& a {
-    @apply text-blue-700;
-    &:hover {
-      @apply text-blue-900;
-      @apply underline;
-    }
-  }*/
 }

@@ -1,7 +1,7 @@
 import {ipcMain} from 'electron';
 import {randomInt} from 'node:crypto';
 import {fromIndividualAccountID} from 'steamid';
-import storage from '../functions/storage.js';
+import storage from '../storage.js';
 import showToast from '../functions/show-toast.js';
 
 const closeModalEvent = 'account-view-close-modal';

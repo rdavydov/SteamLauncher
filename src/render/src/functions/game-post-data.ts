@@ -19,7 +19,7 @@ const gamePostData = async (
     const gameData = (await window.api.invoke('game-data', oldAppId)) as Record<string, unknown>;
     const lastRequest = gameData.lastRequest as number;
     // NOTE: oldAppId !== appId for new request if edited appId
-    const check = nowTimeBySeconds() - lastRequest > 60 * 60 || oldAppId !== appId;
+    const check = nowTimeBySeconds() - lastRequest > 0 || oldAppId !== appId;
     if (check) {
       steamDbParsedData = await steamDbGetData(getAppId);
       showToast('Updated game based on steamdb!');

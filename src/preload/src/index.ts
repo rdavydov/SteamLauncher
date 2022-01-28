@@ -1,5 +1,4 @@
-import {contextBridge, ipcRenderer} from 'electron';
-import type {IpcRendererEvent} from 'electron';
+import {contextBridge, ipcRenderer, IpcRendererEvent} from 'electron';
 
 contextBridge.exposeInMainWorld('api', {
   invoke: async (channel: string, ...args: any[]) => {
@@ -10,5 +9,13 @@ contextBridge.exposeInMainWorld('api', {
   },
   on: (channel: string, listener: (event: IpcRendererEvent, ...args: any[]) => void) => {
     return ipcRenderer.on(channel, listener);
+  },
+  storage: {
+    get: async (key: string, defaultValue = undefined) => {
+      return ipcRenderer.invoke('storage_get', key, defaultValue);
+    },
+    set: async (key: string, value: unknown) => {
+      return ipcRenderer.invoke('storage_set', key, value);
+    },
   },
 });
