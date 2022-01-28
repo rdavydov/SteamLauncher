@@ -317,10 +317,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource/oswald@npm:^4.5.1":
-  version: 4.5.1
-  resolution: "@fontsource/oswald@npm:4.5.1"
-  checksum: 1fd7a6e5c8e8da391dc4ff68bf3241a016cdc08f5c5e6f6fcfc2b3475f522ee122d253155b84a5fd0ebc8bf010cb712dccaf44f5f07c83ea06e627672bba54ae
+"@fontsource/oswald@npm:^4.5.2":
+  version: 4.5.2
+  resolution: "@fontsource/oswald@npm:4.5.2"
+  checksum: 9ba6cb6985b02030906d3cfe7af392eb3ff1334572ef5bfe9e3cda1697fdd41ea7aa86d821f0a32976d721a5c66a52f575fe047a2c86065928b8a555e4e45f79
   languageName: node
   linkType: hard
 
@@ -469,17 +469,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/typography@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "@tailwindcss/typography@npm:0.5.0"
+"@tailwindcss/typography@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "@tailwindcss/typography@npm:0.5.1"
   dependencies:
     lodash.castarray: ^4.4.0
     lodash.isplainobject: ^4.0.6
     lodash.merge: ^4.6.2
-    lodash.uniq: ^4.5.0
   peerDependencies:
     tailwindcss: "*"
-  checksum: 84986845115cd8bfc0d9df8f2a6d3e86fdba0d54e236a6150782b1340e27218610a5dbb5ab63c34cbc6f8bef4180ff0d1540808895e893b16854c2b0f83094dc
+  checksum: 894bab9a14a5bc4071573618ca9fd6b5bbe53e3c26af8aa1de440b8be59a63cf105f9fb1b12611bf446b4b054c6a48e8ff5c7c85ff233c5f78d70ffb7e53b5d9
   languageName: node
   linkType: hard
 
@@ -686,6 +685,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: e99fc7cc6265407987b30deda54c1c24bb1478803faf6037557a774b2f034c5b097ffd65847daa87e82a61a250d919f35c3588654b0fdaa816906650f596d1b0
+  languageName: node
+  linkType: hard
+
+"@types/semver@npm:^7.3.6":
+  version: 7.3.9
+  resolution: "@types/semver@npm:7.3.9"
+  checksum: 60bfcfdfa7f937be2c6f4b37ddb6714fb0f27b05fe4cbdfdd596a97d35ed95d13ee410efdd88e72a66449d0384220bf20055ab7d6b5df10de4990fbd20e5cbe0
   languageName: node
   linkType: hard
 
@@ -1573,9 +1579,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:^3.5.2":
-  version: 3.5.2
-  resolution: "chokidar@npm:3.5.2"
+"chokidar@npm:^3.5.3":
+  version: 3.5.3
+  resolution: "chokidar@npm:3.5.3"
   dependencies:
     anymatch: ~3.1.2
     braces: ~3.0.2
@@ -1588,7 +1594,7 @@ __metadata:
   dependenciesMeta:
     fsevents:
       optional: true
-  checksum: d1fda32fcd67d9f6170a8468ad2630a3c6194949c9db3f6a91b16478c328b2800f433fb5d2592511b6cb145a47c013ea1cce60b432b1a001ae3ee978a8bffc2d
+  checksum: b49fcde40176ba007ff361b198a2d35df60d9bb2a5aab228279eb810feae9294a6b4649ab15981304447afe1e6ffbf4788ad5db77235dc770ab777c6e771980c
   languageName: node
   linkType: hard
 
@@ -2257,7 +2263,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-builder@npm:^22.14.5":
+"electron-builder@npm:^22.14.13":
   version: 22.14.13
   resolution: "electron-builder@npm:22.14.13"
   dependencies:
@@ -2277,6 +2283,13 @@ __metadata:
     electron-builder: cli.js
     install-app-deps: install-app-deps.js
   checksum: 1c5179ca9c4db3886377f86b6aa00db703180358134fefbf4c32daa54ed2620c47bf5495d0e4ee12bd3694dd7d3553a6561f088d2e5ab571b9e9b2f07ff594f2
+  languageName: node
+  linkType: hard
+
+"electron-log@npm:^4.4.5":
+  version: 4.4.5
+  resolution: "electron-log@npm:4.4.5"
+  checksum: 2d19e24783c68a379f2461fdc507b00ce9df4d814eaec8dc804fc8685c72ce9090001c604b1000cfc7337c56ddd9ef5637b31a35a3dfb049e208e3f7790c837e
   languageName: node
   linkType: hard
 
@@ -2329,16 +2342,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^16.0.7":
-  version: 16.0.7
-  resolution: "electron@npm:16.0.7"
+"electron-updater@npm:^4.6.5":
+  version: 4.6.5
+  resolution: "electron-updater@npm:4.6.5"
+  dependencies:
+    "@types/semver": ^7.3.6
+    builder-util-runtime: 8.9.2
+    fs-extra: ^10.0.0
+    js-yaml: ^4.1.0
+    lazy-val: ^1.0.5
+    lodash.escaperegexp: ^4.1.2
+    lodash.isequal: ^4.5.0
+    semver: ^7.3.5
+  checksum: 06b34490fa6213f5c6a01de6f7b3d96eba4e1b7d27e8346747d8b094b9591684f55f92c703e2ee3407c562a240518c0eede699462cc333fcfe2983141941fe98
+  languageName: node
+  linkType: hard
+
+"electron@npm:^16.0.8":
+  version: 16.0.8
+  resolution: "electron@npm:16.0.8"
   dependencies:
     "@electron/get": ^1.13.0
     "@types/node": ^14.6.2
     extract-zip: ^1.0.3
   bin:
     electron: cli.js
-  checksum: 9ca82da3739ad737b736c9f5ff9d0e4883f69cb55128d65c39b559ad26b95502d7fb54899e01d744ee4d1d8d1414fe0a77750ed30ed187e90737562b823e1ee1
+  checksum: 9d3a2e1c3e6dcfdce25b4d9e1ef9dfe736354f9c3605945cfc5b1568862b69ad0a81e402cfaf09c2f51615b64bc3585ef4828a013437b9506cd0dbff3e6db903
   languageName: node
   linkType: hard
 
@@ -3177,6 +3206,19 @@ __metadata:
     merge2: ^1.3.0
     micromatch: ^4.0.4
   checksum: 2f4708ff112d2b451888129fdd9a0938db88b105b0ddfd043c064e3c4d3e20eed8d7c7615f7565fee660db34ddcf08a2db1bf0ab3c00b87608e4719694642d78
+  languageName: node
+  linkType: hard
+
+"fast-glob@npm:^3.2.11":
+  version: 3.2.11
+  resolution: "fast-glob@npm:3.2.11"
+  dependencies:
+    "@nodelib/fs.stat": ^2.0.2
+    "@nodelib/fs.walk": ^1.2.3
+    glob-parent: ^5.1.2
+    merge2: ^1.3.0
+    micromatch: ^4.0.4
+  checksum: f473105324a7780a20c06de842e15ddbb41d3cb7e71d1e4fe6e8373204f22245d54f5ab9e2061e6a1c613047345954d29b022e0e76f5c28b1df9858179a0e6d7
   languageName: node
   linkType: hard
 
@@ -4701,6 +4743,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.escaperegexp@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "lodash.escaperegexp@npm:4.1.2"
+  checksum: 6d99452b1cfd6073175a9b741a9b09ece159eac463f86f02ea3bee2e2092923fce812c8d2bf446309cc52d1d61bf9af51c8118b0d7421388e6cead7bd3798f0f
+  languageName: node
+  linkType: hard
+
+"lodash.isequal@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.isequal@npm:4.5.0"
+  checksum: da27515dc5230eb1140ba65ff8de3613649620e8656b19a6270afe4866b7bd461d9ba2ac8a48dcc57f7adac4ee80e1de9f965d89d4d81a0ad52bb3eec2609644
+  languageName: node
+  linkType: hard
+
 "lodash.isplainobject@npm:^4.0.6":
   version: 4.0.6
   resolution: "lodash.isplainobject@npm:4.0.6"
@@ -4712,13 +4768,6 @@ __metadata:
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
   checksum: ad580b4bdbb7ca1f7abf7e1bce63a9a0b98e370cf40194b03380a46b4ed799c9573029599caebc1b14e3f24b111aef72b96674a56cfa105e0f5ac70546cdc005
-  languageName: node
-  linkType: hard
-
-"lodash.uniq@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "lodash.uniq@npm:4.5.0"
-  checksum: a4779b57a8d0f3c441af13d9afe7ecff22dd1b8ce1129849f71d9bbc8e8ee4e46dfb4b7c28f7ad3d67481edd6e51126e4e2a6ee276e25906d10f7140187c392d
   languageName: node
   linkType: hard
 
@@ -6567,12 +6616,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "steamlauncher@workspace:."
   dependencies:
-    "@fontsource/oswald": ^4.5.1
+    "@fontsource/oswald": ^4.5.2
     "@mdi/font": ^6.5.95
     "@tailwindcss/aspect-ratio": ^0.4.0
     "@tailwindcss/forms": ^0.4.0
     "@tailwindcss/line-clamp": ^0.3.1
-    "@tailwindcss/typography": ^0.5.0
+    "@tailwindcss/typography": ^0.5.1
     "@types/ini": ^1.3.31
     "@types/jquery": ^3.5.13
     "@types/markdown-it": ^12.2.3
@@ -6582,9 +6631,11 @@ __metadata:
     "@types/toastr": ^2.1.39
     autoprefixer: ^10.4.2
     concurrently: ^7.0.0
-    electron: ^16.0.7
-    electron-builder: ^22.14.5
+    electron: ^16.0.8
+    electron-builder: ^22.14.13
+    electron-log: ^4.4.5
     electron-store: ^8.0.1
+    electron-updater: ^4.6.5
     fs-extra: ^10.0.0
     github-markdown-css: ^5.1.0
     ini: ^2.0.0
@@ -6597,7 +6648,7 @@ __metadata:
     postcss: ^8.4.5
     prettier: ^2.5.1
     steamid: ^2.0.0
-    tailwindcss: ^3.0.15
+    tailwindcss: ^3.0.17
     toastr: ^2.1.4
     typescript: ^4.5.5
     vite: ^2.7.13
@@ -6773,19 +6824,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:^3.0.15":
-  version: 3.0.15
-  resolution: "tailwindcss@npm:3.0.15"
+"tailwindcss@npm:^3.0.17":
+  version: 3.0.17
+  resolution: "tailwindcss@npm:3.0.17"
   dependencies:
     arg: ^5.0.1
     chalk: ^4.1.2
-    chokidar: ^3.5.2
+    chokidar: ^3.5.3
     color-name: ^1.1.4
     cosmiconfig: ^7.0.1
     detective: ^5.2.0
     didyoumean: ^1.2.2
     dlv: ^1.1.3
-    fast-glob: ^3.2.7
+    fast-glob: ^3.2.11
     glob-parent: ^6.0.2
     is-glob: ^4.0.3
     normalize-path: ^3.0.0
@@ -6803,7 +6854,7 @@ __metadata:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: acbf45202d3046e87c3a55e80ca93f7344960fb4d0daa3d5f5a2b28e8afd7a26d023f9142632168d1a3076eff701499bed40cafa3823c371de596f42e98ba84d
+  checksum: 70f259dac375bab397ffd4c736db31697992d67a3d4c449ee0d4268ea78f525b13065e2be91616824d2b75a60afa4ecf19f779dd30aebf4792a12b767dd5d073
   languageName: node
   linkType: hard
 

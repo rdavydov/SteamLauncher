@@ -1,28 +1,35 @@
 import {app} from 'electron';
 import {join} from 'node:path';
+import log from 'electron-log';
 
 const environments = import.meta.env;
-const rootPath = environments.DEV ? app.getAppPath() : join(app.getAppPath(), '../../');
-const appDataPath = app.getPath('userData');
-const dataPath = join(rootPath, 'data');
+const resourcePath = environments.DEV ? app.getAppPath() : join(app.getAppPath(), '../../');
+const appDataPath = app.getPath('appData');
+const appUserDataPath = app.getPath('userData');
+const dataPath = join(appUserDataPath, 'data');
 const emulatorPath = join(dataPath, 'emulator');
 const emulatorSettingsPath = join(emulatorPath, 'steam_settings');
+const publicPath = environments.DEV ? 'src/public' : 'dist';
 
 const config = {
   paths: {
-    root: rootPath,
-    data: dataPath,
     gameHeaderImageNotFound: join(
       app.getAppPath(),
-      'src/render/dist/assets/images/gameHeaderImageDefault.jpg',
+      'src/render/',
+      publicPath,
+      '/assets/images/gameHeaderImageDefault.jpg',
     ),
-    contextMenuIcons: join(app.getAppPath(), 'src/render/dist/assets/images/icons/contextmenu'),
-    signtool: join(rootPath, '/bin/win/signtool.exe'),
+    contextMenuIcons: join(
+      app.getAppPath(),
+      'src/render/',
+      publicPath,
+      '/assets/images/icons/contextmenu',
+    ),
+    signtool: join(resourcePath, '/bin/win/signtool.exe'),
     preloadFilePath: join(app.getAppPath(), 'src/preload/dist/index.js'),
     renderFilePath: join(app.getAppPath(), 'src/render/dist/index.html'),
-    iconFilePath: join(app.getAppPath(), 'src/render/dist/favicon.ico'),
+    iconFilePath: join(app.getAppPath(), 'src/render/', publicPath, '/favicon.ico'),
     emulator: {
-      path: emulatorPath,
       settings: {
         path: join(emulatorPath, 'steam_settings'),
         forceAccountName: join(emulatorSettingsPath, 'force_account_name.txt'),
@@ -49,5 +56,7 @@ const config = {
   ]),
   allowedWillNavigateUrls: new Set(['https://steamdb.info', 'http://localhost:3000']),
 };
+
+log.debug(config);
 
 export default config;

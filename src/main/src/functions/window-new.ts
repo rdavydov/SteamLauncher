@@ -1,4 +1,5 @@
 import {app, BrowserWindow} from 'electron';
+import log from 'electron-log';
 import config from '../config.js';
 import storage from './storage.js';
 
@@ -61,22 +62,20 @@ const windowNew = () => {
     win.webContents.send(windowWhenChangeStateChannel, win.isMaximized());
   });
 
+  // SECURITY: denied in options
+  win.webContents.openDevTools({
+    mode: 'undocked',
+  });
+
   if (environments.PROD) {
     win.removeMenu();
     win
       .loadFile(config.paths.renderFilePath, {
         hash: '#/',
       })
-      .catch(console.error);
+      .catch(log.error);
   } else {
-    win
-      .loadURL('http://localhost:3000/')
-      .then(() => {
-        win.webContents.openDevTools({
-          mode: 'undocked',
-        });
-      })
-      .catch(console.error);
+    win.loadURL('http://localhost:3000/').catch(log.error);
   }
 
   return win;

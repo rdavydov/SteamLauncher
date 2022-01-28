@@ -17,6 +17,7 @@ export default function createConfig(packagePath: string) {
     const viteConfig: UserConfigExport = {
       root: viteRoot,
       envDir: rootPath,
+      base: '',
       build: {
         target: 'esnext',
         emptyOutDir: true,
