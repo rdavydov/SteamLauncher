@@ -1,6 +1,4 @@
-import $ from 'jquery';
-
-$("button[data-sk='titlebar']").on('click', async (event) => {
+$(document).on('click', "button[data-sk='titlebar']", async (event) => {
   event.preventDefault();
   const attribute = $(event.currentTarget).data('sk-attr') as string;
   switch (attribute) {
@@ -20,3 +18,5 @@ $("button[data-sk='titlebar']").on('click', async (event) => {
       break;
   }
 });
+
+export {};

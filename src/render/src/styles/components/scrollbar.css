@@ -1,0 +1,17 @@
+@layer base {
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-500 mx-3 border border-gray-800 rounded;
+
+    &:hover {
+      @apply bg-gray-600;
+    }
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+}

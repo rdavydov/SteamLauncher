@@ -1,0 +1,53 @@
+@layer components {
+  .navbar {
+    & .navbar-brand {
+      & > span {
+        @apply font-oswald uppercase;
+      }
+    }
+
+    & .nav-link {
+      & .text {
+        @apply ml-1 hidden lg:inline-block;
+      }
+
+      &[data-sk="titlebar"] {
+        @apply z-30 relative;
+      }
+
+      &[data-sk="titlebar"][data-sk-attr="close"] {
+        @apply hover:bg-red-600;
+      }
+
+      &[data-sk="titlebar"][data-sk-attr="restore"] {
+        @apply hidden;
+      }
+
+      &[data-sk="set-network"][data-sk-to="offline"] {
+        @apply text-green-600;
+
+        & > .mdi:last-child {
+          @apply hidden;
+        }
+      }
+
+      &[data-sk="set-network"][data-sk-to="online"] {
+        @apply text-red-600;
+
+        & > .mdi:first-child {
+          @apply hidden;
+        }
+      }
+    }
+  }
+
+  .window-is-maximized .nav-link {
+    &[data-sk="titlebar"][data-sk-attr="maximize"] {
+      @apply hidden;
+    }
+
+    &[data-sk="titlebar"][data-sk-attr="restore"] {
+      @apply flex;
+    }
+  }
+}

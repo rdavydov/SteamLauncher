@@ -1,0 +1,84 @@
+<div class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <form class="modal-content" action="" sk-channel="account-create">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="mdi mdi-account-plus mdi-18px"></span>
+          <span class="ml-1">
+            {{^isEditMode}}
+            Create account
+            {{/isEditMode}}
+            {{#isEditMode}}
+            Edit account
+            {{/isEditMode}}
+          </span>
+        </div>
+        {{#isEditMode}}
+        <button type="button" class="btn-close" data-bs-dismiss="modal">
+          <span class="mdi mdi-close"></span>
+        </button>
+        {{/isEditMode}}
+      </div>
+      <div class="modal-body text-center">
+        {{^isEditMode}}
+        <div class="mb-3">Before proceeding, please create your account!</div>
+        {{/isEditMode}}
+        <div class="input-group mb-3">
+          <div class="input-group-text">
+            <span class="mdi mdi-account-question"></span>
+            <span class="ml-1">Name</span>
+          </div>
+          {{^isEditMode}}
+          <input type="text" class="form-control" name="name" placeholder="..." required>
+          {{/isEditMode}}
+          {{#isEditMode}}
+          <input type="text" class="form-control" name="name" value="{{accountData.name}}" placeholder="..." required>
+          {{/isEditMode}}
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-text">
+            <span class="mdi mdi-translate"></span>
+            <span class="ml-1">Language</span>
+          </div>
+          <select class="form-control" name="language" required>
+            <option value="">...</option>
+            {{#inputLanguages}}
+            <option value="{{@key}}">{{@val}}</option>
+            {{/inputLanguages}}
+          </select>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-text">
+            <span class="mdi mdi-key"></span>
+            <span class="ml-1">WebAPI Key <span class="text-red-500">(*)</span></span>
+          </div>
+          {{^isEditMode}}
+          <input type="text" class="form-control" name="steamWebApiKey" placeholder="...">
+          {{/isEditMode}}
+          {{#isEditMode}}
+          <input type="text" class="form-control" name="steamWebApiKey" placeholder="..."
+            value="{{accountData.steamWebApiKey}}">
+          {{/isEditMode}}
+        </div>
+        {{^isEditMode}}
+        <input type="text" class="hidden" name="steamId" value="{{inputSteamId}}">
+        {{/isEditMode}}
+        {{#isEditMode}}
+        <div class="input-group mb-3">
+          <div class="input-group-text">
+            <span class="mdi mdi-identifier"></span>
+            <span class="ml-1">SteamID (auto)</span>
+          </div>
+          <input type="text" class="form-control disabled" name="steamId" value="{{accountData.steamId}}" readonly>
+        </div>
+        {{/isEditMode}}
+        <div class="text-xs"><span class="text-red-500">(*)</span> To get achievements, stats, DLCs and games infos get
+          it from <a href="https://steamcommunity.com/dev/apikey" target="_blank">here</a>. If no API key is given, it
+          will only get games infos and DLCs.</div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

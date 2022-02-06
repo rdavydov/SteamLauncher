@@ -1,8 +1,8 @@
 import type {IpcMainEvent} from 'electron';
 import {Buffer} from 'node:buffer';
-import {readFileSync} from 'node:fs';
+// Import {readFileSync} from 'node:fs';
 import axios from 'axios';
-import config from '../config.js';
+// Import config from '../config.js';
 import showToast from './show-toast.js';
 
 const gameDownloadHeaderImage = async (event: IpcMainEvent, url: string) => {
@@ -21,9 +21,9 @@ const gameDownloadHeaderImage = async (event: IpcMainEvent, url: string) => {
     showToast(event, error as string, 'error');
   }
 
-  const notFoundBuffer = readFileSync(config.paths.gameHeaderImageNotFound);
-  const notFoundBase64 = Buffer.from(notFoundBuffer).toString('base64');
-  return `${dataUri}${notFoundBase64}`;
+  /* Const notFoundBuffer = readFileSync(config.paths.gameHeaderImageNotFound);
+  const notFoundBase64 = Buffer.from(notFoundBuffer).toString('base64'); */
+  return ``;
 };
 
 export default gameDownloadHeaderImage;

@@ -1,4 +1,4 @@
-import $ from 'jquery';
+// TODO: unused
 
 const steamDbGetData = async (appId: string) => {
   const doc = (await window.api.invoke('steamdb-get-data', appId)) as string;

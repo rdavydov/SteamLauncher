@@ -4,7 +4,7 @@ import {fromIndividualAccountID} from 'steamid';
 import storage from '../storage.js';
 import showToast from '../functions/show-toast.js';
 
-const closeModalEvent = 'account-view-close-modal';
+const closeModalEvent = 'close-modal';
 const maxSafeInt = 281_474_976_710_655;
 
 ipcMain.on('account-create', (event, inputs) => {

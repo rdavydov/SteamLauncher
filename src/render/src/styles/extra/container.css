@@ -1,17 +1,9 @@
 @layer components {
-  .main {
-    @apply max-h-full flex flex-auto flex-col;
-  }
+  #container {
+    @apply overflow-y-auto px-3;
 
-  .main-container {
-    @apply flex flex-auto flex-col items-center overflow-y-auto;
-
-    & .main-block {
-      @apply flex flex-auto container p-3 mt-5 rounded shadow-md bg-steamlauncher-container;
-
-      &:last-child {
-        @apply mb-5;
-      }
+    & > .container {
+      @apply mx-auto;
     }
   }
 }

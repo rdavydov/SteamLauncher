@@ -1,6 +1,7 @@
-import serializeObject from './serialize-object.js';
-import showToast from './show-toast.js';
+import {serialize} from 'dom-form-serializer';
 import steamDbGetData from './steamdb-get-data.js';
+
+// TODO: unused
 
 const nowTimeBySeconds = () => Math.floor(Date.now() / 1000);
 
@@ -10,8 +11,9 @@ const gamePostData = async (
   oldAppId: string | undefined = undefined,
 ) => {
   const isEditChannel = channel === 'game-edit';
-  const serialize = serializeObject($dom);
-  const appId = serialize.appId as string;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  const serialized = serialize($dom[0]) as Record<string, string>;
+  const appId = serialized.appId;
   const getAppId = oldAppId === appId ? oldAppId : appId;
   let steamDbParsedData: Record<string, unknown> = {};
 
@@ -22,7 +24,7 @@ const gamePostData = async (
     const check = nowTimeBySeconds() - lastRequest > 0 || oldAppId !== appId;
     if (check) {
       steamDbParsedData = await steamDbGetData(getAppId);
-      showToast('Updated game based on steamdb!');
+      $.snack('Updated game based on steamdb!');
     } else {
       steamDbParsedData = {
         name: gameData.name,
@@ -31,8 +33,8 @@ const gamePostData = async (
         dlcs: gameData.dlcs,
         lastRequest: gameData.lastRequest,
       };
-      showToast(
-        'Minuti rimanenti per aggiornare i dati di gioco ' +
+      $.snack(
+        'Minutes remaining to update game data ' +
           Math.floor(Math.abs(nowTimeBySeconds() - lastRequest - 3600) / 60).toString(),
       );
     }
@@ -41,16 +43,16 @@ const gamePostData = async (
   }
 
   if (!steamDbParsedData.isGame) {
-    showToast("Isn't a game!");
+    $.snack("Isn't a game!");
     return;
   }
 
-  const newSerialize = Object.assign({}, serialize, steamDbParsedData);
+  const newSerialized = Object.assign({}, serialized, steamDbParsedData);
 
   if (isEditChannel) {
-    window.api.send(channel, newSerialize, oldAppId);
+    window.api.send(channel, newSerialized, oldAppId);
   } else {
-    window.api.send(channel, newSerialize);
+    window.api.send(channel, newSerialized);
   }
 };
 

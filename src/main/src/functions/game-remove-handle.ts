@@ -1,7 +1,7 @@
 import type {IpcMainEvent, IpcMainInvokeEvent} from 'electron';
+import storage from '../storage.js';
 import gameRemove from './game-remove.js';
 import showToast from './show-toast.js';
-import storage from '../storage.js';
 
 const gameRemoveHandle = (
   event: IpcMainEvent | IpcMainInvokeEvent,

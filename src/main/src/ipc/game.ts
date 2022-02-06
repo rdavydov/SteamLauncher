@@ -6,7 +6,7 @@ import gamesMerge from '../functions/games-merge.js';
 import showToast from '../functions/show-toast.js';
 import gameRemoveHandle from '../functions/game-remove-handle.js';
 
-const closeModalEvent = 'game-view-close-modal';
+const closeModalEvent = 'close-modal';
 
 ipcMain.on('game-add', async (event, inputs) => {
   inputs.headerImage = await gameDownloadHeaderImage(event, inputs.headerImageUrl);

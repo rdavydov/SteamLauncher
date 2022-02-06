@@ -1,45 +1,33 @@
 @layer components {
+  .modal-backdrop {
+    @apply !z-10;
+  }
+
   .modal {
-    @apply flex justify-center fixed inset-0 w-full h-full overflow-x-hidden overflow-y-auto bg-black bg-opacity-75 z-10;
+    @apply !z-20 bottom-0 right-0 mx-auto;
 
-    & .modal-dialog {
-      @apply container lg:max-w-3xl p-5 pt-12 flex items-center;
+    & .modal-header {
+      @apply p-3 border-secondary;
 
-      & .modal-content {
-        @apply bg-steamlauncher-container rounded-md shadow-md w-full flex flex-col;
+      & .modal-title {
+        @apply flex items-center uppercase;
       }
 
-      & .modal-header {
-        @apply flex items-center p-3 bg-steamlauncher justify-between;
-
-        & .modal-header-title {
-          @apply flex items-center uppercase;
-
-          & .mdi:before {
-            @apply text-xl;
-          }
-        }
+      & .btn-close {
+        @apply text-gray-500 hover:text-white;
       }
+    }
 
-      & .modal-body {
-        @apply flex-auto p-3;
-      }
+    & .modal-content {
+      @apply bg-primary shadow-md;
+    }
 
-      & .modal-footer {
-        @apply flex p-3 bg-steamlauncher;
-      }
+    & .modal-body {
+      @apply p-2;
+    }
 
-      &.modal-dialog-scrollabe {
-        @apply h-screen;
-
-        & .modal-content {
-          @apply max-h-full overflow-hidden;
-        }
-
-        & .modal-body {
-          @apply overflow-y-auto;
-        }
-      }
+    & .modal-footer {
+      @apply border-secondary;
     }
   }
 }

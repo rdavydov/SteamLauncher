@@ -4,8 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        steamlauncher: '#161920',
-        'steamlauncher-container': '#1f232e',
+        primary: '#161920',
+        secondary: '#1f232e',
       },
     },
   },

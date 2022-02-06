@@ -12,6 +12,6 @@
   }
 
   .drop-highlight {
-    @apply outline-dashed outline-1 outline-blue-900;
+    @apply outline-1 outline-dashed outline-blue-900;
   }
 }

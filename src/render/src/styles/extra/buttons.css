@@ -1,25 +1,7 @@
 @layer components {
   .btn {
-    @apply rounded-md shadow-sm p-2 border border-solid;
-
-    &.btn-green {
-      @apply text-gray-900 bg-green-600 hover:bg-green-700 border-green-900;
-    }
-
-    &.btn-red {
-      @apply text-gray-900 bg-red-600 hover:bg-red-700 border-red-900;
-    }
-
-    &.btn-white {
-      @apply text-black bg-white hover:bg-gray-200 border-gray-900;
-    }
-
-    &.btn-blue {
-      @apply text-gray-900 bg-blue-600 hover:bg-blue-700 border-blue-900;
-    }
-
-    &.btn-github {
-      @apply text-white bg-gray-600 border-slate-500 hover:bg-gray-700;
+    &.btn-neutral {
+      @apply !text-white bg-neutral-600 hover:bg-neutral-800;
     }
   }
 }

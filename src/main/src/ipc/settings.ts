@@ -5,7 +5,7 @@ import showToast from '../functions/show-toast.js';
 ipcMain.on('settings-edit', (event, inputs) => {
   storage.set('settings', inputs);
   showToast(event, 'Settings edited successfully!', 'success');
-  event.sender.send('settings-view-close-modal');
+  event.sender.send('close-modal');
 });
 
 ipcMain.on('settings-set-network', (event, data) => {
@@ -13,7 +13,7 @@ ipcMain.on('settings-set-network', (event, data) => {
   if (data) {
     showToast(event, 'You are online!', 'success');
   } else {
-    showToast(event, 'You are offline!', 'error');
+    showToast(event, 'You are offline!', 'warning');
   }
 });
 

@@ -7,7 +7,7 @@ import gameLauncher from '../functions/game-launcher.js';
 import gameRemoveHandle from '../functions/game-remove-handle.js';
 import showToast from '../functions/show-toast.js';
 
-ipcMain.on('game-contextmenu-show', (event, appId: string) => {
+ipcMain.on('index-contextmenu-game', (event, appId: string) => {
   Menu.buildFromTemplate([
     {
       label: 'Launch',
@@ -52,7 +52,7 @@ ipcMain.on('game-contextmenu-show', (event, appId: string) => {
     {
       label: 'Edit',
       click: () => {
-        event.sender.send('game-contextmenu-redirect', `/game/edit/${appId}`);
+        event.sender.send('index-contextmenu-redirect', `/game/edit/${appId}`);
       },
     },
     {

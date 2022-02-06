@@ -1,17 +1,25 @@
+@import "github-markdown-css/github-markdown-dark.css";
+@import "@mdi/font/css/materialdesignicons.css";
+@import "@fontsource/oswald";
+
 @import "tailwindcss/base";
 @import "./base";
 
 @import "tailwindcss/components";
-@import "./components";
+
+@import "./components/card";
+@import "./components/navbar";
+@import "./components/scrollbar";
+
+@import "./extra/buttons";
+@import "./extra/container";
+@import "./extra/form";
+@import "./extra/games";
+@import "./extra/modal";
+@import "./extra/navbar";
+@import "./extra/toast";
 
 @import "tailwindcss/utilities";
 @import "./utilities";
 
-@import "./extra/titlebar";
-@import "./extra/container";
-@import "./extra/buttons";
-@import "./extra/modal";
-@import "./extra/scrollbar";
-@import "./extra/form";
-@import "./extra/toastr";
-@import "./extra/games";
+/* TODO: adjust the colors of the interface (difference between gray and white) gray-300 */

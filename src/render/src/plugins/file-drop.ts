@@ -1,13 +1,11 @@
-import $ from 'jquery';
 import config from '../config.js';
-import showToast from '../functions/show-toast.js';
 
-(($$) => {
-  $$.fn.fileDrop = function (callback: (file: Record<string, string>) => void) {
+(($) => {
+  $.fn.fileDrop = function (callback: (file: Record<string, string>) => void) {
     const activeClass = 'drop-highlight';
 
     return this.each(() => {
-      const $dom = $$(this);
+      const $dom = $(this);
       $dom.on('dragenter dragend dragleave dragover drag', (event) => {
         event.preventDefault();
       });
@@ -46,17 +44,17 @@ import showToast from '../functions/show-toast.js';
                 if (config.allowedExtensions.includes(file.ext)) {
                   callback.call(this, file);
                 } else {
-                  showToast('The file extension is not allowed!', 'error');
+                  $.snack("The file extension isn't allowed!", 'error');
                 }
               } else {
-                showToast('The dropped item is not a file! ');
+                $.snack("The dropped item isn't a valid file!", 'error');
               }
             } else {
-              showToast('It is not possible to add more than one file! ', 'warning');
+              $.snack("Isn't possible to add more than one file!", 'warning');
             }
           }
         }
       });
     });
   };
-})($);
+})(jQuery);

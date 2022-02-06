@@ -3,62 +3,79 @@
 
 <head>
   <title>Sak32009</title>
-  <link rel="icon" href="./favicon.ico" />
   <meta charset="utf-8" />
   <meta name="color-scheme" content="dark" />
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <!-- https://www.electronjs.org/docs/latest/tutorial/security/#7-define-a-content-security-policy -->
   <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
+  <script src="js/jquery.min.js"></script>
 </head>
 
 <body>
-  <div class="main">
-    <div class="main-titlebar">
-      <div class="main-titlebar-header">
-        <img class="img" src="./assets/images/steamlauncher.svg" alt="Logo" />
-        <span class="text">&nbsp;</span>
-      </div>
-      <div class="main-titlebar-container">
-        <a class="main-titlebar-btn" href="/" title="Home" data-navigo>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <img src="images/steamlauncher.svg" alt="Logo">
+      <span>&nbsp;</span>
+    </div>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/" data-bs-toggle="tooltip" title="Home" data-navigo>
           <span class="mdi mdi-home"></span>
           <span class="text">Home</span>
         </a>
-        <a class="main-titlebar-btn" href="/account/edit" title="Account" data-navigo>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/account/edit" data-bs-toggle="tooltip" title="Account" data-navigo>
           <span class="mdi mdi-account-edit"></span>
           <span class="text">Account</span>
         </a>
-        <a class="main-titlebar-btn" href="/settings" title="Settings" data-navigo>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/settings" data-bs-toggle="tooltip" title="Settings" data-navigo>
           <span class="mdi mdi-cogs"></span>
           <span class="text">Settings</span>
         </a>
-        <a class="main-titlebar-btn" href="/about" title="About" data-navigo>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/about" data-bs-toggle="tooltip" title="About" data-navigo>
           <span class="mdi mdi-information"></span>
           <span class="text">About</span>
         </a>
-        <button type="button" class="main-titlebar-btn" title="Go offline" data-sk="set-network" data-sk-to="offline">
+      </li>
+      <li class="nav-item">
+        <button type="button" class="nav-link" data-bs-toggle="tooltip" title="Go offline" data-sk="set-network"
+          data-sk-to="offline">
           <span class="mdi mdi-server-network"></span>
           <span class="mdi mdi-server-network-off"></span>
         </button>
-        <button type="button" class="main-titlebar-btn z-30" title="Minimize window" data-sk="titlebar"
+      </li>
+      <li class="nav-item">
+        <button type="button" class="nav-link" data-bs-toggle="tooltip" title="Minimize window" data-sk="titlebar"
           data-sk-attr="minimize">
           <span class="mdi mdi-window-minimize"></span>
         </button>
-        <button type="button" class="main-titlebar-btn z-30" title="Maximize window" data-sk="titlebar"
+      </li>
+      <li class="nav-item">
+        <button type="button" class="nav-link" data-bs-toggle="tooltip" title="Maximize window" data-sk="titlebar"
           data-sk-attr="maximize">
           <span class="mdi mdi-window-maximize"></span>
         </button>
-        <button type="button" class="main-titlebar-btn z-30 hidden" title="Restore window" data-sk="titlebar"
+      </li>
+      <li class="nav-item">
+        <button type="button" class="nav-link" data-bs-toggle="tooltip" title="Restore window" data-sk="titlebar"
           data-sk-attr="restore">
           <span class="mdi mdi-window-restore"></span>
         </button>
-        <button type="button" class="main-titlebar-btn z-30" title="Close window" data-sk="titlebar"
+      </li>
+      <li class="nav-item">
+        <button type="button" class="nav-link" data-bs-toggle="tooltip" title="Close window" data-sk="titlebar"
           data-sk-attr="close">
           <span class="mdi mdi-window-close"></span>
         </button>
-      </div>
-    </div>
-    <div class="main-container"></div>
-  </div>
+      </li>
+    </ul>
+  </nav>
+  <div id="container"></div>
   <script src="./main.ts" type="module"></script>
 </body>
 

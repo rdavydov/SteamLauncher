@@ -1,0 +1,71 @@
+@layer components {
+  .toast-container {
+    @apply z-30;
+  }
+
+  .toast {
+    @apply !shadow-md !bg-transparent !border-0;
+
+    & .toast-header {
+      @apply justify-between bg-secondary text-white rounded-t border-b-0;
+    }
+
+    & .toast-body {
+      @apply rounded-b;
+    }
+
+    & .toast-header-left {
+      & .mdi {
+        @apply mr-1;
+      }
+    }
+
+    &.toast-info {
+      & .toast-body {
+        @apply !bg-blue-700;
+      }
+
+      & .toast-header-left {
+        & .mdi {
+          @apply text-blue-700;
+        }
+      }
+    }
+
+    &.toast-success {
+      & .toast-body {
+        @apply !bg-green-700;
+      }
+
+      & .toast-header-left {
+        & .mdi {
+          @apply text-green-700;
+        }
+      }
+    }
+
+    &.toast-warning {
+      & .toast-body {
+        @apply !bg-yellow-700;
+      }
+
+      & .toast-header-left {
+        & .mdi {
+          @apply text-yellow-500;
+        }
+      }
+    }
+
+    &.toast-error {
+      & .toast-body {
+        @apply !bg-red-700;
+      }
+
+      & .toast-header-left {
+        & .mdi {
+          @apply text-red-500;
+        }
+      }
+    }
+  }
+}

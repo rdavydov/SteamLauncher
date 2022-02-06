@@ -1,3 +1,6 @@
+# SteamLauncher
+/src/render/src/public/js/jquery.min.js
+
 # Yarn
 .pnp.*
 .yarn/*

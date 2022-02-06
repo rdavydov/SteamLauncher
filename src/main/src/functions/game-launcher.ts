@@ -4,10 +4,20 @@ import {execFile} from 'node:child_process';
 import ini from 'ini';
 import {emptyDirSync} from 'fs-extra';
 import config from '../config.js';
-import dlcsToMustacheTemplate from '../../../render/src/functions/dlcs-to-mustache-template.js';
 import storage from '../storage.js';
 import gameGetData from './game-get-data.js';
 import showToast from './show-toast.js';
+
+const dlcsToMustacheTemplate = (dlcs: Record<string, string>) => {
+  const out = [];
+  for (const key in dlcs) {
+    if (Object.prototype.hasOwnProperty.call(dlcs, key)) {
+      out.push(key + '=' + dlcs[key]);
+    }
+  }
+
+  return out;
+};
 
 const gameLauncher = async (event: IpcMainEvent, appId: string, normally = false) => {
   const dataGame = gameGetData(appId);
@@ -107,7 +117,7 @@ const gameLauncher = async (event: IpcMainEvent, appId: string, normally = false
   const emulatorSettingsDlc = config.paths.emulator.settings.dlc;
 
   if (Object.keys(dataGameDlcs).length > 0) {
-    writeFileSync(emulatorSettingsDlc, dlcsToMustacheTemplate(dataGameDlcs));
+    writeFileSync(emulatorSettingsDlc, dlcsToMustacheTemplate(dataGameDlcs).join('\n'));
   }
 
   execFile(emulatorLoaderPath);

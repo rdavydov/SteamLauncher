@@ -20,6 +20,7 @@ export const createWindow = () => {
       preload: config.paths.preloadFilePath,
       // SECURITY: deny devtools in production mode
       devTools: environments.DEV,
+      // TODO: webSecurity: false for loading local images
     },
   });
 

@@ -1,8 +1,8 @@
-import showToast from '../functions/show-toast.js';
-
 window.api.on(
   'show-toast',
-  (_event, text: string, icon: 'info' | 'warning' | 'success' | 'error' = 'info') => {
-    showToast(text, icon);
+  (_event, content: string, type: 'info' | 'warning' | 'success' | 'error' = 'info') => {
+    $.snack(content, type);
   },
 );
+
+export {};

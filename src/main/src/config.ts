@@ -8,27 +8,14 @@ const appUserDataPath = app.getPath('userData');
 const dataPath = join(appUserDataPath, 'data');
 const emulatorPath = join(dataPath, 'emulator');
 const emulatorSettingsPath = join(emulatorPath, 'steam_settings');
-const publicPath = environments.DEV ? 'src/public' : 'dist';
 
 const config = {
   paths: {
-    gameHeaderImageNotFound: join(
-      app.getAppPath(),
-      'src/render/',
-      publicPath,
-      '/assets/images/gameHeaderImageDefault.jpg',
-    ),
-    contextMenuIcons: join(
-      app.getAppPath(),
-      'src/render/',
-      publicPath,
-      '/assets/images/icons/contextmenu',
-    ),
     signtool: join(resourcePath, '/bin/win/signtool/signtool.exe'),
     steamRetriever: join(resourcePath, '/bin/win/steam_retriever/steam_retriever.exe'),
     preloadFilePath: join(app.getAppPath(), 'src/preload/dist/index.js'),
     renderFilePath: join(app.getAppPath(), 'src/render/dist/index.html'),
-    iconFilePath: join(app.getAppPath(), 'src/render/', publicPath, '/favicon.ico'),
+    iconFilePath: join(app.getAppPath(), 'build/resources/icon.ico'),
     emulator: {
       settings: {
         path: join(emulatorPath, 'steam_settings'),
@@ -53,6 +40,7 @@ const config = {
     'https://github.com',
     'https://gitlab.com',
     'https://cs.rin.ru',
+    'https://steamcommunity.com',
   ]),
   allowedWillNavigateUrls: new Set(['https://steamdb.info', 'http://localhost:3000']),
 };

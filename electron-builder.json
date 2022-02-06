@@ -5,7 +5,7 @@
     "buildResources": "./build/resources/",
     "output": "./build/release/${version}/"
   },
-  "files": ["./bin/**/*", "./src/*/dist/**/*"],
+  "files": ["./bin/**/*", "./src/*/dist/**/*", "./build/resources/"],
   "win": {
     "target": ["nsis", "zip"],
     "artifactName": "${name}-${version}-${os}-${arch}-portable.zip"

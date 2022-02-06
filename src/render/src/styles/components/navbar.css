@@ -1,0 +1,27 @@
+@layer components {
+  .navbar {
+    @apply flex justify-between bg-secondary app-region-drag shadow-md;
+
+    & .navbar-brand {
+      @apply flex items-center mx-1;
+
+      & > img {
+        @apply w-8 h-auto mr-1;
+      }
+    }
+
+    & .navbar-nav {
+      @apply flex app-region-drag;
+
+      & .nav-link {
+        @apply flex text-white p-2 app-region-no-drag border-b border-b-transparent;
+        @apply hover:bg-gray-200 hover:bg-opacity-10;
+
+        &.active,
+        &[data-navigo]:hover {
+          @apply border-b-white;
+        }
+      }
+    }
+  }
+}

@@ -1,14 +1,14 @@
 @layer base {
-  html {
-    @apply select-none text-gray-300;
-  }
-
-  body {
-    @apply bg-steamlauncher overflow-hidden;
-  }
-
   html,
   body {
     @apply h-full;
+  }
+
+  html {
+    @apply select-none bg-primary;
+  }
+
+  body {
+    @apply max-h-full flex flex-col;
   }
 }
