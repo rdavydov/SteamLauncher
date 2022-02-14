@@ -1,24 +1,19 @@
 import {ipcMain} from 'electron';
 import storage from '../storage.js';
-import showToast from '../functions/show-toast.js';
+import snack from '../functions/snack.js';
 
-ipcMain.on('settings-edit', (event, inputs) => {
+ipcMain.on('settings-edit', (event, inputs: StoreSettingsType) => {
   storage.set('settings', inputs);
-  showToast(event, 'Settings edited successfully!', 'success');
+  snack('Settings edited successfully!', 'success');
   event.sender.send('close-modal');
 });
 
-ipcMain.on('settings-set-network', (event, data) => {
-  storage.set('network', data);
-  if (data) {
-    showToast(event, 'You are online!', 'success');
-  } else {
-    showToast(event, 'You are offline!', 'warning');
-  }
+ipcMain.on('settings-set-network', (_event, data: boolean) => {
+  storage.set('settings.network', data);
 });
 
-ipcMain.handle('settings-get-network', () => {
-  return storage.get('network');
+ipcMain.handle('settings-get-network-status', (): boolean => {
+  return storage.get('settings.network');
 });
 
 ipcMain.handle('settings-data', () => {

@@ -1,25 +1,25 @@
 import {ipcMain} from 'electron';
-import {randomInt} from 'node:crypto';
 import {fromIndividualAccountID} from 'steamid';
+import {customAlphabet} from 'nanoid/non-secure';
 import storage from '../storage.js';
-import showToast from '../functions/show-toast.js';
+import config from '../config.js';
+import snack from '../functions/snack.js';
 
-const closeModalEvent = 'close-modal';
-const maxSafeInt = 281_474_976_710_655;
+const nanoid = customAlphabet('0123456789', 8);
 
 ipcMain.on('account-create', (event, inputs) => {
   storage.set('account', inputs);
-  showToast(event, 'Account created successfully!', 'success');
-  event.sender.send(closeModalEvent);
+  snack('Account created successfully!', 'success');
+  event.sender.send(config.closeModalChannel);
 });
 
 ipcMain.on('account-edit', (event, inputs) => {
   storage.set('account', inputs);
-  showToast(event, 'Account edited successfully!', 'success');
-  event.sender.send(closeModalEvent);
+  snack('Account edited successfully!', 'success');
+  event.sender.send(config.closeModalChannel);
 });
 
-ipcMain.handle('account-data', (): Record<string, string> | undefined => {
+ipcMain.handle('account-data', () => {
   return storage.get('account');
 });
 
@@ -28,5 +28,5 @@ ipcMain.handle('account-exist', () => {
 });
 
 ipcMain.handle('account-get-random-steamid', () => {
-  return fromIndividualAccountID(randomInt(maxSafeInt)).getSteamID64();
+  return fromIndividualAccountID(nanoid()).getSteamID64();
 });

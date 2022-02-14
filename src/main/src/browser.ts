@@ -1,9 +1,10 @@
 import {app, BrowserWindow, shell} from 'electron';
 import log from 'electron-log';
-import config from './config.js';
+import {paths, allowedExternalUrls} from './config.js';
 import storage from './storage.js';
 
 const environments = import.meta.env;
+const viteServerUrl = 'http://localhost:3000/';
 
 export const createWindow = () => {
   const win = new BrowserWindow({
@@ -15,12 +16,13 @@ export const createWindow = () => {
     title: app.getName(),
     backgroundColor: '#161920',
     frame: environments.DEV,
-    icon: config.paths.iconFilePath,
+    icon: paths.iconFilePath,
     webPreferences: {
-      preload: config.paths.preloadFilePath,
-      // SECURITY: deny devtools in production mode
+      preload: paths.preloadFilePath,
+      // SECURITY: disable devtools in production mode
       devTools: environments.DEV,
-      // TODO: webSecurity: false for loading local images
+      // NOTE: local files are not displayed in developer mode
+      webSecurity: environments.PROD,
     },
   });
 
@@ -63,7 +65,6 @@ export const createWindow = () => {
     win.webContents.send(windowWhenChangeStateChannel, win.isMaximized());
   });
 
-  // SECURITY: denied in options
   win.webContents.openDevTools({
     mode: 'undocked',
   });
@@ -71,12 +72,16 @@ export const createWindow = () => {
   if (environments.PROD) {
     win.removeMenu();
     win
-      .loadFile(config.paths.renderFilePath, {
+      .loadFile(paths.renderFilePath, {
         hash: '#/',
       })
-      .catch(log.error);
+      .catch((error) => {
+        log.error(error.message);
+      });
   } else {
-    win.loadURL('http://localhost:3000/').catch(log.error);
+    win.loadURL(viteServerUrl).catch((error) => {
+      log.error(error.message);
+    });
   }
 
   return win;
@@ -84,7 +89,7 @@ export const createWindow = () => {
 
 export const openUrlExternal = (url: string) => {
   const parsedUrl = new URL(url);
-  if (config.allowedUrls.has(parsedUrl.origin)) {
+  if (allowedExternalUrls.has(parsedUrl.origin)) {
     log.debug(url + ' is opened externally');
     setImmediate(async () => {
       return shell.openExternal(url);

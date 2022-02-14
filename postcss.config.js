@@ -8,13 +8,18 @@ module.exports = {
     }),
     require('@fullhuman/postcss-purgecss')({
       content: [
-        './src/render/**/*.{js,ts,html}',
+        './src/render/src/**/*.{js,ts,html}',
         './node_modules/bootstrap/js/dist/modal.js',
         './node_modules/bootstrap/js/dist/toast.js',
-        './node_modules/bootstrap/js/dist/tooltip.js',
+        // './node_modules/bootstrap/js/dist/tooltip.js', NOTE: TOOLTIP hm.. lag?
         './node_modules/markdown-it/dist/markdown-it.js',
       ],
-      safelist: [/^bs-tooltip/, 'toast-success', 'toast-warning', 'toast-error', 'toast-info'],
+      safelist: [
+        /* /^bs-tooltip/, NOTE: TOOLTIP hm.. lag? */
+        /^toast-(success|warning|error|info)/,
+        /* !.class tailwindcss */
+        /^!(.+)/,
+      ],
     }),
     require('autoprefixer'),
   ],

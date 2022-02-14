@@ -1,37 +1,36 @@
-import {ipcMain} from 'electron';
+import {ipcMain, IpcMainEvent} from 'electron';
+import SteamRetriever from '../classes/steam-retriever.js';
 import storage from '../storage.js';
-import gameDownloadHeaderImage from '../functions/game-download-header-image.js';
-import gameGetData from '../functions/game-get-data.js';
-import gamesMerge from '../functions/games-merge.js';
-import showToast from '../functions/show-toast.js';
-import gameRemoveHandle from '../functions/game-remove-handle.js';
+import snack from '../functions/snack.js';
+import {closeModalChannel} from '../config.js';
 
-const closeModalEvent = 'close-modal';
-
-ipcMain.on('game-add', async (event, inputs) => {
-  inputs.headerImage = await gameDownloadHeaderImage(event, inputs.headerImageUrl);
-  storage.set('games', gamesMerge(inputs));
-  showToast(event, 'Game added successfully!', 'success');
-  event.sender.send(closeModalEvent);
-});
-
-ipcMain.on('game-edit', async (event, inputs, oldAppId: string) => {
-  const getAppId = (oldAppId === inputs.appId ? oldAppId : inputs.appId) as string;
-  delete inputs.appId;
-  inputs.headerImage = await gameDownloadHeaderImage(event, inputs.headerImageUrl);
-  if (oldAppId !== inputs.appId) {
-    gameRemoveHandle(event, oldAppId, false);
+const fnGameAddEdit = async (event: IpcMainEvent, inputs: StoreGameDataType) => {
+  const key = 'games.' + inputs.appId;
+  if (storage.has(key)) {
+    const data: StoreGameDataType = storage.get(key);
+    storage.set(key, Object.assign(data, inputs));
+    snack('Game edited successfully!');
+    event.sender.send(closeModalChannel);
+  } else {
+    const steamRetriever = new SteamRetriever(inputs);
+    await steamRetriever.run();
   }
+};
 
-  storage.set(`games.${getAppId}`, inputs);
-  showToast(event, 'Game edited successfully!', 'success');
-  event.sender.send(closeModalEvent);
+ipcMain.on('game-add', fnGameAddEdit);
+ipcMain.on('game-edit', fnGameAddEdit);
+
+// TODO: da implementare
+ipcMain.on('game-rebase', async (_event, appId: string) => {
+  const inputs: StoreGameDataType = storage.get('games.' + appId);
+  const steamRetriever = new SteamRetriever(inputs);
+  await steamRetriever.run();
 });
 
-ipcMain.handle('game-remove', (event, appId: string) => {
-  gameRemoveHandle(event, appId);
+ipcMain.handle('game-data', (_event, appId: string): StoreGameDataType | undefined => {
+  return storage.get('games.' + appId);
 });
 
-ipcMain.handle('game-data', (_event, appId: string) => {
-  return gameGetData(appId);
+ipcMain.handle('games-data', () => {
+  return storage.get('games');
 });

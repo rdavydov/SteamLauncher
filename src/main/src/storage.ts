@@ -1,13 +1,14 @@
 import ElectronStore from 'electron-store';
 
 const defaults = {
-  network: true,
   settings: {
-    overlay: true,
-    listenPort: '47584',
+    network: true,
+    /* Overlay: true,
+    listenPort: '47584', */
   },
 };
 const options = {defaults};
-const storage = new ElectronStore(options);
+
+const storage = new ElectronStore<StoreType>(options);
 
 export default storage;

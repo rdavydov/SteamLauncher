@@ -1,24 +1,17 @@
 import navigo from '../navigo.js';
-import IndexView from './index/view.js';
+import HomeView from './home/view.js';
 import GameView from './game/view.js';
 import AboutView from './about/view.js';
-import SettingsView from './settings/view.js';
+// Import SettingsView from './settings/view.js';
 import AccountView from './account/view.js';
 
-const indexController = new IndexView();
+const homeController = new HomeView();
 navigo.on(
   async () => {
-    await indexController.show();
+    await homeController.show();
   },
   {
-    before: async (done) => {
-      const accountExist = (await window.api.invoke('account-exist')) as boolean;
-      if (!accountExist) {
-        navigo.navigate('/account/create');
-      }
-
-      done();
-    },
+    before: homeController.beforeHook,
   },
 );
 
@@ -36,10 +29,10 @@ navigo.on('/account/edit', async () => {
   await accountController.show(true);
 });
 
-const settingsController = new SettingsView();
+/* Const settingsController = new SettingsView();
 navigo.on('/settings', async () => {
   await settingsController.show();
-});
+}); */
 
 const gameController = new GameView();
 navigo.on('/game/add', async () => {

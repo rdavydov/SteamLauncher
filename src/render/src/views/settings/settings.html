@@ -18,12 +18,12 @@
           </div>
           <select class="form-control" name="overlay" required>
             {{^data.overlay}}
-            <option value="true">true</option>
-            <option value="false" selected>false</option>
+            <option value="true">Activated</option>
+            <option value="false" selected>Deactivated</option>
             {{/data.overlay}}
             {{#data.overlay}}
-            <option value="true" selected>true</option>
-            <option value="false">false</option>
+            <option value="true" selected>Activated</option>
+            <option value="false">Deactivated</option>
             {{/data.overlay}}
           </select>
         </div>
@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-success">Save</button>
+        <button type="submit" class="btn btn-block btn-success">Save</button>
       </div>
     </form>
   </div>

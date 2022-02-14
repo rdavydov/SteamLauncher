@@ -1,0 +1,15 @@
+@layer components {
+  #console {
+    font-family: Lucida Console;
+
+    & .modal-body {
+      & p {
+        @apply pb-1 text-sm;
+
+        &::before {
+          content: "> ";
+        }
+      }
+    }
+  }
+}

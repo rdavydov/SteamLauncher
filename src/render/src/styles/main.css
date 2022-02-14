@@ -18,8 +18,7 @@
 @import "./extra/modal";
 @import "./extra/navbar";
 @import "./extra/toast";
+@import "./extra/console";
 
 @import "tailwindcss/utilities";
 @import "./utilities";
-
-/* TODO: adjust the colors of the interface (difference between gray and white) gray-300 */

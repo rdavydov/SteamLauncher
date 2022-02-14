@@ -1,8 +1,8 @@
 import mustache from 'mustache';
 
 class SettingsView {
-  private $dom = $();
-  private data: Record<string, unknown> = {};
+  private $dom: JQuery | undefined;
+  private data: StoreSettingsType | undefined;
 
   public async show() {
     await this.setData();
@@ -11,19 +11,19 @@ class SettingsView {
   }
 
   private async setData() {
-    this.data = (await window.api.invoke('settings-data')) as Record<string, unknown>;
+    this.data = await window.api.settings.getData();
   }
 
   private async setDom() {
     const {default: html} = await import('./settings.html?raw');
-    const dom = mustache.render(html, {
+    const rendered = mustache.render(html, {
       data: this.data,
     });
-    this.$dom = $(dom);
+    this.$dom = $(rendered);
   }
 
   private async appendDom() {
-    this.$dom.appendTo(document.body).modal('show');
+    this.$dom?.appendTo(document.body).modal('show');
   }
 }
 

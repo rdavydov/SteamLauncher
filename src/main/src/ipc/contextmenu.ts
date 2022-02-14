@@ -1,64 +1,64 @@
 import {ipcMain, Menu, shell} from 'electron';
 import {existsSync} from 'node:fs';
 import {join} from 'node:path';
-import config from '../config.js';
-import gameGetData from '../functions/game-get-data.js';
+import {paths} from '../config.js';
 import gameLauncher from '../functions/game-launcher.js';
-import gameRemoveHandle from '../functions/game-remove-handle.js';
-import showToast from '../functions/show-toast.js';
+import gameRemove from '../functions/game-remove.js';
+import snack from '../functions/snack.js';
+import storage from '../storage.js';
 
-ipcMain.on('index-contextmenu-game', (event, appId: string) => {
+ipcMain.on('open-contextmenu-game', (event, appId: string) => {
   Menu.buildFromTemplate([
     {
       label: 'Launch',
-      click: async () => {
-        await gameLauncher(event, appId);
+      async click() {
+        return gameLauncher(appId);
       },
     },
     {
       label: 'Launch normally',
-      click: async () => {
-        await gameLauncher(event, appId, true);
+      async click() {
+        return gameLauncher(appId, true);
       },
     },
     {type: 'separator'},
     {
       label: 'Create desktop shortcut',
-      click: () => {
-        showToast(event, 'Not implemented yet', 'warning');
+      click() {
+        snack('Not implemented yet', 'warning');
       },
     },
     {
       label: 'Open file location',
-      click: () => {
-        const data = gameGetData(appId);
+      click() {
+        const data: StoreGameDataType | undefined = storage.get('games.' + appId);
         if (typeof data !== 'undefined') {
-          shell.showItemInFolder(data.path as string);
+          shell.showItemInFolder(data.path);
         }
       },
     },
     {
       label: 'Open save location',
-      click: async () => {
-        const savesPath = join(config.paths.emulator.saves, appId);
+      async click() {
+        const savesPath = join(paths.emulator.saves, appId);
         if (existsSync(savesPath)) {
           await shell.openPath(savesPath);
         } else {
-          showToast(event, 'The emulator does not contain any save folders.', 'warning');
+          snack('No game saves found!', 'warning');
         }
       },
     },
     {type: 'separator'},
     {
       label: 'Edit',
-      click: () => {
-        event.sender.send('index-contextmenu-redirect', `/game/edit/${appId}`);
+      click() {
+        event.sender.send('app-navigate-to', `/game/edit/${appId}`);
       },
     },
     {
       label: 'Delete',
-      click: () => {
-        gameRemoveHandle(event, appId);
+      click() {
+        gameRemove(appId);
       },
     },
   ]).popup();

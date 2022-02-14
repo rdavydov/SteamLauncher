@@ -1,9 +1,9 @@
 import {execFile} from 'node:child_process';
-import config from '../config.js';
+import {paths} from '../config.js';
 
 // NOTE: unused
 const signVerify = (filePath: string) => {
-  const signtool = config.paths.signtool;
+  const signtool = paths.signtool;
 
   try {
     execFile(signtool, ['verify', '/pa', filePath]);

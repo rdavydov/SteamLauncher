@@ -1,15 +1,17 @@
-import gamesGetData from './games-get-data.js';
+import {webContents} from 'electron';
+import storage from '../storage.js';
+import snack from './snack.js';
 
 const gameRemove = (appId: string) => {
-  const gamesData = gamesGetData();
-  if (typeof gamesData !== 'undefined') {
+  const data = storage.get('games');
+  if (typeof data !== 'undefined') {
+    const name = data[appId].name;
     // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-    delete gamesData[appId];
-
-    return gamesData;
+    delete data[appId];
+    storage.set(`games`, data);
+    snack(name + ' removed successfully!', 'success');
+    webContents.getFocusedWebContents().send('index-reload-games-list');
   }
-
-  return null;
 };
 
 export default gameRemove;

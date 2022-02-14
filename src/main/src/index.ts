@@ -1,10 +1,16 @@
 import {app, session} from 'electron';
 import {autoUpdater} from 'electron-updater';
 import log from 'electron-log';
+import './process.js';
 import {appId} from '../../../electron-builder.json';
 import browser from './browser.js';
 import config from './config.js';
-import './set-ipcs.js';
+import './ipc/app.js';
+import './ipc/window.js';
+import './ipc/contextmenu.js';
+import './ipc/account.js';
+import './ipc/settings.js';
+import './ipc/game.js';
 
 log.info('App starting...');
 
@@ -16,14 +22,14 @@ autoUpdater.logger = log;
 
 // REQUEST SINGLE INSTANCE
 if (!app.requestSingleInstanceLock()) {
-  log.error("Multiple instance isn't allowed");
+  log.error('Only single instances are allowed');
   app.quit();
 }
 
 // SET APP USER MODEL
 app.setAppUserModelId(appId);
 // DISABLE HARDWARE ACCELERATION
-// app.disableHardwareAcceleration();
+app.disableHardwareAcceleration();
 // SECURITY: https://www.electronjs.org/docs/latest/tutorial/security/#4-enable-sandboxing
 app.enableSandbox();
 
@@ -55,7 +61,10 @@ app
   .whenReady()
   .then(async () => {
     log.debug(
-      'PROD: ' + environments.PROD.toString() + '; isPackaged: ' + app.isPackaged.toString(),
+      'isProduction: ' +
+        environments.PROD.toString() +
+        '; isPackaged: ' +
+        app.isPackaged.toString(),
     );
     if (environments.PROD && !app.isPackaged) {
       log.info('Check for updates...');
@@ -70,4 +79,6 @@ app
       callback(false);
     });
   })
-  .catch(log.error);
+  .catch((error) => {
+    log.error(error.message);
+  });

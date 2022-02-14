@@ -7,8 +7,8 @@ const _closeModal = ($elm: JQuery) => {
   navigo.navigate('/');
 };
 
-const closeModal = (onHide = false) => {
-  const $elm = $('.modal');
+const closeModal = (onHide = false, selector = '.modal') => {
+  const $elm = $(selector);
 
   if (onHide) {
     $elm.modal('hide');

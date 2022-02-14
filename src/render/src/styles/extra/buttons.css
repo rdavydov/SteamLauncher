@@ -1,7 +1,15 @@
 @layer components {
   .btn {
+    &.btn-success {
+      @apply !text-white bg-green-700 border-green-800 hover:bg-green-800 hover:border-green-900;
+    }
+
     &.btn-neutral {
       @apply !text-white bg-neutral-600 hover:bg-neutral-800;
+    }
+
+    &.btn-block {
+      @apply w-full;
     }
   }
 }

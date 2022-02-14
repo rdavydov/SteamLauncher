@@ -22,6 +22,6 @@ ipcMain.handle('app-get-copyright', () => {
   return `Copyright © ${new Date().getUTCFullYear()} ${packageAuthor.name}`;
 });
 
-ipcMain.handle('app-file-path-parse', (_event, filePath) => {
-  return parse(filePath);
+ipcMain.handle('app-file-path-parse', (_event, filePath: string) => {
+  return Object.assign({}, parse(filePath), {fullPath: filePath});
 });

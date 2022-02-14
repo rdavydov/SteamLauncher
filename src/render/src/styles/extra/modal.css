@@ -27,7 +27,7 @@
     }
 
     & .modal-footer {
-      @apply border-secondary;
+      @apply p-2 border-secondary;
     }
   }
 }

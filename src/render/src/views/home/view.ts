@@ -1,9 +1,8 @@
 import mustache from 'mustache';
 import navigo from '../../navigo.js';
-// Import {encodeUriObject} from '../../functions/encoded-decode-uri-object.js';
 
-class IndexView {
-  private $dom = $();
+class HomeView {
+  private $dom: JQuery | undefined;
 
   public async show() {
     await this.setDom();
@@ -12,26 +11,34 @@ class IndexView {
     await this.appendDom();
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  public async beforeHook(done: Function) {
+    const accountExist = await window.api.account.exist();
+    if (!accountExist) {
+      navigo.navigate('/account/create');
+    }
+
+    done();
+  }
+
   private async setDom() {
-    const {default: html} = await import('./index.html?raw');
-    const dom = mustache.render(html, {});
-    this.$dom = $(dom);
+    const {default: html} = await import('./home.html?raw');
+    const rendered = mustache.render(html, {});
+    this.$dom = $(rendered);
   }
 
   private async appendGamesList() {
-    const gamesData = (await window.api.invoke('games-data')) as
-      | Record<string, Record<string, string>>
-      | undefined;
-    const $gamesList = this.$dom.find('#games-list .card-body');
+    const gamesData = await window.api.games.getData();
+    const $gamesList = this.$dom?.find('#games-list .card-body').empty();
     if (typeof gamesData !== 'undefined' && Object.keys(gamesData).length > 0) {
       const $gamesGrid = $("<div class='games-grid'></div>");
       $.each(gamesData, (appId: string, values) => {
         const $gameContainer = $(`<div class="game-container" data-appId="${appId}"></div>`);
-        const headerImage = values.headerImage;
+        const header = values.header;
         const name = values.name;
 
-        if (headerImage !== '') {
-          $('<img>').attr('src', headerImage).appendTo($gameContainer);
+        if (header !== '') {
+          $('<img>').attr('src', header).appendTo($gameContainer);
         }
 
         $('<div>').text(name).appendTo($gameContainer);
@@ -45,28 +52,24 @@ class IndexView {
   }
 
   private async setEvents() {
-    this.$dom.on('contextmenu', '.game-container', (event) => {
+    this.$dom?.on('contextmenu', '.game-container', (event) => {
       const appId = $(event.currentTarget).attr('data-appId');
-      window.api.send('index-contextmenu-game', appId);
+      window.api.game.openContextMenu(appId!);
     });
 
-    this.$dom.find('#file-drop').fileDrop((file) => {
+    this.$dom?.find('#file-drop').fileDrop((file) => {
       const queryString = new URLSearchParams(file).toString();
       navigo.navigate(`/game/add/?${queryString}`);
     });
 
-    window.api.on('index-contextmenu-redirect', (_event, to: string) => {
-      navigo.navigate(to);
-    });
-
-    window.api.on('index-view-reload-games', async () => {
-      navigo.navigate('/');
+    window.api.on('index-reload-games-list', async () => {
+      await this.appendGamesList();
     });
   }
 
   private async appendDom() {
-    $('#container').html(this.$dom[0]);
+    $('#container').html(this.$dom![0]);
   }
 }
 
-export default IndexView;
+export default HomeView;

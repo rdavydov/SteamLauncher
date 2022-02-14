@@ -3,8 +3,8 @@ import {allowedLanguages} from '../../config.js';
 import objs2list from '../../functions/objs2list.js';
 
 class AccountCreateView {
-  private $dom = $();
-  private accountData: Record<string, string> | undefined;
+  private $dom: JQuery | undefined;
+  private accountData: StoreAccountType | undefined;
   private isEditMode = false;
 
   public async show(editMode = false) {
@@ -20,9 +20,7 @@ class AccountCreateView {
   }
 
   private async setData() {
-    this.accountData = (await window.api.storage.get('account')) as
-      | Record<string, string>
-      | undefined;
+    this.accountData = await window.api.account.getData();
   }
 
   private async setDom() {
@@ -34,29 +32,29 @@ class AccountCreateView {
     if (this.isEditMode) {
       Object.assign(view, {accountData: this.accountData});
     } else {
-      const inputSteamId = (await window.api.invoke('account-get-random-steamid')) as string;
+      const inputSteamId = await window.api.account.getRandomSteamId();
       Object.assign(view, {inputSteamId});
     }
 
-    const dom = mustache.render(html, view);
-    this.$dom = $(dom);
+    const rendered = mustache.render(html, view);
+    this.$dom = $(rendered);
   }
 
   private async afterSetDom() {
     if (this.isEditMode) {
-      this.$dom.find('select[name="language"]').val(this.accountData!.language);
+      this.$dom?.find('select[name="language"]').val(this.accountData!.language);
     }
   }
 
   private async appendDom() {
     if (!this.isEditMode) {
-      this.$dom.attr({
+      this.$dom?.attr({
         'data-bs-backdrop': 'static',
         'data-bs-keyboard': 'false',
       });
     }
 
-    this.$dom.appendTo(document.body).modal('show');
+    this.$dom?.appendTo(document.body).modal('show');
   }
 }
 

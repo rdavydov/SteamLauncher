@@ -1,4 +1,5 @@
 {
+  "asarUnpack": ["./bin/**/*"],
   "appId": "com.electron.steamlauncher",
   "copyright": "Copyright © 2022 Sak32009",
   "directories": {

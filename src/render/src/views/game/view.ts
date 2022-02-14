@@ -1,9 +1,9 @@
 import mustache from 'mustache';
 import navigo from '../../navigo.js';
-import objs2list from '../../functions/objs2list.js';
+import iteratorToObject from '../../functions/iterator-to-object.js';
 
 class GameAddView {
-  private $dom = $();
+  private $dom: JQuery | undefined;
   private isEditMode = false;
 
   public async show(editMode = false) {
@@ -14,36 +14,32 @@ class GameAddView {
   }
 
   private async appendDom() {
-    this.$dom.appendTo(document.body).modal('show');
+    this.$dom?.appendTo(document.body).modal('show');
   }
 
   private async setDom() {
     const {default: html} = await import('./game.html?raw');
 
     let view = {};
-    const currentLocationInfo = navigo.current![0];
+    const current = navigo.current![0];
+    const appId = current.data?.appId;
+    const queryString = current.queryString;
 
     if (this.isEditMode) {
-      const appId = currentLocationInfo.data?.appId;
-      const gameData = (await window.api.invoke('game-data', appId)) as Record<
-        string,
-        Record<string, string>
-      >;
+      const gameData = await window.api.game.getData(appId!);
       view = {
         isEditMode: this.isEditMode,
         gameData,
-        gameDataAppId: appId,
-        gameDataDlcs: objs2list(gameData.dlcs),
       };
     } else {
-      const parameters = currentLocationInfo.params;
+      const parameters = new URLSearchParams(queryString);
       view = {
-        parameters,
+        parameters: iteratorToObject(parameters),
       };
     }
 
-    const dom = mustache.render(html, view);
-    this.$dom = $(dom);
+    const rendered = mustache.render(html, view);
+    this.$dom = $(rendered);
   }
 }
 

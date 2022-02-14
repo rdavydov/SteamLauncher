@@ -1,9 +1,0 @@
-import './ipc/app.js';
-import './ipc/window.js';
-import './ipc/contextmenu.js';
-import './ipc/account.js';
-import './ipc/settings.js';
-import './ipc/games.js';
-import './ipc/game.js';
-import './ipc/steamdb.js';
-import './ipc/storage.js';
