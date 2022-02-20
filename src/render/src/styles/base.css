@@ -11,4 +11,11 @@
   body {
     @apply max-h-full flex flex-col;
   }
+
+  a.link {
+    @apply text-blue-500;
+    &:hover {
+      @apply text-blue-600 underline;
+    }
+  }
 }

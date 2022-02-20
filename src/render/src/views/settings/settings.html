@@ -10,31 +10,20 @@
           <span class="mdi mdi-close"></span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body text-center">
         <div class="input-group mb-3">
           <div class="input-group-text">
-            <span class="mdi mdi-select-multiple"></span>
-            <span class="ml-1">Overlay</span>
+            <span class="mdi mdi-steam mdi-18px"></span>
+            <span class="ml-1">SteamClient Path <span class="text-red-500">(*)</span></span>
           </div>
-          <select class="form-control" name="overlay" required>
-            {{^data.overlay}}
-            <option value="true">Activated</option>
-            <option value="false" selected>Deactivated</option>
-            {{/data.overlay}}
-            {{#data.overlay}}
-            <option value="true" selected>Activated</option>
-            <option value="false">Deactivated</option>
-            {{/data.overlay}}
-          </select>
+          <input type="text" class="form-control disabled" name="steamClientPath" value="{{data.steamClientPath}}"
+            placeholder="click on paperclip and chose directory" readonly required>
+          <button type="button" class="btn btn-neutral" data-sk="choseDirFile">
+            <span class="mdi mdi-paperclip"></span>
+          </button>
         </div>
-        <div class="input-group">
-          <div class="input-group-text">
-            <span class="mdi mdi-numeric"></span>
-            <span class="ml-1">Listen Port</span>
-          </div>
-          <input type="number" class="form-control" name="listenPort" value="{{data.listenPort}}" placeholder="..."
-            required>
-        </div>
+        <div class="text-xs"><span class="text-red-500">(*)</span> Download Mr. GoldBerg Steam Emulator and select the
+          "experimental_steamclient" folder.</div>
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-block btn-success">Save</button>

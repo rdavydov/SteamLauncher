@@ -9,7 +9,7 @@
             Add {{parameters.name}}
             {{/isEditMode}}
             {{#isEditMode}}
-            Edit {{gameData.name}}
+            Edit {{data.name}}
             {{/isEditMode}}
           </span>
         </div>
@@ -20,68 +20,94 @@
       <div class="modal-body">
         <div class="input-group mb-3">
           <div class="input-group-text">
-            <span class="mdi mdi-account-question"></span>
+            <span class="mdi mdi-account-question mdi-18px"></span>
             <span class="ml-1">AppId</span>
           </div>
           {{^isEditMode}}
           <input type="number" class="form-control" name="appId" value="" placeholder="..." required>
           {{/isEditMode}}
           {{#isEditMode}}
-          <input type="number" class="form-control disabled" name="appId" value="{{gameData.appId}}" placeholder="..."
+          <input type="number" class="form-control disabled" name="appId" value="{{data.appId}}" placeholder="..."
             readonly required>
           {{/isEditMode}}
         </div>
         <div class="input-group mb-3">
           <div class="input-group-text">
-            <span class="mdi mdi-account-question"></span>
+            <span class="mdi mdi-account-question mdi-18px"></span>
             <span class="ml-1">Path</span>
           </div>
           {{^isEditMode}}
-          <input type="text" class="form-control" name="path" value="{{parameters.fullPath}}" placeholder="..." required
-            readonly>
+          <input type="text" class="form-control disabled" name="path" value="{{parameters.fullPath}}" placeholder="..."
+            required readonly>
           {{/isEditMode}}
           {{#isEditMode}}
-          <input type="text" class="form-control" name="path" value="{{gameData.path}}" placeholder="..." required
+          <input type="text" class="form-control disabled" name="path" value="{{data.path}}" placeholder="..." required
             readonly>
+          {{/isEditMode}}
+          <button type="button" class="btn btn-neutral" data-sk="choseDirFile">
+            <span class="mdi mdi-paperclip"></span>
+          </button>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-text">
+            <span class="mdi mdi-account-question mdi-18px"></span>
+            <span class="ml-1">Run Path</span>
+          </div>
+          {{^isEditMode}}
+          <input type="text" class="form-control disabled" name="runPath" value="{{parameters.dir}}" placeholder="..."
+            required readonly>
+          {{/isEditMode}}
+          {{#isEditMode}}
+          <input type="text" class="form-control disabled" name="runPath" value="{{data.runPath}}" placeholder="..."
+            required readonly>
+          {{/isEditMode}}
+          <button type="button" class="btn btn-neutral" data-sk="choseDirFile">
+            <span class="mdi mdi-paperclip"></span>
+          </button>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-text">
+            <span class="mdi mdi-account-question mdi-18px"></span>
+            <span class="ml-1">Command Line</span>
+          </div>
+          {{^isEditMode}}
+          <input type="text" class="form-control" name="commandLine" value="" placeholder="ex: -steam">
+          {{/isEditMode}}
+          {{#isEditMode}}
+          <input type="text" class="form-control" name="commandLine" value="{{data.commandLine}}"
+            placeholder="ex: -steam">
           {{/isEditMode}}
         </div>
         <div class="input-group mb-3">
           <div class="input-group-text">
-            <span class="mdi mdi-account-question"></span>
-            <span class="ml-1">Run Path</span>
+            <span class="mdi mdi-account-question mdi-18px"></span>
+            <span class="ml-1">Listen Port</span>
           </div>
           {{^isEditMode}}
-          <input type="text" class="form-control" name="runPath" value="{{parameters.dir}}" placeholder="..." required
-            readonly>
+          <input type="number" class="form-control" name="listenPort" value="47584" placeholder="default: 47584"
+            required>
           {{/isEditMode}}
           {{#isEditMode}}
-          <input type="text" class="form-control" name="runPath" value="{{gameData.runPath}}" placeholder="..." required
-            readonly>
+          <input type="number" class="form-control" name="listenPort" value="{{data.listenPort}}"
+            placeholder="default: 47584" required>
           {{/isEditMode}}
         </div>
         <div class="input-group">
           <div class="input-group-text">
-            <span class="mdi mdi-account-question"></span>
-            <span class="ml-1">Command Line</span>
+            <span class="mdi mdi-account-question mdi-18px"></span>
+            <span class="ml-1">Overlay</span>
           </div>
-          {{^isEditMode}}
-          <input type="text" class="form-control" name="commandLine" value="" placeholder="-steam">
-          {{/isEditMode}}
-          {{#isEditMode}}
-          <input type="text" class="form-control" name="commandLine" value="{{gameData.commandLine}}"
-            placeholder="-steam">
-          {{/isEditMode}}
+          <select class="form-control" name="overlay" required>
+            {{^data.overlay}}
+            <option value="true">Activated</option>
+            <option value="false" selected>Deactivated</option>
+            {{/data.overlay}}
+            {{#data.overlay}}
+            <option value="true" selected>Activated</option>
+            <option value="false">Deactivated</option>
+            {{/data.overlay}}
+          </select>
         </div>
-        <!--{{#isEditMode}}
-        <div class="mt-3 text-center">
-          <h3 class="mb-1">Unlocked DLCs</h3>
-          <textarea rows="5" class="form-control w-full resize-none" readonly>
-            {{#gameDataDlcs}}
-{{@key}} = {{@val.name}}
-{{/gameDataDlcs}}
-          </textarea>
-        </div>
-        {{/isEditMode}}-->
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-block btn-success">Save</button>

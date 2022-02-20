@@ -5,7 +5,7 @@
     }
 
     &.btn-neutral {
-      @apply !text-white bg-neutral-600 hover:bg-neutral-800;
+      @apply !text-white bg-neutral-600 hover:bg-neutral-800 border-neutral-700;
     }
 
     &.btn-block {

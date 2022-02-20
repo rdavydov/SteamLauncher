@@ -37,6 +37,12 @@ contextBridge.exposeInMainWorld('api', {
     async filePathParse(path: string) {
       return ipc.invoke('app-file-path-parse', path);
     },
+    async choseDirectory() {
+      return ipc.invoke('app-chose-directory');
+    },
+    async choseFile() {
+      return ipc.invoke('app-chose-file');
+    },
   },
   account: {
     async getData() {

@@ -2,7 +2,7 @@ import navigo from '../navigo.js';
 import HomeView from './home/view.js';
 import GameView from './game/view.js';
 import AboutView from './about/view.js';
-// Import SettingsView from './settings/view.js';
+import SettingsView from './settings/view.js';
 import AccountView from './account/view.js';
 
 const homeController = new HomeView();
@@ -29,10 +29,10 @@ navigo.on('/account/edit', async () => {
   await accountController.show(true);
 });
 
-/* Const settingsController = new SettingsView();
+const settingsController = new SettingsView();
 navigo.on('/settings', async () => {
   await settingsController.show();
-}); */
+});
 
 const gameController = new GameView();
 navigo.on('/game/add', async () => {

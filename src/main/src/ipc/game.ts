@@ -1,4 +1,5 @@
 import {ipcMain, IpcMainEvent} from 'electron';
+import log from 'electron-log';
 import SteamRetriever from '../classes/steam-retriever.js';
 import storage from '../storage.js';
 import snack from '../functions/snack.js';
@@ -13,19 +14,14 @@ const fnGameAddEdit = async (event: IpcMainEvent, inputs: StoreGameDataType) => 
     event.sender.send(closeModalChannel);
   } else {
     const steamRetriever = new SteamRetriever(inputs);
-    await steamRetriever.run();
+    steamRetriever.run().catch((error) => {
+      log.error(error.message);
+    });
   }
 };
 
 ipcMain.on('game-add', fnGameAddEdit);
 ipcMain.on('game-edit', fnGameAddEdit);
-
-// TODO: da implementare
-ipcMain.on('game-rebase', async (_event, appId: string) => {
-  const inputs: StoreGameDataType = storage.get('games.' + appId);
-  const steamRetriever = new SteamRetriever(inputs);
-  await steamRetriever.run();
-});
 
 ipcMain.handle('game-data', (_event, appId: string): StoreGameDataType | undefined => {
   return storage.get('games.' + appId);

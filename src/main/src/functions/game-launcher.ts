@@ -1,69 +1,76 @@
-// Import {webContents} from 'electron';
 import {join} from 'node:path';
-import {existsSync, mkdirSync, writeFileSync} from 'node:fs';
+import {existsSync, writeFileSync} from 'node:fs';
 import {execFile} from 'node:child_process';
 import ini from 'ini';
 import {emptyDirSync, copySync} from 'fs-extra';
-// Import log from 'electron-log';
-import {paths} from '../config.js';
 import storage from '../storage.js';
 import snack from './snack.js';
+import generateAppIdPaths from './generate-appid-paths.js';
 
-const gameLauncher = async (appId: string, normally = false) => {
-  // Const event = webContents.getFocusedWebContents();
-  const dataGame: StoreGameDataType = storage.get('games.' + appId);
-  const dataAccount: Record<string, string> | undefined = storage.get('account');
-  const dataNetwork = storage.get('network');
-  // Const dataSettings = storage.get('settings');
+const gameLauncher = async (dataGame: StoreGameDataType, normally = false) => {
+  const dataAccount = storage.get('account')!;
+  const dataSettings = storage.get('settings');
 
-  if (dataGame === null && typeof dataAccount === 'undefined') {
-    snack(`Unknown error (dataGame, dataAccount)!`, 'error');
-    return;
-  }
+  const paths = generateAppIdPaths(dataGame.appId, dataAccount.language);
 
   const dataGamePath = dataGame.path;
   const dataGameRunPath = dataGame.runPath;
-  const dataGameCommandLine = dataGame.path;
-  // Const dataGameDlcs = dataGame?.dlcs as Record<string, string>;
+  const dataGameCommandLine = dataGame.commandLine;
 
   if (normally) {
     execFile(dataGamePath, dataGameCommandLine.split(' '));
-    snack(`Launch ${dataGamePath}`, 'success');
+    snack(`Launch normally ${dataGame.name}`, 'success');
     return;
   }
 
-  const emulatorLoaderPath = paths.emulator.loader;
+  const emulatorPath = dataSettings.steamClientPath!;
+  const emulatorLoaderPath = join(emulatorPath, 'steamclient_loader.exe');
+
   if (!existsSync(emulatorLoaderPath)) {
-    snack(`Missing ${emulatorLoaderPath}`, 'error');
+    snack(`Assign the correct folder of the experimental client in the settings!`, 'error');
     return;
   }
 
-  const emulatorSteamClientPath = paths.emulator.steamclient;
-  if (!existsSync(emulatorSteamClientPath)) {
-    snack(`Missing ${emulatorSteamClientPath}`, 'error');
-    return;
+  const emulatorSteamSettingsPath = join(emulatorPath, 'steam_settings');
+
+  if (existsSync(emulatorSteamSettingsPath)) {
+    emptyDirSync(emulatorSteamSettingsPath);
   }
 
-  const emulatorSteamClient64Path = paths.emulator.steamclient64;
-  if (!existsSync(emulatorSteamClient64Path)) {
-    snack(`Missing ${emulatorSteamClient64Path}`, 'error');
-    return;
+  copySync(paths.appIdDataPath, emulatorSteamSettingsPath);
+
+  const emulatorSettingsForceAccountName = join(
+    emulatorSteamSettingsPath,
+    'force_account_name.txt',
+  );
+  const emulatorSettingsForceLanguage = join(emulatorSteamSettingsPath, 'force_language.txt');
+  const emulatorSettingsForceSteamId = join(emulatorSteamSettingsPath, 'force_steamid.txt');
+
+  writeFileSync(emulatorSettingsForceAccountName, dataAccount.name);
+  writeFileSync(emulatorSettingsForceLanguage, dataAccount.language);
+  writeFileSync(emulatorSettingsForceSteamId, dataAccount.steamId);
+
+  const emulatorSettingsForceListenPort = join(emulatorSteamSettingsPath, 'force_listen_port.txt');
+  const emulatorSettingsOverlay = join(emulatorSteamSettingsPath, 'disable_overlay.txt');
+
+  writeFileSync(emulatorSettingsForceListenPort, dataGame.listenPort);
+
+  if (!dataGame.overlay) {
+    writeFileSync(emulatorSettingsOverlay, '');
   }
 
-  const asd = join(paths.dataPath, 'apps', appId);
-  const asdTo = paths.emulator.settings.path;
+  const emulatorSettingsDisableNetworking = join(
+    emulatorSteamSettingsPath,
+    'disable_networking.txt',
+  );
+  const emulatorSettingsOffline = join(emulatorSteamSettingsPath, 'offline.txt');
 
-  copySync(asd, asdTo); /*
-    .then(() => {
-      snack('the plm ' + asdTo);
-      log.debug(asdTo);
-    })
-    .catch((error) => {
-      snack(error.message);
-      log.debug(error.message);
-    }); */
+  if (!dataSettings.network) {
+    writeFileSync(emulatorSettingsDisableNetworking, '');
+    writeFileSync(emulatorSettingsOffline, '');
+  }
 
-  const emulatorLoaderConfigPath = paths.emulator.loaderConfig;
+  const emulatorLoaderConfigPath = join(emulatorPath, 'ColdClientLoader.ini');
 
   const loaderConfig = {
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -75,58 +82,19 @@ const gameLauncher = async (appId: string, normally = false) => {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       ExeCommandLine: dataGameCommandLine,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      AppId: appId,
+      AppId: dataGame.appId,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      SteamClientDll: emulatorSteamClientPath,
+      SteamClientDll: join(emulatorPath, 'steamclient.dll'),
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      SteamClient64Dll: emulatorSteamClient64Path,
+      SteamClient64Dll: join(emulatorPath, 'steamclient64.dll'),
     },
   };
 
   writeFileSync(emulatorLoaderConfigPath, ini.stringify(loaderConfig));
 
-  const emulatorSettingsPath = paths.emulator.settings.path;
-
-  if (existsSync(emulatorSettingsPath)) {
-    emptyDirSync(emulatorSettingsPath);
-  } else {
-    mkdirSync(emulatorSettingsPath);
-  }
-
-  const emulatorSettingsForceAccountName = paths.emulator.settings.forceAccountName;
-  const emulatorSettingsForceLanguage = paths.emulator.settings.forceLanguage;
-  const emulatorSettingsForceSteamId = paths.emulator.settings.forceSteamId;
-
-  writeFileSync(emulatorSettingsForceAccountName, dataAccount!.name);
-  writeFileSync(emulatorSettingsForceLanguage, dataAccount!.language);
-  writeFileSync(emulatorSettingsForceSteamId, dataAccount!.steamId);
-
-  /* Const emulatorSettingsForceListenPort = paths.emulator.settings.forceListenPort;
-  const emulatorSettingsOverlay = paths.emulator.settings.overlay;
-
-  writeFileSync(emulatorSettingsForceListenPort, dataSettings.listenPort);
-
-  if (!dataSettings.overlay) {
-    writeFileSync(emulatorSettingsOverlay, '');
-  } */
-
-  const emulatorSettingsDisableNetworking = paths.emulator.settings.disableNetworking;
-  const emulatorSettingsOffline = paths.emulator.settings.offline;
-
-  if (!dataNetwork) {
-    writeFileSync(emulatorSettingsDisableNetworking, '');
-    writeFileSync(emulatorSettingsOffline, '');
-  }
-
-  /* Const emulatorSettingsDlc = config.paths.emulator.settings.dlc;
-
-  if (Object.keys(dataGameDlcs).length > 0) {
-    writeFileSync(emulatorSettingsDlc, dlcsToMustacheTemplate(dataGameDlcs).join('\n'));
-  } */
-
   execFile(emulatorLoaderPath);
 
-  snack(`Launch ${dataGamePath}`, 'success');
+  snack(`Launch ${dataGame.name}`, 'success');
 };
 
 export default gameLauncher;

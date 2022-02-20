@@ -9,7 +9,7 @@ import {productName} from '../../../../package.json';
     $(this).remove();
   });
 
-  $.snack = (content: string, type: SnackTypeArg = 'info', delay = 3000) => {
+  $.snack = (content, type, delay = 3000) => {
     if ($('.toast-container').length === 0) {
       $(toastContainer).appendTo('body');
     }

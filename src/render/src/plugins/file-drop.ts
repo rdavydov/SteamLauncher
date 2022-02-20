@@ -1,7 +1,7 @@
 import config from '../config.js';
 
 (($) => {
-  $.fn.fileDrop = function (callback: (callbackFileParsed: Record<string, string>) => void) {
+  $.fn.fileDrop = function (callback) {
     const activeClass = 'drop-highlight';
 
     return this.each(() => {

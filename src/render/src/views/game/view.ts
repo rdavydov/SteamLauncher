@@ -26,15 +26,15 @@ class GameAddView {
     const queryString = current.queryString;
 
     if (this.isEditMode) {
-      const gameData = await window.api.game.getData(appId!);
+      const data = await window.api.game.getData(appId!);
       view = {
         isEditMode: this.isEditMode,
-        gameData,
+        data,
       };
     } else {
-      const parameters = new URLSearchParams(queryString);
+      const parameters = iteratorToObject(new URLSearchParams(queryString));
       view = {
-        parameters: iteratorToObject(parameters),
+        parameters,
       };
     }
 

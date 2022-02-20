@@ -1,70 +1,37 @@
-import {app, webContents} from 'electron';
-import log from 'electron-log';
+import {webContents} from 'electron';
 import {spawn} from 'node:child_process';
-import {writeFile} from 'node:fs/promises';
+import {writeFile, unlink} from 'node:fs/promises';
 import type {Buffer} from 'node:buffer';
-import {join} from 'node:path';
+import {join, parse} from 'node:path';
+import log from 'electron-log';
 import {pathExists, writeJson, readJson, ensureDir, copy} from 'fs-extra';
+import fg from 'fast-glob';
 import {paths} from '../config.js';
 import storage from '../storage.js';
+import steamApiInterfaces from '../bin/steam-api-interfaces.js';
+import signVerify from '../bin/signtool.js';
+import generateAppIdPaths from '../functions/generate-appid-paths.js';
+
+const globSteamApis = (runPath: string) => {
+  return fg.sync(['**/steam_api.dll', '**/steam_api64.dll'], {
+    cwd: runPath,
+    absolute: true,
+    onlyFiles: true,
+  });
+};
 
 class SteamRetriever {
   private readonly steamWebApiKey: string = storage.get('account.steamWebApiKey');
   private readonly language: string = storage.get('account.language');
   private readonly event = webContents.getFocusedWebContents();
   private readonly appId: string;
+  private readonly paths: Record<string, string>;
   private readonly inputs: StoreGameDataType;
-  private readonly dataPath: string;
-  private readonly appsPath: string;
-  private readonly appIdDataPath: string;
-  private readonly appIdAchievementsInfoPath: string;
-  private readonly appIdAchievementsPath: string;
-  private readonly appIdStatsInfoPath: string;
-  private readonly appIdItemsInfoPath: string;
-  private readonly appIdDlcsInfoPath: string;
-  private readonly steamRetrieverPath: string;
-  private readonly steamRetrieverAppIdPath: string;
-  private readonly steamRetrieverAppIdInfoPath: string;
-  private readonly steamRetrieverBackgroundPath: string;
-  private readonly steamRetrieverStatsPath: string;
-  private readonly steamRetrieverItemsPath: string;
-  private readonly steamRetrieverAchievementsImagesPath: string;
-  private readonly steamRetrieverAchievementsInfoPath: string;
-  private readonly steamRetrieverAchievementsInfoDefaultPath: string;
 
   public constructor(inputs: StoreGameDataType) {
     this.inputs = inputs;
     this.appId = inputs.appId;
-
-    this.dataPath = join(app.getPath('userData'), 'data');
-
-    this.appsPath = join(this.dataPath, 'apps');
-    this.appIdDataPath = join(this.appsPath, this.appId);
-    this.appIdAchievementsInfoPath = join(this.appIdDataPath, 'achievements.json');
-    this.appIdAchievementsPath = join(this.appIdDataPath, 'achievements');
-    this.appIdStatsInfoPath = join(this.appIdDataPath, 'stats.txt');
-    this.appIdItemsInfoPath = join(this.appIdDataPath, 'items.json');
-    this.appIdDlcsInfoPath = join(this.appIdDataPath, 'DLC.txt');
-
-    this.steamRetrieverPath = join(this.dataPath, 'steam_retriever');
-    this.steamRetrieverAppIdPath = join(this.steamRetrieverPath, this.appId);
-    this.steamRetrieverAppIdInfoPath = join(this.steamRetrieverAppIdPath, this.appId + '.json');
-    this.steamRetrieverBackgroundPath = join(this.steamRetrieverAppIdPath, 'background.jpg');
-    this.steamRetrieverStatsPath = join(this.steamRetrieverAppIdPath, 'stats.json');
-    this.steamRetrieverItemsPath = join(this.steamRetrieverAppIdPath, 'db_inventory.json');
-
-    this.steamRetrieverAchievementsImagesPath = join(
-      this.steamRetrieverAppIdPath,
-      'achievements_images',
-    );
-    this.steamRetrieverAchievementsInfoPath = join(
-      this.steamRetrieverAppIdPath,
-      this.language + '.db_achievements.json',
-    );
-    this.steamRetrieverAchievementsInfoDefaultPath = join(
-      this.steamRetrieverAppIdPath,
-      'english.db_achievements.json',
-    );
+    this.paths = generateAppIdPaths(inputs.appId, this.language);
   }
 
   public console(content: string) {
@@ -81,99 +48,148 @@ class SteamRetriever {
 
     this.console('Launch steamRetriever for ' + this.appId + '...');
 
-    const steamRetrieverSpawn = this.spawn(
-      this.appId,
-      this.steamWebApiKey,
-      true,
-      this.steamRetrieverPath,
-      this.language,
-    );
+    const findSteamApis = globSteamApis(this.inputs.runPath);
+    if (findSteamApis.length > 0) {
+      let i = 1;
+      for (const o of findSteamApis) {
+        const signed = signVerify(o);
 
-    if (typeof steamRetrieverSpawn !== 'undefined') {
-      const output = (chunk: Buffer) => {
-        this.console(chunk.toString('utf8').trim());
-      };
+        if (!signed) {
+          this.console(o + " isn't signed! Please use original steam_api(64).dll only!");
+          return;
+        }
 
-      steamRetrieverSpawn.stdout.on('data', output);
-      steamRetrieverSpawn.stderr.on('data', output);
+        if (i === findSteamApis.length) {
+          const steamRetrieverSpawn = this.spawn();
 
-      steamRetrieverSpawn.on('close', async (code, signal) => {
-        this.console(`steamRetriever exited with: [code ${code!}][signal ${signal!}]`);
+          if (typeof steamRetrieverSpawn !== 'undefined') {
+            const output = (chunk: Buffer) => {
+              this.console(chunk.toString('utf8').trim());
+            };
 
-        await ensureDir(this.appIdDataPath);
+            steamRetrieverSpawn.stdout.on('data', output);
+            steamRetrieverSpawn.stderr.on('data', output);
 
-        const data: Record<string, unknown> = {};
+            steamRetrieverSpawn.on('close', async (code, signal) => {
+              this.console(`steamRetriever exited with: [code ${code!}][signal ${signal!}]`);
 
-        if (await pathExists(this.steamRetrieverAppIdInfoPath)) {
-          const steamRetrieverAppIdInfoParse = (await readJson(
-            this.steamRetrieverAppIdInfoPath,
-          )) as Record<string, unknown>;
-          data.name = steamRetrieverAppIdInfoParse.Name;
-          data.header = this.steamRetrieverBackgroundPath;
+              await ensureDir(this.paths.appIdDataPath);
 
-          if (typeof data.Type !== 'undefined') {
-            this.console(this.appId + " isn't a game!");
-            this.consoleHide(5);
-            return;
-          }
+              const data: Record<string, string> = {};
 
-          this.console(`${data.name as string} > name`);
-          this.console(`${data.header as string} > header`);
+              if (await pathExists(this.paths.steamRetrieverAppIdInfoPath)) {
+                const steamRetrieverAppIdInfoParse = (await readJson(
+                  this.paths.steamRetrieverAppIdInfoPath,
+                )) as SteamRetrieverAppId;
+                data.name = steamRetrieverAppIdInfoParse.Name;
+                data.header = this.paths.steamRetrieverBackgroundPath;
 
-          const outDlcs = [];
-          let iii = 0;
-          const dlcs = steamRetrieverAppIdInfoParse.Dlcs as Record<string, Record<string, string>>;
-          if (Object.keys(dlcs).length > 0) {
-            for (const dlcKey in dlcs) {
-              if (Object.prototype.hasOwnProperty.call(dlcs, dlcKey)) {
-                const dlc = dlcs[dlcKey];
-                const dlcName = dlc.Name;
-
-                outDlcs.push(dlcKey + '=' + dlcName);
-
-                // eslint-disable-next-line max-depth
-                if (Object.keys(dlcs).length - 1 === iii) {
-                  writeFile(this.appIdDlcsInfoPath, outDlcs.join('\n'))
-                    .then(() => {
-                      this.console(this.appIdDlcsInfoPath + ' was written successfully!');
-                    })
-                    .catch((error) => {
-                      this.console(error.message);
-                    });
+                if (typeof steamRetrieverAppIdInfoParse.Type !== 'undefined') {
+                  this.console(data.name + " isn't a game!");
+                  this.consoleHide(5);
+                  return;
                 }
 
-                iii++;
+                this.console(`${data.name} > name`);
+                this.console(`${data.header} > header`);
+
+                const outDlcs = [];
+                let iii = 0;
+                const dlcs = steamRetrieverAppIdInfoParse.Dlcs;
+                if (Object.keys(dlcs).length > 0) {
+                  for (const dlcKey in dlcs) {
+                    if (Object.prototype.hasOwnProperty.call(dlcs, dlcKey)) {
+                      const dlc = dlcs[dlcKey];
+                      const dlcName = dlc.Name;
+
+                      outDlcs.push(dlcKey + '=' + dlcName);
+
+                      // eslint-disable-next-line max-depth
+                      if (Object.keys(dlcs).length - 1 === iii) {
+                        writeFile(this.paths.appIdDlcsInfoPath, outDlcs.join('\n'))
+                          .then(() => {
+                            this.console(
+                              this.paths.appIdDlcsInfoPath + ' was written successfully!',
+                            );
+                          })
+                          .catch((error) => {
+                            this.console(error.message);
+                          });
+                      }
+
+                      iii++;
+                    }
+                  }
+                } else {
+                  this.console('The game has no dlcs!');
+                }
+
+                if (this.steamWebApiKey.length > 0) {
+                  await this.writeAchievements();
+                  await this.writeStats();
+                  await this.writeItems();
+                }
+
+                await this.writeSteamApiInterfaces(o);
+                await this.addGame(data);
+              } else {
+                this.console(`${this.paths.steamRetrieverAppIdInfoPath} was not found!`);
               }
-            }
-          } else {
-            this.console('The game has no dlcs!');
+            });
           }
-
-          if (this.steamWebApiKey.length > 0) {
-            await this.writeAchievements();
-            await this.writeStats();
-            await this.writeItems();
-          }
-
-          await this.addGame(data);
-        } else {
-          this.console(`${this.steamRetrieverAppIdInfoPath} was not found!`);
         }
-      });
+
+        i++;
+      }
+    } else {
+      this.console(
+        'The game does not contain any steam_api(64).dll! Please select the correct run path!',
+      );
     }
   }
 
-  private async addGame(data: Record<string, unknown>) {
-    const a: StoreGameDataType = Object.assign({}, this.inputs, data);
+  private async addGame(data: Record<string, string>) {
+    const inputs: StoreGameDataType = Object.assign({}, this.inputs, data);
 
-    storage.set('games.' + a.appId, a);
-    this.console('Game created successfully!');
-    this.consoleHide(5);
+    storage.set('games.' + inputs.appId, inputs);
+    this.console(inputs.name + ' created successfully!');
+    this.consoleHide(10);
+  }
+
+  private async writeSteamApiInterfaces(dll: string) {
+    const steamApiDll = join(paths.steamApiInterfacesPath, parse(dll).base);
+    const steamInterfacesTxt = join(paths.steamApiInterfacesPath, 'steam_interfaces.txt');
+    copy(dll, steamApiDll)
+      .then(() => {
+        this.console('The steam_api(64).dll have been successfully moved to ' + steamApiDll);
+
+        const generateSteamApiInterfaces = steamApiInterfaces(dll);
+        if (generateSteamApiInterfaces) {
+          copy(steamInterfacesTxt, this.paths.appIdSteamInterfacesPath)
+            .then(async () => {
+              this.console(
+                'The steam_api(64).dll interfaces have been successfully moved to ' +
+                  this.paths.appIdSteamInterfacesPath,
+              );
+
+              await unlink(steamApiDll);
+              await unlink(steamInterfacesTxt);
+            })
+            .catch((error) => {
+              this.console(error.message);
+            });
+        } else {
+          this.console('Unknown error with generating the steam_api(64).dll interfaces!');
+        }
+      })
+      .catch((error) => {
+        this.console(error.message);
+      });
   }
 
   private async writeStats() {
-    readJson(this.steamRetrieverStatsPath)
-      .then(async (statsInfoParse: Record<string, Record<string, string>>) => {
+    readJson(this.paths.steamRetrieverStatsPath)
+      .then(async (statsInfoParse: SteamRetrieverStats) => {
         const out = [];
         for (const o in statsInfoParse) {
           if (Object.prototype.hasOwnProperty.call(statsInfoParse, o)) {
@@ -185,9 +201,9 @@ class SteamRetriever {
             out.push(name + '=' + typeValue + '=' + defaultValue.toString());
 
             if ((Object.keys(statsInfoParse).length - 1).toString() === o) {
-              writeFile(this.appIdStatsInfoPath, out.join('\n'))
+              writeFile(this.paths.appIdStatsInfoPath, out.join('\n'))
                 .then(() => {
-                  this.console(this.appIdStatsInfoPath + ' was written successfully!');
+                  this.console(this.paths.appIdStatsInfoPath + ' was written successfully!');
                 })
                 .catch((error) => {
                   this.console(error.message);
@@ -202,9 +218,9 @@ class SteamRetriever {
   }
 
   private async writeItems() {
-    readJson(this.steamRetrieverItemsPath)
-      .then(async (itemsInfoParse: Record<string, Record<string, string>>) => {
-        const out: Record<string, unknown> = {};
+    readJson(this.paths.steamRetrieverItemsPath)
+      .then(async (itemsInfoParse: SteamRetrieverItems) => {
+        const out: SteamRetrieverItems = {};
         const outArray = [];
         for (const o in itemsInfoParse) {
           if (Object.prototype.hasOwnProperty.call(itemsInfoParse, o)) {
@@ -215,9 +231,9 @@ class SteamRetriever {
             outArray.push(out);
 
             if ((Object.keys(itemsInfoParse).length - 1).toString() === o) {
-              writeJson(this.appIdItemsInfoPath, outArray, {spaces: 2})
+              writeJson(this.paths.appIdItemsInfoPath, outArray, {spaces: 2})
                 .then(() => {
-                  this.console(this.appIdItemsInfoPath + ' was written successfully!');
+                  this.console(this.paths.appIdItemsInfoPath + ' was written successfully!');
                 })
                 .catch((error) => {
                   this.console(error.message);
@@ -234,22 +250,22 @@ class SteamRetriever {
   private async writeAchievements() {
     let achievementsInfoPath = '';
 
-    if (await pathExists(this.steamRetrieverAchievementsInfoPath)) {
-      achievementsInfoPath = this.steamRetrieverAchievementsInfoPath;
+    if (await pathExists(this.paths.steamRetrieverAchievementsInfoPath)) {
+      achievementsInfoPath = this.paths.steamRetrieverAchievementsInfoPath;
     } else {
-      this.console(`${this.steamRetrieverAchievementsInfoPath} was not found!`);
+      this.console(`${this.paths.steamRetrieverAchievementsInfoPath} was not found!`);
 
-      if (await pathExists(this.steamRetrieverAchievementsInfoPath)) {
-        achievementsInfoPath = this.steamRetrieverAchievementsInfoPath;
+      if (await pathExists(this.paths.steamRetrieverAchievementsInfoDefaultPath)) {
+        achievementsInfoPath = this.paths.steamRetrieverAchievementsInfoDefaultPath;
       } else {
-        this.console(`${this.steamRetrieverAchievementsInfoPath} was not found!`);
+        this.console(`${this.paths.steamRetrieverAchievementsInfoDefaultPath} was not found!`);
       }
     }
 
     if (achievementsInfoPath.length > 0) {
       readJson(achievementsInfoPath)
-        .then(async (achievementsInfoParse: Record<string, Record<string, string>>) => {
-          await ensureDir(this.appIdAchievementsPath);
+        .then(async (achievementsInfoParse: SteamRetrieverAchievements) => {
+          await ensureDir(this.paths.appIdAchievementsPath);
 
           for (const o in achievementsInfoParse) {
             if (Object.prototype.hasOwnProperty.call(achievementsInfoParse, o)) {
@@ -260,18 +276,23 @@ class SteamRetriever {
               achievementsInfoParse[o] = achievement;
 
               if ((Object.keys(achievementsInfoParse).length - 1).toString() === o) {
-                writeJson(this.appIdAchievementsInfoPath, achievementsInfoParse, {spaces: 2})
+                writeJson(this.paths.appIdAchievementsInfoPath, achievementsInfoParse, {spaces: 2})
                   .then(() => {
-                    this.console(this.appIdAchievementsInfoPath + ' was written successfully!');
+                    this.console(
+                      this.paths.appIdAchievementsInfoPath + ' was written successfully!',
+                    );
                   })
                   .catch((error) => {
                     this.console(error.message);
                   });
-                copy(this.steamRetrieverAchievementsImagesPath, this.appIdAchievementsPath)
+                copy(
+                  this.paths.steamRetrieverAchievementsImagesPath,
+                  this.paths.appIdAchievementsPath,
+                )
                   .then(() => {
                     this.console(
                       'The achievement images have been successfully moved to ' +
-                        this.appIdAchievementsPath,
+                        this.paths.appIdAchievementsPath,
                     );
                   })
                   .catch((error) => {
@@ -287,27 +308,19 @@ class SteamRetriever {
     }
   }
 
-  // eslint-disable-next-line max-params
-  private spawn(
-    appId: string,
-    steamWebKey: string,
-    downloadImages: boolean,
-    outputPath: string,
-    language: string,
-    force = false,
-  ) {
-    const filePath = paths.steamRetriever;
-    const args = ['-k', steamWebKey, '-o', outputPath, '-l', language];
-
-    if (downloadImages) {
-      args.push('-i');
-    }
-
-    if (force) {
-      args.push('-f');
-    }
-
-    args.push(appId);
+  private spawn() {
+    const filePath = paths.steamRetrieverBin;
+    const args = [
+      '-k', // SteamApi web key
+      this.steamWebApiKey,
+      '-o', // OutputPath
+      this.paths.steamRetrieverPath,
+      '-l', // Language
+      this.language,
+      '-i', // Download images
+      // '-f',
+      this.appId, // AppId
+    ];
 
     try {
       return spawn(filePath, args);

@@ -1,11 +1,12 @@
 import {ipcMain} from 'electron';
 import storage from '../storage.js';
 import snack from '../functions/snack.js';
+import {closeModalChannel} from '../config.js';
 
 ipcMain.on('settings-edit', (event, inputs: StoreSettingsType) => {
   storage.set('settings', inputs);
   snack('Settings edited successfully!', 'success');
-  event.sender.send('close-modal');
+  event.sender.send(closeModalChannel);
 });
 
 ipcMain.on('settings-set-network', (_event, data: boolean) => {

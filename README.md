@@ -1,8 +1,10 @@
 # SteamLauncher (ALPHA)
 
-A totally free Steam clone :smile:
+**_SteamLauncher_** optimizes the setup process of each game in a simple and automatic way.
 
 [forum cs.rin.ru support](https://cs.rin.ru/forum/viewtopic.php?f=20&t=116801)
+
+#### Screenshots
 
 <img src="https://raw.githubusercontent.com/Sak32009/SteamLauncher/main/screenshots/screenshot_main.png" alt="screenshot-main" width="400">
 
@@ -14,60 +16,68 @@ A totally free Steam clone :smile:
 
 ## Introduction
 
-_SteamLauncher_ is a Windows application that offers the same capabilities as Steam but completely free.
+**_SteamLauncher_** is a windows application that optimizes the setup process of each game in a simple and automatic way.
 
-Instead of manually configuring each game, _SteamLauncher_ automatically performs all operations for **Mr. Goldberg's Steam emulator**.
+Instead of manually configuring each game, **_SteamLauncher_** automatically performs all operations for **Mr. Goldberg's Steam Emulator**.
 
 For more information on the emulator: [gitlab](https://gitlab.com/Mr_Goldberg/goldberg_emulator) [cs.rin.ru](https://cs.rin.ru/forum/viewtopic.php?f=29&t=91627)
 
 ## Installation
 
-_SteamLauncher_ comes in two variants:
+**_SteamLauncher_** comes in two variants:
 
 - Portable _(to carry in your pocket)_
 - Installable _(recommended for extra features that portable doesn't offer)_
 
-Download the latest version of the _SteamLauncher_ from the GitHub releases page.
+Download the latest version of the _SteamLauncher_ from the [GitHub Releases](https://github.com/Sak32009/SteamLauncher/releases).
 
-To update _SteamLauncher_, simply download the new version from the GitHub releases page, and run the installer or replace the portable folder. In the future I may add auto-updating feature.
+To update **_SteamLauncher_**, simply download the new version from the GitHub releases page and run the installer or wait for the update notification directly from the app.
+
+For the portable version, replace manually files.
 
 ## Small description of usage
 
-When the application starts, you will be asked to create the account. Once created, by going to the application folder, a folder named "data" was automatically created and inside there is another folder "emulator".
+When the application starts, you will be asked to create the account. Once done, download the latest version of the Mr. GoldBerg emulator, extract the zip and go to the settings in the application and select the "experimental_steamclient" folder.
 
-Now download the latest release of Mr. Goldberg's emulator, extract the files from the "experimental_steamclient" folder to the "emulator" folder previously seen.
+To add a game, simply drag the game executable to the main page of the application in the appropriate section, fill in the data and right-click on the game card to open the context menu and click "Launch".
 
-To add a game, simply drag the game executable to the main page of the application in the appropriate section, fill in the data and right-click on the game card to open the context menu and click on "Launch".
+## Supported Mr. GoldBerg Steam Emulator features
 
-**For a proper start, please use the original steam_api(64).dll**
-
-## Supported emulator features
-
+- Set items
+- Set stats
+- Set achievements and images
 - Set enable/disable overlay
 - Set online/offline mode
 - Set language
 - Set listen port
 - DLCs
 
-## Unsupported Steam features
+## Unsupported Mr. GoldBerg Steam Emulator features
 
-- **Bypass any DRM (Denuvo, SteamStub, SteamCEG, etc.) within the game.**
+- All those not listed.
+
+**To solve this problem just go to the folder "%APPDATA%/SteamLauncher/data/apps/_APPID_" and enter the missing data.**
+
+**Attention! This data is always overwritten:**
+
+- folder achievements
+- achievements.json
+- stats.txt
+- items.json
+- DLC.txt
+- steam_interfaces.txt
+- force_account_name.txt
+- force_language.txt
+- force_listen_port.txt
+- force_steamid.txt
 
 ## TODO
 
 The first item in the list has priority.
 
-- **The SteamLauncher code is sadly worse than a child's drawing of a tree.**
+- ~~**The SteamLauncher code is sadly worse than a child's drawing of a tree.**~~
 
 ## FAQ
-
-### I can't find a way to add/delete game dlcs. How you do it?
-
-There is currently no way to do this, when you add/edit the selected game, the dlcs list is automatically extracted from steamdb.
-
-### I can't find a way to update dlcs of the game. How you do it?
-
-For the moment you can update the dlcs by opening the game editing screen and pressing "Save" even without modifying the data.
 
 ### I can't find a way to edit steamid. How you do it?
 
@@ -75,24 +85,6 @@ When you create the account, the steamid is assigned automatically. There is no 
 
 ## Troubleshoots
 
-### A new dlc was added 2 minutes ago in steamdb but when i modify the game, it is not activated in game.
-
-From the moment of the last request, an hour must pass to be able to make another one.
-
-**It's better to prevent another message from the steamdb author.**
-
-## Legal
+## License
 
 > _SteamLauncher_ is released under the following license: [MIT](https://github.com/Sak32009/SteamLauncher/blob/main/LICENSE)
->
-> _SteamLauncher_ isn't intended for malicious use or for the use of obtaining or playing games illegally.
->
-> _SteamLauncher_ should only be used on games that you legally purchased and own.
->
-> _SteamLauncher_ isn't associated with Valve or any of its partners / affiliates.
->
-> _SteamLauncher_ doesn't have code taken from Valve or any of its partners / affiliates.
->
-> Use _SteamLauncher_ at your own risk.
->
-> I'm not responsible for what happens while using _SteamLauncher_. You take full responsibility for any outcome that happens to you while using this application.

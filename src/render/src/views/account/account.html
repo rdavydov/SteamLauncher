@@ -25,7 +25,7 @@
         {{/isEditMode}}
         <div class="input-group mb-3">
           <div class="input-group-text">
-            <span class="mdi mdi-account-question"></span>
+            <span class="mdi mdi-account-question mdi-18px"></span>
             <span class="ml-1">Name</span>
           </div>
           {{^isEditMode}}
@@ -37,7 +37,7 @@
         </div>
         <div class="input-group mb-3">
           <div class="input-group-text">
-            <span class="mdi mdi-translate"></span>
+            <span class="mdi mdi-translate mdi-18px"></span>
             <span class="ml-1">Language</span>
           </div>
           <select class="form-control" name="language" required>
@@ -49,7 +49,7 @@
         </div>
         <div class="input-group mb-3">
           <div class="input-group-text">
-            <span class="mdi mdi-key"></span>
+            <span class="mdi mdi-key mdi-18px"></span>
             <span class="ml-1">WebAPI Key <span class="text-red-500">(*)</span></span>
           </div>
           {{^isEditMode}}
@@ -66,15 +66,15 @@
         {{#isEditMode}}
         <div class="input-group mb-3">
           <div class="input-group-text">
-            <span class="mdi mdi-identifier"></span>
+            <span class="mdi mdi-identifier mdi-18px"></span>
             <span class="ml-1">SteamID (auto)</span>
           </div>
           <input type="text" class="form-control disabled" name="steamId" value="{{accountData.steamId}}" readonly>
         </div>
         {{/isEditMode}}
         <div class="text-xs"><span class="text-red-500">(*)</span> To get achievements, stats, DLCs and games infos get
-          it from <a href="https://steamcommunity.com/dev/apikey" target="_blank">here</a>. If no API key is given, it
-          will only get games infos and DLCs.</div>
+          it from <a class="link" href="https://steamcommunity.com/dev/apikey" target="_blank">here</a>. If no API key
+          is given, it will only get games infos and DLCs.</div>
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-block btn-success">Save</button>

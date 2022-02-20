@@ -17,6 +17,8 @@ declare global {
         getDescription: () => Promise<string>;
         getCopyright: () => Promise<string>;
         filePathParse: (path: string) => Promise<Record<string, string>>;
+        choseDirectory: () => Promise<string[] | undefined>;
+        choseFile: () => Promise<string[] | undefined>;
       };
       account: {
         getData: () => Promise<StoreAccountType | undefined>;

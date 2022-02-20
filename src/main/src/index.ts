@@ -1,4 +1,5 @@
-import {app, session} from 'electron';
+import {app, session, dialog} from 'electron';
+import {argv} from 'node:process';
 import {autoUpdater} from 'electron-updater';
 import log from 'electron-log';
 import './process.js';
@@ -11,6 +12,8 @@ import './ipc/contextmenu.js';
 import './ipc/account.js';
 import './ipc/settings.js';
 import './ipc/game.js';
+import gameLauncher from './functions/game-launcher.js';
+import storage from './storage.js';
 
 log.info('App starting...');
 
@@ -20,8 +23,11 @@ const environments = import.meta.env;
 // SET LOG TO AUTOUPDATER
 autoUpdater.logger = log;
 
+// COMMANDS LINE
+const commandsLine = argv.slice(environments.DEV ? 2 : 1);
+
 // REQUEST SINGLE INSTANCE
-if (!app.requestSingleInstanceLock()) {
+if (!app.requestSingleInstanceLock() && commandsLine.length === 0) {
   log.error('Only single instances are allowed');
   app.quit();
 }
@@ -59,25 +65,39 @@ app.on('second-instance', () => {
 
 app
   .whenReady()
-  .then(async () => {
-    log.debug(
-      'isProduction: ' +
-        environments.PROD.toString() +
-        '; isPackaged: ' +
-        app.isPackaged.toString(),
-    );
-    if (environments.PROD && !app.isPackaged) {
-      log.info('Check for updates...');
-      await autoUpdater.checkForUpdatesAndNotify();
-    }
-  })
-  .then(browser.createWindow)
   .then(() => {
     // SECURITY: https://www.electronjs.org/docs/latest/tutorial/security/#5-handle-session-permission-requests-from-remote-content
     session.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
       log.debug(permission + ' permission is not granted');
       callback(false);
     });
+  })
+  .then(async () => {
+    if (commandsLine.length > 0) {
+      const appId = commandsLine[0];
+      const has = storage.has('games.' + appId);
+      if (has) {
+        const data: StoreGameDataType = storage.get('games.' + appId);
+        await gameLauncher(data);
+      } else {
+        dialog.showErrorBox('Error', appId + ' does not exist!');
+      }
+
+      app.exit();
+    } else {
+      log.debug(
+        'isProduction: ' +
+          environments.PROD.toString() +
+          '; isPackaged: ' +
+          app.isPackaged.toString(),
+      );
+      if (environments.PROD && !app.isPackaged) {
+        log.info('Check for updates...');
+        await autoUpdater.checkForUpdatesAndNotify();
+      }
+
+      browser.createWindow();
+    }
   })
   .catch((error) => {
     log.error(error.message);
