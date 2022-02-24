@@ -1,23 +1,25 @@
-import {ipcMain} from 'electron';
+import {ipcMain, IpcMainEvent} from 'electron';
 import {fromIndividualAccountID} from 'steamid';
 import {customAlphabet} from 'nanoid/non-secure';
 import storage from '../storage.js';
-import config from '../config.js';
+import {closeModalChannel} from '../config.js';
 import snack from '../functions/snack.js';
 
 const nanoid = customAlphabet('0123456789', 8);
+const fnAccountCreateEdit = async (event: IpcMainEvent, inputs: StoreAccountType) => {
+  if (!fromIndividualAccountID(inputs.steamId).isValidIndividual()) {
+    snack('Invalid ' + inputs.steamId + ' SteamId!', 'error');
+    return;
+  }
 
-ipcMain.on('account-create', (event, inputs) => {
+  const has = storage.has('account');
   storage.set('account', inputs);
-  snack('Account created successfully!', 'success');
-  event.sender.send(config.closeModalChannel);
-});
+  snack(has ? 'Account edited successfully!' : 'Account created successfully!', 'success');
+  event.sender.send(closeModalChannel);
+};
 
-ipcMain.on('account-edit', (event, inputs) => {
-  storage.set('account', inputs);
-  snack('Account edited successfully!', 'success');
-  event.sender.send(config.closeModalChannel);
-});
+ipcMain.on('account-create', fnAccountCreateEdit);
+ipcMain.on('account-edit', fnAccountCreateEdit);
 
 ipcMain.handle('account-data', () => {
   return storage.get('account');

@@ -32,8 +32,8 @@ class AccountCreateView {
     if (this.isEditMode) {
       Object.assign(view, {accountData: this.accountData});
     } else {
-      const inputSteamId = await window.api.account.getRandomSteamId();
-      Object.assign(view, {inputSteamId});
+      const steamId = await window.api.account.getRandomSteamId();
+      Object.assign(view, {accountData: {steamId}});
     }
 
     const rendered = mustache.render(html, view);

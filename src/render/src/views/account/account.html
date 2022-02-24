@@ -60,20 +60,16 @@
             value="{{accountData.steamWebApiKey}}">
           {{/isEditMode}}
         </div>
-        {{^isEditMode}}
-        <input type="text" class="hidden" name="steamId" value="{{inputSteamId}}">
-        {{/isEditMode}}
-        {{#isEditMode}}
         <div class="input-group mb-3">
           <div class="input-group-text">
             <span class="mdi mdi-identifier mdi-18px"></span>
-            <span class="ml-1">SteamID (auto)</span>
+            <span class="ml-1">SteamID</span>
           </div>
-          <input type="text" class="form-control disabled" name="steamId" value="{{accountData.steamId}}" readonly>
+          <input type="number" class="form-control" name="steamId" value="{{accountData.steamId}}"
+            placeholder="Ex: 76596712918662909">
         </div>
-        {{/isEditMode}}
-        <div class="text-xs"><span class="text-red-500">(*)</span> To get achievements, stats, DLCs and games infos get
-          it from <a class="link" href="https://steamcommunity.com/dev/apikey" target="_blank">here</a>. If no API key
+        <div class="text-xs"><span class="text-red-500">(*)</span> To get achievements, stats and items get
+          key from <a class="link" href="https://steamcommunity.com/dev/apikey" target="_blank">here</a>. If no API key
           is given, it will only get games infos and DLCs.</div>
       </div>
       <div class="modal-footer">
