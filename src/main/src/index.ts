@@ -85,16 +85,9 @@ app
 
       app.exit();
     } else {
-      log.debug(
-        'isProduction: ' +
-          environments.PROD.toString() +
-          '; isPackaged: ' +
-          app.isPackaged.toString(),
-      );
-      if (environments.PROD && !app.isPackaged) {
-        log.info('Check for updates...');
-        await autoUpdater.checkForUpdatesAndNotify();
-      }
+      autoUpdater.checkForUpdatesAndNotify().catch((error) => {
+        log.error(error.message);
+      });
 
       browser.createWindow();
     }
