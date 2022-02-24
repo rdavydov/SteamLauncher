@@ -76,12 +76,9 @@ To add a game, simply drag the game executable to the main page of the applicati
 The first item in the list has priority.
 
 - ~~**The SteamLauncher code is sadly worse than a child's drawing of a tree.**~~
+- Integrate https://github.com/Sak32009/GetDLCInfoFromSteamDB into the launcher.
 
 ## FAQ
-
-### I can't find a way to edit steamid. How you do it?
-
-When you create the account, the steamid is assigned automatically. There is no way to change it for now.
 
 ## Troubleshoots
 
