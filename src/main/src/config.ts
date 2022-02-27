@@ -4,14 +4,14 @@ import {join} from 'node:path';
 const environments = import.meta.env;
 const appPath = app.getAppPath();
 const appDataPath = app.getPath('appData');
-const binPath = appPath + (environments.PROD ? '.unpacked' : '');
+const binPath = join(appPath + (environments.PROD ? '.unpacked' : ''), 'bin/win');
 
 export const paths = {
-  signToolBin: join(binPath, '/bin/win/signtool/signtool.exe'),
-  steamApiInterfacesBin: join(binPath, '/bin/win/steam_api_interfaces/steam_api_interfaces.exe'),
-  steamApiInterfacesPath: join(binPath, '/bin/win/steam_api_interfaces'),
-  steamRetrieverBin: join(binPath, '/bin/win/steam_retriever/steam_retriever.exe'),
-  steamRetrieverPath: join(binPath, '/bin/win/steam_retriever'),
+  signToolBin: join(binPath, 'signtool/signtool.exe'),
+  steamApiInterfacesBin: join(binPath, 'steam_api_interfaces/steam_api_interfaces.exe'),
+  steamApiInterfacesPath: join(binPath, 'steam_api_interfaces'),
+  steamRetrieverBin: join(binPath, 'steam_retriever/steam_retriever.exe'),
+  steamRetrieverPath: join(binPath, 'steam_retriever'),
   preloadFilePath: join(appPath, '/src/preload/dist/index.js'),
   renderFilePath: join(appPath, '/src/render/dist/index.html'),
   iconFilePath: join(appPath, '/build/resources/icon.ico'),
@@ -30,8 +30,13 @@ export const allowedExternalUrls = new Set([
   'https://steamcommunity.com',
 ]);
 
-export const closeModalChannel = 'close-modal';
+export const hiddenModalChannel = 'hidden-modal-channel';
 
-const defaults = {paths, allowedWillNavigateUrls, allowedExternalUrls, closeModalChannel};
+const defaults = {
+  paths,
+  allowedWillNavigateUrls,
+  allowedExternalUrls,
+  hiddenModalChannel,
+};
 
 export default defaults;

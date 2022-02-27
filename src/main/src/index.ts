@@ -78,7 +78,7 @@ app
       const has = storage.has('games.' + appId);
       if (has) {
         const data: StoreGameDataType = storage.get('games.' + appId);
-        await gameLauncher(data);
+        gameLauncher(data);
       } else {
         dialog.showErrorBox('Error', appId + ' does not exist!');
       }

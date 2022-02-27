@@ -1,9 +1,10 @@
 <div class="modal fade" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-    <form class="modal-content" action="" sk-channel="account-create">
+    <form class="modal-content" action="" data-sk-channel="account-create">
       <div class="modal-header">
         <div class="modal-title">
-          <span class="mdi mdi-account-plus mdi-18px"></span>
+          <span
+            class="mdi {{^isEditMode}}mdi-account-plus{{/isEditMode}}{{#isEditMode}}mdi-account-edit{{/isEditMode}} mdi-18px"></span>
           <span class="ml-1">
             {{^isEditMode}}
             Create account
@@ -28,12 +29,8 @@
             <span class="mdi mdi-account-question mdi-18px"></span>
             <span class="ml-1">Name</span>
           </div>
-          {{^isEditMode}}
-          <input type="text" class="form-control" name="name" placeholder="..." required>
-          {{/isEditMode}}
-          {{#isEditMode}}
-          <input type="text" class="form-control" name="name" value="{{accountData.name}}" placeholder="..." required>
-          {{/isEditMode}}
+          <input type="text" class="form-control" name="name" value="{{#isEditMode}}{{accountData.name}}{{/isEditMode}}"
+            placeholder="..." required>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-text">
@@ -41,7 +38,7 @@
             <span class="ml-1">Language</span>
           </div>
           <select class="form-control" name="language" required>
-            <option value="">...</option>
+            <option value="english">...</option>
             {{#inputLanguages}}
             <option value="{{@key}}">{{@val}}</option>
             {{/inputLanguages}}
@@ -52,13 +49,8 @@
             <span class="mdi mdi-key mdi-18px"></span>
             <span class="ml-1">WebAPI Key <span class="text-red-500">(*)</span></span>
           </div>
-          {{^isEditMode}}
-          <input type="text" class="form-control" name="steamWebApiKey" placeholder="...">
-          {{/isEditMode}}
-          {{#isEditMode}}
           <input type="text" class="form-control" name="steamWebApiKey" placeholder="..."
-            value="{{accountData.steamWebApiKey}}">
-          {{/isEditMode}}
+            value="{{#isEditMode}}{{accountData.steamWebApiKey}}{{/isEditMode}}">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-text">

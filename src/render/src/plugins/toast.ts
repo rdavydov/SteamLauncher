@@ -21,13 +21,19 @@ import {productName} from '../../../../package.json';
       warning: 'mdi-alert-decagram',
       error: 'mdi-alert',
     };
+    const types: Record<string, string> = {
+      info: 'toast-info',
+      success: 'toast-success',
+      warning: 'toast-warning',
+      error: 'toast-error',
+    };
 
     if (container.find('> .toast').length > toastStack) {
       container.find('> .toast:first-child').toast('hide');
     }
 
     const html =
-      $(`<div class="toast toast-${type}" data-bs-delay="${delay}" aria-live="assertive" aria-atomic="true">
+      $(`<div class="toast ${types[type]}" data-bs-delay="${delay}" aria-live="assertive" aria-atomic="true">
   <div class="toast-header">
     <div class="toast-header-left">
       <span class="mdi ${icons[type]}"></span>

@@ -1,21 +1,20 @@
 import {ipcMain, IpcMainEvent} from 'electron';
-import log from 'electron-log';
 import SteamRetriever from '../classes/steam-retriever.js';
 import storage from '../storage.js';
 import snack from '../functions/snack.js';
-import {closeModalChannel} from '../config.js';
+import {hiddenModalChannel} from '../config.js';
 
 const fnGameAddEdit = async (event: IpcMainEvent, inputs: StoreGameDataType) => {
   const key = 'games.' + inputs.appId;
   if (storage.has(key)) {
     const data: StoreGameDataType = storage.get(key);
     storage.set(key, Object.assign(data, inputs));
-    snack('Game edited successfully!');
-    event.sender.send(closeModalChannel);
+    snack('Game edited successfully!', 'success');
+    event.sender.send(hiddenModalChannel);
   } else {
     const steamRetriever = new SteamRetriever(inputs);
-    steamRetriever.run().catch((error) => {
-      log.error(error.message);
+    await steamRetriever.run().then(() => {
+      snack('Game created successfully!', 'success');
     });
   }
 };

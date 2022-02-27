@@ -3,10 +3,10 @@
     @apply grid grid-cols-4 lg:grid-cols-6 gap-4;
 
     & > .game-container {
-      @apply bg-primary shadow-md rounded;
+      @apply bg-primary shadow-md rounded cursor-pointer;
 
       & > img {
-        @apply rounded;
+        @apply rounded rounded-b-none;
       }
 
       & > div {

@@ -33,14 +33,14 @@ class HomeView {
     if (typeof gamesData !== 'undefined' && Object.keys(gamesData).length > 0) {
       const $gamesGrid = $("<div class='games-grid'></div>");
       $.each(gamesData, (appId: string, values) => {
-        const $gameContainer = $(`<div class="game-container" data-appId="${appId}"></div>`);
         const header = values.header;
         const name = values.name;
 
-        if (header !== '') {
-          $('<img>').attr('src', header).appendTo($gameContainer);
-        }
-
+        const $gameContainer = $(`<div class="game-container" data-appId="${appId}"></div>`).attr(
+          'title',
+          'To open the context menu click on the right mouse button!',
+        );
+        $('<img>').attr('src', header).appendTo($gameContainer);
         $('<div>').text(name).appendTo($gameContainer);
 
         $gamesGrid.append($gameContainer);

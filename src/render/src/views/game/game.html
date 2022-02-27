@@ -1,6 +1,6 @@
 <div class="modal fade" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-    <form class="modal-content" action="" sk-channel="game-add">
+    <form class="modal-content" action="" data-sk-channel="game-add">
       <div class="modal-header">
         <div class="modal-title">
           <span class="mdi mdi-nintendo-game-boy mdi-18px"></span>
@@ -23,29 +23,20 @@
             <span class="mdi mdi-account-question mdi-18px"></span>
             <span class="ml-1">AppId</span>
           </div>
-          {{^isEditMode}}
-          <input type="number" class="form-control" name="appId" value="" placeholder="..." required>
-          {{/isEditMode}}
-          {{#isEditMode}}
-          <input type="number" class="form-control disabled" name="appId" value="{{data.appId}}" placeholder="..."
-            readonly required>
-          {{/isEditMode}}
+          <input type="number" class="form-control {{#isEditMode}}disabled{{/isEditMode}}" name="appId"
+            value="{{#isEditMode}}{{data.appId}}{{/isEditMode}}" placeholder="..."
+            {{#isEditMode}}readonly{{/isEditMode}} required>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-text">
             <span class="mdi mdi-account-question mdi-18px"></span>
             <span class="ml-1">Path</span>
           </div>
-          {{^isEditMode}}
-          <input type="text" class="form-control disabled" name="path" value="{{parameters.fullPath}}" placeholder="..."
-            required readonly>
-          {{/isEditMode}}
-          {{#isEditMode}}
-          <input type="text" class="form-control disabled" name="path" value="{{data.path}}" placeholder="..." required
-            readonly>
-          {{/isEditMode}}
-          <button type="button" class="btn btn-neutral" data-sk="choseDirFile">
-            <span class="mdi mdi-paperclip"></span>
+          <input type="text" class="form-control disabled" name="path"
+            value="{{^isEditMode}}{{parameters.fullPath}}{{/isEditMode}}{{#isEditMode}}{{data.path}}{{/isEditMode}}"
+            placeholder="..." required readonly>
+          <button type="button" class="btn btn-gray" data-sk="choseDirFile">
+            <span class="mdi mdi-paperclip mdi-18px"></span>
           </button>
         </div>
         <div class="input-group mb-3">
@@ -53,16 +44,11 @@
             <span class="mdi mdi-account-question mdi-18px"></span>
             <span class="ml-1">Run Path</span>
           </div>
-          {{^isEditMode}}
-          <input type="text" class="form-control disabled" name="runPath" value="{{parameters.dir}}" placeholder="..."
-            required readonly>
-          {{/isEditMode}}
-          {{#isEditMode}}
-          <input type="text" class="form-control disabled" name="runPath" value="{{data.runPath}}" placeholder="..."
-            required readonly>
-          {{/isEditMode}}
-          <button type="button" class="btn btn-neutral" data-sk="choseDirFile">
-            <span class="mdi mdi-paperclip"></span>
+          <input type="text" class="form-control disabled" name="runPath"
+            value="{{^isEditMode}}{{parameters.dir}}{{/isEditMode}}{{#isEditMode}}{{data.runPath}}{{/isEditMode}}"
+            placeholder="..." required readonly>
+          <button type="button" class="btn btn-gray" data-sk="choseDirFile">
+            <span class="mdi mdi-paperclip mdi-18px"></span>
           </button>
         </div>
         <div class="input-group mb-3">
@@ -70,27 +56,17 @@
             <span class="mdi mdi-account-question mdi-18px"></span>
             <span class="ml-1">Command Line</span>
           </div>
-          {{^isEditMode}}
-          <input type="text" class="form-control" name="commandLine" value="" placeholder="ex: -steam">
-          {{/isEditMode}}
-          {{#isEditMode}}
-          <input type="text" class="form-control" name="commandLine" value="{{data.commandLine}}"
-            placeholder="ex: -steam">
-          {{/isEditMode}}
+          <input type="text" class="form-control" name="commandLine"
+            value="{{#isEditMode}}{{data.commandLine}}{{/isEditMode}}" placeholder="ex: -steam">
         </div>
         <div class="input-group mb-3">
           <div class="input-group-text">
             <span class="mdi mdi-account-question mdi-18px"></span>
             <span class="ml-1">Listen Port</span>
           </div>
-          {{^isEditMode}}
-          <input type="number" class="form-control" name="listenPort" value="47584" placeholder="default: 47584"
-            required>
-          {{/isEditMode}}
-          {{#isEditMode}}
-          <input type="number" class="form-control" name="listenPort" value="{{data.listenPort}}"
+          <input type="number" class="form-control" name="listenPort"
+            value="{{^isEditMode}}47584{{/isEditMode}}{{#isEditMode}}{{data.listenPort}}{{/isEditMode}}"
             placeholder="default: 47584" required>
-          {{/isEditMode}}
         </div>
         <div class="input-group">
           <div class="input-group-text">
@@ -98,14 +74,8 @@
             <span class="ml-1">Overlay</span>
           </div>
           <select class="form-control" name="overlay" required>
-            {{^data.overlay}}
-            <option value="true">Activated</option>
-            <option value="false" selected>Deactivated</option>
-            {{/data.overlay}}
-            {{#data.overlay}}
-            <option value="true" selected>Activated</option>
-            <option value="false">Deactivated</option>
-            {{/data.overlay}}
+            <option value="true" {{#data.overlay}}selected{{/data.overlay}}>Activated</option>
+            <option value="false" {{^data.overlay}}selected{{/data.overlay}}>Deactivated</option>
           </select>
         </div>
       </div>

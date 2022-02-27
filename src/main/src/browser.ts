@@ -71,13 +71,9 @@ export const createWindow = () => {
 
   if (environments.PROD) {
     win.removeMenu();
-    win
-      .loadFile(paths.renderFilePath, {
-        hash: '#/',
-      })
-      .catch((error) => {
-        log.error(error.message);
-      });
+    win.loadFile(paths.renderFilePath).catch((error) => {
+      log.error(error.message);
+    });
   } else {
     win.loadURL(viteServerUrl).catch((error) => {
       log.error(error.message);

@@ -17,7 +17,6 @@
         @apply flex text-white p-2 app-region-no-drag border-b border-b-transparent;
         @apply hover:bg-gray-200 hover:bg-opacity-10;
 
-        &.active,
         &[data-navigo]:hover {
           @apply border-b-white;
         }

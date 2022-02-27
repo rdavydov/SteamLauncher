@@ -1,6 +1,6 @@
 import mustache from 'mustache';
 import {allowedLanguages} from '../../config.js';
-import objs2list from '../../functions/objs2list.js';
+import objs2list from '../../functions/mustache-objs2list.js';
 
 class AccountCreateView {
   private $dom: JQuery | undefined;

@@ -1,5 +1,3 @@
-import closeModal from '../../functions/close-modal.js';
-
 const addToConsole = (txt: string) => {
   const a = $('#console .modal-body');
   $('<p>').text(txt).appendTo(a);
@@ -11,19 +9,25 @@ window.api.on('show-console', async () => {
   $(html).appendTo('body').modal('show');
 });
 
-window.api.on('hide-console', (_event, timeout = 0) => {
-  let i = 0;
-  const interval = window.setInterval(() => {
-    if (i === timeout) {
-      closeModal(true);
-      window.clearInterval(interval);
-    } else {
-      addToConsole(`close in ${timeout - i}...`);
-      i++;
-    }
-  }, 1000);
+window.api.on('hide-console', (_event) => {
+  window.setTimeout(() => {
+    $('#console').addClass('finished');
+    addToConsole('');
+    addToConsole('');
+    addToConsole('Press Enter to exit...');
+  }, 1500);
 });
 
 window.api.on('add-to-console', (_event, txt: string) => {
   addToConsole(txt);
 });
+
+$(window).on('keyup', (event) => {
+  const $console = $('#console');
+  if (event.key === 'Enter' && $console.hasClass('finished')) {
+    $console.removeClass('finished');
+    $('.modal').modal('hide');
+  }
+});
+
+export {};

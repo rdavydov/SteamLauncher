@@ -7,7 +7,7 @@ import storage from '../storage.js';
 import snack from './snack.js';
 import generateAppIdPaths from './generate-appid-paths.js';
 
-const gameLauncher = async (dataGame: StoreGameDataType, normally = false) => {
+const gameLauncher = (dataGame: StoreGameDataType, normally = false) => {
   const dataAccount = storage.get('account')!;
   const dataSettings = storage.get('settings');
 

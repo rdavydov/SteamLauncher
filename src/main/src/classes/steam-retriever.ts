@@ -12,6 +12,8 @@ import steamApiInterfaces from '../bin/steam-api-interfaces.js';
 import signVerify from '../bin/signtool.js';
 import generateAppIdPaths from '../functions/generate-appid-paths.js';
 
+const environments = import.meta.env;
+
 const globSteamApis = (runPath: string) => {
   return fg.sync(['**/steam_api.dll', '**/steam_api64.dll'], {
     cwd: runPath,
@@ -39,13 +41,16 @@ class SteamRetriever {
     this.event.send('add-to-console', content);
   }
 
-  public consoleHide(timeout = 0) {
-    this.event.send('hide-console', timeout);
+  public consoleHide() {
+    this.event.send('hide-console');
+  }
+
+  public consoleShow() {
+    this.event.send('show-console');
   }
 
   public async run() {
-    this.event.send('show-console');
-
+    this.consoleShow();
     this.console('Launch steamRetriever for ' + this.appId + '...');
 
     const findSteamApis = globSteamApis(this.inputs.runPath);
@@ -86,7 +91,7 @@ class SteamRetriever {
 
                 if (typeof steamRetrieverAppIdInfoParse.Type !== 'undefined') {
                   this.console(data.name + " isn't a game!");
-                  this.consoleHide(5);
+                  this.consoleHide();
                   return;
                 }
 
@@ -150,28 +155,29 @@ class SteamRetriever {
 
   private async addGame(data: Record<string, string>) {
     const inputs: StoreGameDataType = Object.assign({}, this.inputs, data);
-
     storage.set('games.' + inputs.appId, inputs);
-    this.console(inputs.name + ' created successfully!');
-    this.consoleHide(10);
+    this.consoleHide();
   }
 
   private async writeSteamApiInterfaces(dll: string) {
+    if (await pathExists(this.paths.appIdSteamInterfacesPath)) {
+      this.console('Skip, steam_interfaces.txt already exists!');
+      return;
+    }
+
     const steamApiDll = join(paths.steamApiInterfacesPath, parse(dll).base);
     const steamInterfacesTxt = join(paths.steamApiInterfacesPath, 'steam_interfaces.txt');
     copy(dll, steamApiDll)
       .then(() => {
         this.console('The steam_api(64).dll have been successfully moved to ' + steamApiDll);
-
         const generateSteamApiInterfaces = steamApiInterfaces(dll);
         if (generateSteamApiInterfaces) {
           copy(steamInterfacesTxt, this.paths.appIdSteamInterfacesPath)
             .then(async () => {
               this.console(
-                'The steam_api(64).dll interfaces have been successfully moved to ' +
+                'The steam_interfaces have been successfully moved to ' +
                   this.paths.appIdSteamInterfacesPath,
               );
-
               await unlink(steamApiDll);
               await unlink(steamInterfacesTxt);
             })
@@ -318,9 +324,13 @@ class SteamRetriever {
       '-l', // Language
       this.language,
       '-i', // Download images
-      // '-f',
-      this.appId, // AppId
     ];
+
+    if (environments.PROD) {
+      args.push('-f'); // Force only in production mode
+    }
+
+    args.push(this.appId);
 
     try {
       return spawn(filePath, args);

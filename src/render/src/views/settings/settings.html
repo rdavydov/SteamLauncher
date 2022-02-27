@@ -1,6 +1,6 @@
 <div class="modal fade" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-    <form class="modal-content" action="" sk-channel="settings-edit">
+    <form class="modal-content" action="" data-sk-channel="settings-edit">
       <div class="modal-header">
         <div class="modal-title">
           <span class="mdi mdi-cogs mdi-18px"></span>
@@ -18,7 +18,7 @@
           </div>
           <input type="text" class="form-control disabled" name="steamClientPath" value="{{data.steamClientPath}}"
             placeholder="click on paperclip and chose directory" readonly required>
-          <button type="button" class="btn btn-neutral" data-sk="choseDirFile">
+          <button type="button" class="btn btn-gray mdi-18px" data-sk="choseDirFile">
             <span class="mdi mdi-paperclip"></span>
           </button>
         </div>
