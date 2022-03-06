@@ -1,5 +1,9 @@
-import {app} from 'electron';
-import {join} from 'node:path';
+import {
+  join,
+} from 'node:path';
+import {
+  app,
+} from 'electron';
 
 const generateAppIdPaths = (appId: string, language: string) => {
   const userData = app.getPath('userData');
@@ -33,24 +37,24 @@ const generateAppIdPaths = (appId: string, language: string) => {
   );
 
   return {
-    dataPath,
-    appsPath,
-    appIdDataPath,
     appIdAchievementsInfoPath,
     appIdAchievementsPath,
-    appIdStatsInfoPath,
-    appIdItemsInfoPath,
+    appIdDataPath,
     appIdDlcsInfoPath,
+    appIdItemsInfoPath,
+    appIdStatsInfoPath,
     appIdSteamInterfacesPath,
-    steamRetrieverPath,
-    steamRetrieverAppIdPath,
-    steamRetrieverAppIdInfoPath,
-    steamRetrieverBackgroundPath,
-    steamRetrieverStatsPath,
-    steamRetrieverItemsPath,
+    appsPath,
+    dataPath,
     steamRetrieverAchievementsImagesPath,
-    steamRetrieverAchievementsInfoPath,
     steamRetrieverAchievementsInfoDefaultPath,
+    steamRetrieverAchievementsInfoPath,
+    steamRetrieverAppIdInfoPath,
+    steamRetrieverAppIdPath,
+    steamRetrieverBackgroundPath,
+    steamRetrieverItemsPath,
+    steamRetrieverPath,
+    steamRetrieverStatsPath,
   };
 };
 

@@ -1,19 +1,14 @@
-import navigo from '../navigo.js';
-import HomeView from './home/view.js';
-import GameView from './game/view.js';
-import AboutView from './about/view.js';
-import SettingsView from './settings/view.js';
-import AccountView from './account/view.js';
+import navigo from '../navigo';
+import AboutView from './about/view';
+import AccountView from './account/view';
+import GameView from './game/view';
+import HomeView from './home/view';
+import SettingsView from './settings/view';
 
 const homeController = new HomeView();
-navigo.on(
-  async () => {
-    await homeController.show();
-  },
-  {
-    before: homeController.beforeHook,
-  },
-);
+(async () => {
+  await homeController.show();
+})();
 
 const aboutController = new AboutView();
 navigo.on('/about', async () => {

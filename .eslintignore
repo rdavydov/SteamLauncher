@@ -1,0 +1,9 @@
+/.github
+/.yarn
+/bin
+/build
+/node_modules
+/screenshots
+/src/**/dist
+
+*.min.js

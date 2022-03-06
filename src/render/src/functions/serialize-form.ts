@@ -1,5 +1,5 @@
 const serializeForm = (form: HTMLFormElement) => {
-  const objects: Record<string, string | boolean> = {};
+  const objects: Record<string, boolean | string> = {};
   const formData = new FormData(form);
 
   for (const pair of formData) {

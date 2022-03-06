@@ -1,0 +1,27 @@
+{
+  "extends": ["canonical", "canonical/browser", "canonical/node"],
+  "env": {
+    "es2022": true,
+    "jquery": true
+  },
+  "rules": {
+    "linebreak-style": ["error", "windows"],
+    "canonical/filename-match-exported": "off",
+    "import/no-unassigned-import": "off",
+    "no-warning-comments": "off"
+  },
+  "overrides": [
+    {
+      "extends": ["canonical/typescript"],
+      "files": "*.ts",
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      },
+      "rules": {
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-misused-promises": "off"
+      }
+    }
+  ],
+  "root": true
+}

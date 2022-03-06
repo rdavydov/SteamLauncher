@@ -1,4 +1,4 @@
 type StoreSettingsType = {
-  network: boolean;
-  steamClientPath?: string;
+  network: boolean,
+  steamClientPath?: string,
 };

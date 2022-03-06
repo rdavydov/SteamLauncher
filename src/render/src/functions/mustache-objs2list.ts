@@ -1,12 +1,16 @@
-function objs2list(p: Record<string, unknown>) {
-  const r = [];
-  for (const k in p) {
-    if (Object.prototype.hasOwnProperty.call(p, k)) {
-      r.push({'@key': k, '@val': p[k]});
+// eslint-disable-next-line canonical/id-match
+const objs2list = (pp: Record<string, unknown>) => {
+  const rr = [];
+  for (const kk in pp) {
+    if (Object.prototype.hasOwnProperty.call(pp, kk)) {
+      rr.push({
+        '@key': kk,
+        '@val': pp[kk],
+      });
     }
   }
 
-  return r;
-}
+  return rr;
+};
 
 export default objs2list;

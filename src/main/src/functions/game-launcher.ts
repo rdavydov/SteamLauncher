@@ -1,11 +1,21 @@
-import {join} from 'node:path';
-import {existsSync, writeFileSync} from 'node:fs';
-import {execFile} from 'node:child_process';
+import {
+  execFile,
+} from 'node:child_process';
+import {
+  existsSync,
+  writeFileSync,
+} from 'node:fs';
+import {
+  join,
+} from 'node:path';
+import {
+  emptyDirSync,
+  copySync,
+} from 'fs-extra';
 import ini from 'ini';
-import {emptyDirSync, copySync} from 'fs-extra';
-import storage from '../storage.js';
-import snack from './snack.js';
-import generateAppIdPaths from './generate-appid-paths.js';
+import storage from '../storage';
+import generateAppIdPaths from './generate-appid-paths';
+import notify from './notify';
 
 const gameLauncher = (dataGame: StoreGameDataType, normally = false) => {
   const dataAccount = storage.get('account')!;
@@ -19,15 +29,16 @@ const gameLauncher = (dataGame: StoreGameDataType, normally = false) => {
 
   if (normally) {
     execFile(dataGamePath, dataGameCommandLine.split(' '));
-    snack(`Launch normally ${dataGame.name}`, 'success');
+    notify(`Launch normally ${dataGame.name}`);
     return;
   }
 
   const emulatorPath = dataSettings.steamClientPath!;
+
   const emulatorLoaderPath = join(emulatorPath, 'steamclient_loader.exe');
 
   if (!existsSync(emulatorLoaderPath)) {
-    snack(`Assign the correct folder of the experimental client in the settings!`, 'error');
+    notify('Assign the correct folder of the experimental client in the settings!');
     return;
   }
 
@@ -73,20 +84,13 @@ const gameLauncher = (dataGame: StoreGameDataType, normally = false) => {
   const emulatorLoaderConfigPath = join(emulatorPath, 'ColdClientLoader.ini');
 
   const loaderConfig = {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     SteamClient: {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      Exe: dataGamePath,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      ExeRunDir: dataGameRunPath,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      ExeCommandLine: dataGameCommandLine,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       AppId: dataGame.appId,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      SteamClientDll: join(emulatorPath, 'steamclient.dll'),
-      // eslint-disable-next-line @typescript-eslint/naming-convention
+      Exe: dataGamePath,
+      ExeCommandLine: dataGameCommandLine,
+      ExeRunDir: dataGameRunPath,
       SteamClient64Dll: join(emulatorPath, 'steamclient64.dll'),
+      SteamClientDll: join(emulatorPath, 'steamclient.dll'),
     },
   };
 
@@ -94,7 +98,7 @@ const gameLauncher = (dataGame: StoreGameDataType, normally = false) => {
 
   execFile(emulatorLoaderPath);
 
-  snack(`Launch ${dataGame.name}`, 'success');
+  notify(`Launch ${dataGame.name}`);
 };
 
 export default gameLauncher;

@@ -1,12 +1,11 @@
 import './styles/main.css';
 import './styles/scss/bootstrap.scss';
 
-import 'bootstrap/js/dist/modal.js';
-import 'bootstrap/js/dist/toast.js';
-import './plugins/file-drop.js';
-import './plugins/toast.js';
-import './plugins/chose-dir-file.js';
+import 'bootstrap/js/dist/modal';
+import 'bootstrap/js/dist/toast';
+import './plugins/file-drop';
+import './plugins/chose-directory-file';
 
-import './ipc/_ipc.js';
-import './events/_events.js';
-import './views/_views.js';
+import './ipc/_ipc';
+import './events/_events';
+import './views/_views';

@@ -1,31 +1,38 @@
-import {ipcMain, IpcMainEvent} from 'electron';
-import SteamRetriever from '../classes/steam-retriever.js';
-import storage from '../storage.js';
-import snack from '../functions/snack.js';
-import {hiddenModalChannel} from '../config.js';
+import type {
+  IpcMainEvent,
+} from 'electron';
+import {
+  ipcMain as ipc,
+} from 'electron';
+import SteamRetriever from '../classes/steam-retriever';
+import {
+  hiddenModalChannel,
+} from '../config';
+import notify from '../functions/notify';
+import storage from '../storage';
 
-const fnGameAddEdit = async (event: IpcMainEvent, inputs: StoreGameDataType) => {
+const functionGameAddEdit = async (event: IpcMainEvent, inputs: StoreGameDataType) => {
   const key = 'games.' + inputs.appId;
   if (storage.has(key)) {
     const data: StoreGameDataType = storage.get(key);
     storage.set(key, Object.assign(data, inputs));
-    snack('Game edited successfully!', 'success');
+    notify('Game edited successfully!');
     event.sender.send(hiddenModalChannel);
   } else {
     const steamRetriever = new SteamRetriever(inputs);
     await steamRetriever.run().then(() => {
-      snack('Game created successfully!', 'success');
+      notify('Game created successfully!');
     });
   }
 };
 
-ipcMain.on('game-add', fnGameAddEdit);
-ipcMain.on('game-edit', fnGameAddEdit);
+ipc.on('game-add', functionGameAddEdit);
+ipc.on('game-edit', functionGameAddEdit);
 
-ipcMain.handle('game-data', (_event, appId: string): StoreGameDataType | undefined => {
+ipc.handle('game-data', (_event, appId: string): StoreGameDataType | undefined => {
   return storage.get('games.' + appId);
 });
 
-ipcMain.handle('games-data', () => {
+ipc.handle('games-data', () => {
   return storage.get('games');
 });

@@ -17,7 +17,6 @@
 @import "./extra/games";
 @import "./extra/modal";
 @import "./extra/navbar";
-@import "./extra/toast";
 @import "./extra/console";
 
 @import "tailwindcss/utilities";

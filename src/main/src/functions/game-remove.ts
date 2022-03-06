@@ -1,6 +1,8 @@
-import {webContents} from 'electron';
-import storage from '../storage.js';
-import snack from './snack.js';
+import {
+  webContents,
+} from 'electron';
+import storage from '../storage';
+import notify from './notify';
 
 const gameRemove = (appId: string) => {
   const data = storage.get('games');
@@ -8,8 +10,8 @@ const gameRemove = (appId: string) => {
     const name = data[appId].name;
     // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     delete data[appId];
-    storage.set(`games`, data);
-    snack(name + ' removed successfully!', 'success');
+    storage.set('games', data);
+    notify(name + ' removed successfully!');
     webContents.getFocusedWebContents().send('index-reload-games-list');
   }
 };

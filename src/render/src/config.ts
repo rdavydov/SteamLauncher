@@ -1,8 +1,7 @@
 export const allowedLanguages = {
   arabic: 'Arabic',
+  brazilian: 'Portuguese-Brazil',
   bulgarian: 'Bulgarian',
-  schinese: 'Chinese (Simplified)',
-  tchinese: 'Chinese (Traditional)',
   czech: 'Czech',
   danish: 'Danish',
   dutch: 'Dutch',
@@ -15,23 +14,29 @@ export const allowedLanguages = {
   italian: 'Italian',
   japanese: 'Japanese',
   koreana: 'Korean',
+  latam: 'Spanish-Latin America',
   norwegian: 'Norwegian',
   polish: 'Polish',
   portuguese: 'Portuguese',
-  brazilian: 'Portuguese-Brazil',
   romanian: 'Romanian',
   russian: 'Russian',
+  schinese: 'Chinese (Simplified)',
   spanish: 'Spanish-Spain',
-  latam: 'Spanish-Latin America',
   swedish: 'Swedish',
+  tchinese: 'Chinese (Traditional)',
   thai: 'Thai',
   turkish: 'Turkish',
   ukrainian: 'Ukrainian',
   vietnamese: 'Vietnamese',
 };
 
-export const allowedExtensions = ['.exe'];
+export const allowedExtensions = [
+  '.exe',
+];
 
-const defaults = {allowedLanguages, allowedExtensions};
+const defaults = {
+  allowedExtensions,
+  allowedLanguages,
+};
 
 export default defaults;

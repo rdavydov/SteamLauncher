@@ -1,29 +1,36 @@
-import {app, BrowserWindow, shell} from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+} from 'electron';
 import log from 'electron-log';
-import {paths, allowedExternalUrls} from './config.js';
-import storage from './storage.js';
+import {
+  paths,
+  allowedExternalUrls,
+} from './config';
+import storage from './storage';
 
 const environments = import.meta.env;
 const viteServerUrl = 'http://localhost:3000/';
 
 export const createWindow = () => {
   const win = new BrowserWindow({
-    width: 800,
-    height: 720,
-    minWidth: 800,
-    minHeight: 720,
-    show: false,
-    title: app.getName(),
     backgroundColor: '#161920',
     frame: environments.DEV,
+    height: 720,
     icon: paths.iconFilePath,
+    minHeight: 720,
+    minWidth: 800,
+    show: false,
+    title: app.getName(),
     webPreferences: {
-      preload: paths.preloadFilePath,
       // SECURITY: disable devtools in production mode
       devTools: environments.DEV,
+      preload: paths.preloadFilePath,
       // NOTE: local files are not displayed in developer mode
       webSecurity: environments.PROD,
     },
+    width: 800,
   });
 
   win.on('close', () => {
@@ -92,11 +99,14 @@ export const openUrlExternal = (url: string) => {
   if (allowedExternalUrls.has(parsedUrl.origin)) {
     log.debug(url + ' is opened externally');
     setImmediate(async () => {
-      return shell.openExternal(url);
+      await shell.openExternal(url);
     });
   }
 };
 
-const defaults = {createWindow, openUrlExternal};
+const defaults = {
+  createWindow,
+  openUrlExternal,
+};
 
 export default defaults;

@@ -1,6 +1,6 @@
 type StoreAccountType = {
-  name: string;
-  language: string;
-  steamWebApiKey: string;
-  steamId: string;
+  language: string,
+  name: string,
+  steamId: string,
+  steamWebApiKey: string,
 };

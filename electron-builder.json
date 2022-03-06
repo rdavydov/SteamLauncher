@@ -1,5 +1,4 @@
 {
-  "asarUnpack": ["./bin/**/*"],
   "appId": "com.electron.steamlauncher",
   "copyright": "Copyright © 2022 Sak32009",
   "directories": {
@@ -7,6 +6,7 @@
     "output": "./build/release/${version}/"
   },
   "files": ["./bin/**/*", "./src/*/dist/**/*", "./build/resources/"],
+  "asarUnpack": ["./bin/**/*"],
   "win": {
     "target": ["nsis", "zip"],
     "artifactName": "${name}-${version}-${os}-${arch}-portable.zip"

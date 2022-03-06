@@ -1,4 +1,4 @@
-import './event-titlebar.js';
-import './event-set-network-status.js';
-import './event-hidden-modal.js';
-import './event-submit-form.js';
+import './event-titlebar';
+import './event-set-network-status';
+import './event-hidden-modal';
+import './event-submit-form';

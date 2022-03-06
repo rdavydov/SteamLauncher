@@ -1,82 +1,93 @@
-import {contextBridge, ipcRenderer as ipc, IpcRendererEvent} from 'electron';
+import type {
+  IpcRendererEvent,
+} from 'electron';
+import {
+  contextBridge,
+  ipcRenderer as ipc,
+} from 'electron';
 
 contextBridge.exposeInMainWorld('api', {
-  send(channel: string, ...args: any[]) {
-    ipc.send(channel, ...args);
-  },
-  on(channel: string, listener: (event: IpcRendererEvent, ...args: any[]) => void) {
-    ipc.on(channel, listener);
-  },
-  window: {
-    async minimize() {
-      return ipc.invoke('window-minimize');
+  account: {
+    async exist () {
+      return await ipc.invoke('account-exist');
     },
-    async maximize() {
-      return ipc.invoke('window-maximize');
+    async getData () {
+      return await ipc.invoke('account-data');
     },
-    async restore() {
-      return ipc.invoke('window-restore');
-    },
-    async close() {
-      return ipc.invoke('window-close');
+    async getRandomSteamId () {
+      return await ipc.invoke('account-get-random-steamid');
     },
   },
   app: {
-    async getName() {
-      return ipc.invoke('app-get-name');
+    async choseDirectory () {
+      return await ipc.invoke('app-chose-directory');
     },
-    async getVersion() {
-      return ipc.invoke('app-get-version');
+    async choseFile () {
+      return await ipc.invoke('app-chose-file');
     },
-    async getDescription() {
-      return ipc.invoke('app-get-description');
+    async filePathParse (path: string) {
+      return await ipc.invoke('app-file-path-parse', path);
     },
-    async getCopyright() {
-      return ipc.invoke('app-get-copyright');
+    async getCopyright () {
+      return await ipc.invoke('app-get-copyright');
     },
-    async filePathParse(path: string) {
-      return ipc.invoke('app-file-path-parse', path);
+    async getDescription () {
+      return await ipc.invoke('app-get-description');
     },
-    async choseDirectory() {
-      return ipc.invoke('app-chose-directory');
+    async getName () {
+      return await ipc.invoke('app-get-name');
     },
-    async choseFile() {
-      return ipc.invoke('app-chose-file');
+    async getVersion () {
+      return await ipc.invoke('app-get-version');
     },
-  },
-  account: {
-    async getData() {
-      return ipc.invoke('account-data');
-    },
-    async getRandomSteamId() {
-      return ipc.invoke('account-get-random-steamid');
-    },
-    async exist() {
-      return ipc.invoke('account-exist');
-    },
-  },
-  settings: {
-    async getData() {
-      return ipc.invoke('settings-data');
-    },
-    async getNetworkStatus() {
-      return ipc.invoke('settings-get-network-status');
-    },
-    setNetworkStatus(to: boolean) {
-      ipc.send('settings-set-network', to);
+    notify (message: string) {
+      ipc.invoke('app-notify', message).catch(() => {
+        //
+      });
     },
   },
   game: {
-    async getData(appId: string) {
-      return ipc.invoke('game-data', appId);
+    async getData (appId: string) {
+      return await ipc.invoke('game-data', appId);
     },
-    openContextMenu(appId: string) {
+    openContextMenu (appId: string) {
       ipc.send('open-contextmenu-game', appId);
     },
   },
   games: {
-    async getData() {
-      return ipc.invoke('games-data');
+    async getData () {
+      return await ipc.invoke('games-data');
+    },
+  },
+  on (channel: string, listener: (event: IpcRendererEvent, ...args: any[]) => void) {
+    ipc.on(channel, listener);
+  },
+  send (channel: string, ...args: any[]) {
+    ipc.send(channel, ...args);
+  },
+  settings: {
+    async getData () {
+      return await ipc.invoke('settings-data');
+    },
+    async getNetworkStatus () {
+      return await ipc.invoke('settings-get-network-status');
+    },
+    setNetworkStatus (to: boolean) {
+      ipc.send('settings-set-network', to);
+    },
+  },
+  window: {
+    async close () {
+      return await ipc.invoke('window-close');
+    },
+    async maximize () {
+      return await ipc.invoke('window-maximize');
+    },
+    async minimize () {
+      return await ipc.invoke('window-minimize');
+    },
+    async restore () {
+      return await ipc.invoke('window-restore');
     },
   },
 });

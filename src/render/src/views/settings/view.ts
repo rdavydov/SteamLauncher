@@ -1,29 +1,32 @@
 import mustache from 'mustache';
 
 class SettingsView {
-  private $dom: JQuery | undefined;
+  private dom: JQuery | undefined;
+
   private data: StoreSettingsType | undefined;
 
-  public async show() {
+  public async show () {
     await this.setData();
     await this.setDom();
     await this.appendDom();
   }
 
-  private async setData() {
+  private async setData () {
     this.data = await window.api.settings.getData();
   }
 
-  private async setDom() {
-    const {default: html} = await import('./settings.html?raw');
+  private async setDom () {
+    const {
+      default: html,
+    } = await import('./settings.html?raw');
     const rendered = mustache.render(html, {
       data: this.data,
     });
-    this.$dom = $(rendered);
+    this.dom = $(rendered);
   }
 
-  private async appendDom() {
-    this.$dom?.appendTo(document.body).modal('show');
+  private async appendDom () {
+    this.dom?.appendTo(document.body).modal('show');
   }
 }
 

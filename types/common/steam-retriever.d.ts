@@ -1,48 +1,48 @@
 type SteamRetrieverAchievement = {
-  name: string;
-  defaultvalue: number;
-  displayName: string;
-  hidden: number;
-  description: string;
-  icon: string;
-  icongray: string;
+  defaultvalue: number,
+  description: string,
+  displayName: string,
+  hidden: number,
+  icon: string,
+  icongray: string,
+  name: string,
 };
 
 type SteamRetrieverAchievements = Record<string, SteamRetrieverAchievement>;
 
 type SteamRetrieverStat = {
-  name: string;
-  defaultvalue: number;
-  displayName: string;
+  defaultvalue: number,
+  displayName: string,
+  name: string,
 };
 
 type SteamRetrieverStats = Record<string, SteamRetrieverStat>;
 
 // INCLUDE ONLY USED KEY
 type SteamRetrieverItem = {
-  appid: string;
+  appid: string,
 };
 
 type SteamRetrieverItems = Record<string, SteamRetrieverItem>;
 
 type SteamRetrieverAppIdPlatforms = {
-  windows: boolean;
-  mac: boolean;
-  linux: boolean;
+  linux: boolean,
+  mac: boolean,
+  windows: boolean,
 };
 
 type SteamRetrieverAppIdDlcs = {
-  Name: string;
-  ImageUrl: string;
-  Type: string;
+  ImageUrl: string,
+  Name: string,
+  Type: string,
 };
 
 type SteamRetrieverAppId = {
-  Dlcs: Record<string, SteamRetrieverAppIdDlcs>;
-  Name: string;
-  AppId: string;
-  ImageUrl: string;
-  Languages: string[];
-  Platforms: SteamRetrieverAppIdPlatforms;
-  Type?: string;
+  AppId: string,
+  Dlcs: Record<string, SteamRetrieverAppIdDlcs>,
+  ImageUrl: string,
+  Languages: string[],
+  Name: string,
+  Platforms: SteamRetrieverAppIdPlatforms,
+  Type?: string,
 };

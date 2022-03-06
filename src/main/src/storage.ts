@@ -5,7 +5,9 @@ const defaults = {
     network: true,
   },
 };
-const options = {defaults};
+const options = {
+  defaults,
+};
 
 const storage = new ElectronStore<StoreType>(options);
 

@@ -1,12 +1,12 @@
 type StoreWindowBoundsType = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+  height: number,
+  width: number,
+  x: number,
+  y: number,
 };
 
 type StoreWindowType = {
-  bounds: StoreWindowBoundsType;
-  isMaximized: boolean;
-  isFullScreen: boolean;
+  bounds: StoreWindowBoundsType,
+  isFullScreen: boolean,
+  isMaximized: boolean,
 };

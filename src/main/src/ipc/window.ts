@@ -1,21 +1,24 @@
-import {BrowserWindow, ipcMain} from 'electron';
+import {
+  BrowserWindow,
+  ipcMain as ipc,
+} from 'electron';
 
-ipcMain.handle('window-close', (event) => {
+ipc.handle('window-close', (event) => {
   const currentWindow = BrowserWindow.fromId(event.frameId);
   currentWindow?.close();
 });
 
-ipcMain.handle('window-minimize', (event) => {
+ipc.handle('window-minimize', (event) => {
   const currentWindow = BrowserWindow.fromId(event.frameId);
   currentWindow?.minimize();
 });
 
-ipcMain.handle('window-maximize', (event) => {
+ipc.handle('window-maximize', (event) => {
   const currentWindow = BrowserWindow.fromId(event.frameId);
   currentWindow?.maximize();
 });
 
-ipcMain.handle('window-restore', (event) => {
+ipc.handle('window-restore', (event) => {
   const currentWindow = BrowserWindow.fromId(event.frameId);
   currentWindow?.restore();
 });

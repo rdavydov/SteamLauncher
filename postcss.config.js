@@ -1,12 +1,22 @@
+const postcssPurgeCss = require('@fullhuman/postcss-purgecss');
+const autoprefixer = require('autoprefixer');
+const postcssImport = require('postcss-import');
+const postcssNesting = require('postcss-nesting');
+const postcssPresetEnv = require('postcss-preset-env');
+const tailwindcss = require('tailwindcss');
+const tailwindcssNesting = require('tailwindcss/nesting');
+
 module.exports = {
   plugins: [
-    require('postcss-import'),
-    require('tailwindcss/nesting')(require('postcss-nesting')),
-    require('tailwindcss'),
-    require('postcss-preset-env')({
-      features: {'nesting-rules': false},
+    postcssImport,
+    tailwindcssNesting(postcssNesting),
+    tailwindcss,
+    postcssPresetEnv({
+      features: {
+        'nesting-rules': false,
+      },
     }),
-    require('@fullhuman/postcss-purgecss')({
+    postcssPurgeCss({
       content: [
         './src/render/src/**/*.{js,ts,html}',
         './node_modules/bootstrap/js/dist/modal.js',
@@ -15,9 +25,9 @@ module.exports = {
       ],
       safelist: [
         /* !.class tailwindcss */
-        /^!(.+)/,
+        /^!(.+)/u,
       ],
     }),
-    require('autoprefixer'),
+    autoprefixer,
   ],
 };

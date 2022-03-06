@@ -1,4 +1,4 @@
-$(document).on('click', "button[data-sk='titlebar']", async (event) => {
+$(document).on('click', 'button[data-sk="titlebar"]', async (event) => {
   event.preventDefault();
   const attribute = $(event.currentTarget).attr('data-sk-attr')!;
   switch (attribute) {

@@ -1,6 +1,6 @@
 type StoreType = {
-  settings: StoreSettingsType;
-  window?: StoreWindowType;
-  account?: StoreAccountType;
-  games?: StoreGamesDataType;
+  account?: StoreAccountType,
+  games?: StoreGamesDataType,
+  settings: StoreSettingsType,
+  window?: StoreWindowType,
 };

@@ -1,19 +1,29 @@
-import {app, session, dialog} from 'electron';
-import {argv} from 'node:process';
-import {autoUpdater} from 'electron-updater';
+import {
+  argv,
+} from 'node:process';
+import {
+  app,
+  session,
+  dialog,
+} from 'electron';
 import log from 'electron-log';
-import './process.js';
-import {appId} from '../../../electron-builder.json';
-import browser from './browser.js';
-import config from './config.js';
-import './ipc/app.js';
-import './ipc/window.js';
-import './ipc/contextmenu.js';
-import './ipc/account.js';
-import './ipc/settings.js';
-import './ipc/game.js';
-import gameLauncher from './functions/game-launcher.js';
-import storage from './storage.js';
+import {
+  autoUpdater,
+} from 'electron-updater';
+import './process';
+import {
+  appId,
+} from '../../../electron-builder.json';
+import browser from './browser';
+import config from './config';
+import gameLauncher from './functions/game-launcher';
+import storage from './storage';
+import './ipc/app';
+import './ipc/window';
+import './ipc/contextmenu';
+import './ipc/account';
+import './ipc/settings';
+import './ipc/game';
 
 log.info('App starting...');
 
@@ -44,7 +54,7 @@ app.on('web-contents-created', (_event, contents) => {
   contents.on('will-navigate', (event, url) => {
     const parsedUrl = new URL(url);
     if (!config.allowedWillNavigateUrls.has(parsedUrl.origin)) {
-      log.error('will-navigate: ' + parsedUrl.href + " isn't allowed");
+      log.error('will-navigate: ' + parsedUrl.href + ' isn\'t allowed');
       event.preventDefault();
     }
 
@@ -53,9 +63,13 @@ app.on('web-contents-created', (_event, contents) => {
 
   // SECURITY: https://www.electronjs.org/docs/latest/tutorial/security/#14-disable-or-limit-creation-of-new-windows
   // NOTE: this happen when link have target="_blank"
-  contents.setWindowOpenHandler(({url}) => {
+  contents.setWindowOpenHandler(({
+    url,
+  }) => {
     browser.openUrlExternal(url);
-    return {action: 'deny'};
+    return {
+      action: 'deny',
+    };
   });
 });
 
@@ -68,19 +82,20 @@ app
   .then(() => {
     // SECURITY: https://www.electronjs.org/docs/latest/tutorial/security/#5-handle-session-permission-requests-from-remote-content
     session.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
+      const pass = false;
       log.debug(permission + ' permission is not granted');
-      callback(false);
+      callback(pass);
     });
   })
   .then(async () => {
     if (commandsLine.length > 0) {
-      const appId = commandsLine[0];
-      const has = storage.has('games.' + appId);
+      const argumentAppId = commandsLine[0];
+      const has = storage.has('games.' + argumentAppId);
       if (has) {
-        const data: StoreGameDataType = storage.get('games.' + appId);
+        const data: StoreGameDataType = storage.get('games.' + argumentAppId);
         gameLauncher(data);
       } else {
-        dialog.showErrorBox('Error', appId + ' does not exist!');
+        dialog.showErrorBox('Error', argumentAppId + ' does not exist!');
       }
 
       app.exit();

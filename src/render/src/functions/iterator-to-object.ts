@@ -1,7 +1,7 @@
-const iteratorToObject = (n: URLSearchParams) => {
+const iteratorToObject = (nn: URLSearchParams) => {
   const b: Record<string, string> = {};
-  for (const p of n) {
-    b[p[0]] = p[1];
+  for (const pp of nn) {
+    b[pp[0]] = pp[1];
   }
 
   return b;

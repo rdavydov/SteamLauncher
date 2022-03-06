@@ -1,22 +1,26 @@
-import {ipcMain} from 'electron';
-import storage from '../storage.js';
-import snack from '../functions/snack.js';
-import {hiddenModalChannel} from '../config.js';
+import {
+  ipcMain as ipc,
+} from 'electron';
+import {
+  hiddenModalChannel,
+} from '../config';
+import notify from '../functions/notify';
+import storage from '../storage';
 
-ipcMain.on('settings-edit', (event, inputs: StoreSettingsType) => {
+ipc.on('settings-edit', (event, inputs: StoreSettingsType) => {
   storage.set('settings', inputs);
-  snack('Settings edited successfully!', 'success');
+  notify('Settings edited successfully!');
   event.sender.send(hiddenModalChannel);
 });
 
-ipcMain.on('settings-set-network', (_event, data: boolean) => {
+ipc.on('settings-set-network', (_event, data: boolean) => {
   storage.set('settings.network', data);
 });
 
-ipcMain.handle('settings-get-network-status', (): boolean => {
+ipc.handle('settings-get-network-status', (): boolean => {
   return storage.get('settings.network');
 });
 
-ipcMain.handle('settings-data', () => {
+ipc.handle('settings-data', () => {
   return storage.get('settings');
 });

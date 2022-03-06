@@ -1,90 +1,107 @@
-import {ipcMain, Menu, shell, app} from 'electron';
-import {join} from 'node:path';
-import {pathExists} from 'fs-extra';
-import SteamRetriever from '../classes/steam-retriever.js';
-import {paths} from '../config.js';
-import gameLauncher from '../functions/game-launcher.js';
-import gameRemove from '../functions/game-remove.js';
-import snack from '../functions/snack.js';
-import storage from '../storage.js';
+import {
+  join,
+} from 'node:path';
+import {
+  ipcMain as ipc,
+  Menu,
+  shell,
+  app,
+} from 'electron';
+import {
+  pathExists,
+} from 'fs-extra';
+import SteamRetriever from '../classes/steam-retriever';
+import {
+  paths,
+} from '../config';
+import gameLauncher from '../functions/game-launcher';
+import gameRemove from '../functions/game-remove';
+import notify from '../functions/notify';
+import storage from '../storage';
 
-ipcMain.on('open-contextmenu-game', (event, appId: string) => {
+ipc.on('open-contextmenu-game', (event, appId: string) => {
   const dataGame: StoreGameDataType = storage.get('games.' + appId);
   Menu.buildFromTemplate([
     {
-      label: 'Launch',
-      click() {
+      click () {
         gameLauncher(dataGame);
       },
+      label: 'Launch',
     },
     {
-      label: 'Launch normally',
-      click() {
+      click () {
         gameLauncher(dataGame, true);
       },
+      label: 'Launch normally',
     },
-    {type: 'separator'},
     {
-      label: 'Create desktop shortcut',
-      click() {
-        const name = dataGame.name.replace(/[^\da-zA-Z. ]/g, '');
+      type: 'separator',
+    },
+    {
+      click () {
+        const name = dataGame.name.replace(/[^\d .A-Za-z]/gu, '');
         const to = join(app.getPath('desktop'), 'Launch ' + name + '.lnk');
         const created = shell.writeShortcutLink(to, {
-          target: app.getPath('exe'),
           args: dataGame.appId,
           icon: dataGame.path,
           iconIndex: 0,
+          target: app.getPath('exe'),
         });
         if (created) {
-          snack('Shortcut created successfully on desktop!', 'success');
+          notify('Shortcut created successfully on desktop!');
         } else {
-          snack('Unknown error', 'error');
+          notify('Unknown error');
         }
       },
+      label: 'Create desktop shortcut',
     },
     {
-      label: 'Open file location',
-      async click() {
+      async click () {
         if (await pathExists(dataGame.path)) {
           shell.showItemInFolder(dataGame.path);
         } else {
-          snack('The game path does not exists!', 'warning');
+          notify('The game path does not exists!');
         }
       },
+      label: 'Open file location',
     },
     {
-      label: 'Open save location',
-      async click() {
+      async click () {
         const savesPath = join(paths.emulator.saves, appId);
         if (await pathExists(savesPath)) {
           await shell.openPath(savesPath);
         } else {
-          snack('The game saves does not exists!', 'warning');
+          notify('The game saves does not exists!');
         }
       },
+      label: 'Open save location',
     },
-    {type: 'separator'},
     {
-      label: 'Rebase DLCs, Items, etc...',
-      async click() {
+      type: 'separator',
+    },
+    {
+      async click () {
         const steamRetriever = new SteamRetriever(dataGame);
         await steamRetriever.run().then(() => {
-          snack('Game rebased successfully!', 'success');
+          notify('Game rebased successfully!');
         });
       },
+      label: 'Rebase DLCs, Items, etc...',
     },
-    {type: 'separator'},
     {
-      label: 'Edit game',
-      click() {
+      type: 'separator',
+    },
+    {
+      click () {
         event.sender.send('app-navigate-to', `/game/edit/${appId}`);
       },
+      label: 'Edit game',
     },
     {
-      label: 'Remove game',
-      click() {
+      click () {
         gameRemove(appId);
       },
+      label: 'Remove game',
     },
   ]).popup();
 });

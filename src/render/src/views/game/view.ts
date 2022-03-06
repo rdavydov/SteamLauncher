@@ -1,24 +1,27 @@
 import mustache from 'mustache';
-import navigo from '../../navigo.js';
-import iteratorToObject from '../../functions/iterator-to-object.js';
+import iteratorToObject from '../../functions/iterator-to-object';
+import navigo from '../../navigo';
 
-class GameAddView {
-  private $dom: JQuery | undefined;
+class GameView {
+  private dom: JQuery | undefined;
+
   private isEditMode = false;
 
-  public async show(editMode = false) {
+  public async show (editMode = false) {
     this.isEditMode = editMode;
 
     await this.setDom();
     await this.appendDom();
   }
 
-  private async appendDom() {
-    this.$dom?.appendTo(document.body).modal('show');
+  private async appendDom () {
+    this.dom?.appendTo(document.body).modal('show');
   }
 
-  private async setDom() {
-    const {default: html} = await import('./game.html?raw');
+  private async setDom () {
+    const {
+      default: html,
+    } = await import('./game.html?raw');
 
     let view = {};
     const current = navigo.current![0];
@@ -28,8 +31,8 @@ class GameAddView {
     if (this.isEditMode) {
       const data = await window.api.game.getData(appId!);
       view = {
-        isEditMode: this.isEditMode,
         data,
+        isEditMode: this.isEditMode,
       };
     } else {
       const parameters = iteratorToObject(new URLSearchParams(queryString));
@@ -39,8 +42,8 @@ class GameAddView {
     }
 
     const rendered = mustache.render(html, view);
-    this.$dom = $(rendered);
+    this.dom = $(rendered);
   }
 }
 
-export default GameAddView;
+export default GameView;

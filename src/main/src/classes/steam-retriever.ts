@@ -1,70 +1,98 @@
-import {webContents} from 'electron';
-import {spawn} from 'node:child_process';
-import {writeFile, unlink} from 'node:fs/promises';
-import type {Buffer} from 'node:buffer';
-import {join, parse} from 'node:path';
+import type {
+  Buffer,
+} from 'node:buffer';
+import {
+  spawn,
+} from 'node:child_process';
+import {
+  writeFile,
+  unlink,
+} from 'node:fs/promises';
+import {
+  join,
+  parse,
+} from 'node:path';
+import {
+  webContents,
+} from 'electron';
 import log from 'electron-log';
-import {pathExists, writeJson, readJson, ensureDir, copy} from 'fs-extra';
 import fg from 'fast-glob';
-import {paths} from '../config.js';
-import storage from '../storage.js';
-import steamApiInterfaces from '../bin/steam-api-interfaces.js';
-import signVerify from '../bin/signtool.js';
-import generateAppIdPaths from '../functions/generate-appid-paths.js';
+import {
+  pathExists,
+  writeJson,
+  readJson,
+  ensureDir,
+  copy,
+} from 'fs-extra';
+import signVerify from '../bin/signtool';
+import steamApiInterfaces from '../bin/steam-api-interfaces';
+import {
+  paths,
+} from '../config';
+import generateAppIdPaths from '../functions/generate-appid-paths';
+import storage from '../storage';
 
 const environments = import.meta.env;
 
 const globSteamApis = (runPath: string) => {
-  return fg.sync(['**/steam_api.dll', '**/steam_api64.dll'], {
-    cwd: runPath,
+  return fg.sync([
+    '**/steam_api.dll',
+    '**/steam_api64.dll',
+  ], {
     absolute: true,
+    cwd: runPath,
     onlyFiles: true,
   });
 };
 
 class SteamRetriever {
   private readonly steamWebApiKey: string = storage.get('account.steamWebApiKey');
+
   private readonly language: string = storage.get('account.language');
+
   private readonly event = webContents.getFocusedWebContents();
+
   private readonly appId: string;
+
   private readonly paths: Record<string, string>;
+
   private readonly inputs: StoreGameDataType;
 
-  public constructor(inputs: StoreGameDataType) {
+  public constructor (inputs: StoreGameDataType) {
     this.inputs = inputs;
     this.appId = inputs.appId;
     this.paths = generateAppIdPaths(inputs.appId, this.language);
   }
 
-  public console(content: string) {
+  public console (content: string) {
     log.info(content);
     this.event.send('add-to-console', content);
   }
 
-  public consoleHide() {
+  public consoleHide () {
     this.event.send('hide-console');
   }
 
-  public consoleShow() {
+  public consoleShow () {
     this.event.send('show-console');
   }
 
-  public async run() {
+  public async run () {
     this.consoleShow();
     this.console('Launch steamRetriever for ' + this.appId + '...');
 
     const findSteamApis = globSteamApis(this.inputs.runPath);
     if (findSteamApis.length > 0) {
-      let i = 1;
-      for (const o of findSteamApis) {
-        const signed = signVerify(o);
+      let index = 1;
+      for (const oo of findSteamApis) {
+        const signed = signVerify(oo);
 
         if (!signed) {
-          this.console(o + " isn't signed! Please use original steam_api(64).dll only!");
+          this.console(oo + ' isn\'t signed! Please use original steam_api(64).dll only!');
           return;
         }
 
-        if (i === findSteamApis.length) {
+        if (index === findSteamApis.length) {
           const steamRetrieverSpawn = this.spawn();
 
           if (typeof steamRetrieverSpawn !== 'undefined') {
@@ -76,7 +104,7 @@ class SteamRetriever {
             steamRetrieverSpawn.stderr.on('data', output);
 
             steamRetrieverSpawn.on('close', async (code, signal) => {
-              this.console(`steamRetriever exited with: [code ${code!}][signal ${signal!}]`);
+              this.console(`steamRetriever exited with: [code ${code}][signal ${signal}]`);
 
               await ensureDir(this.paths.appIdDataPath);
 
@@ -90,7 +118,7 @@ class SteamRetriever {
                 data.header = this.paths.steamRetrieverBackgroundPath;
 
                 if (typeof steamRetrieverAppIdInfoParse.Type !== 'undefined') {
-                  this.console(data.name + " isn't a game!");
+                  this.console(data.name + ' isn\'t a game!');
                   this.consoleHide();
                   return;
                 }
@@ -109,7 +137,6 @@ class SteamRetriever {
 
                       outDlcs.push(dlcKey + '=' + dlcName);
 
-                      // eslint-disable-next-line max-depth
                       if (Object.keys(dlcs).length - 1 === iii) {
                         writeFile(this.paths.appIdDlcsInfoPath, outDlcs.join('\n'))
                           .then(() => {
@@ -135,7 +162,7 @@ class SteamRetriever {
                   await this.writeItems();
                 }
 
-                await this.writeSteamApiInterfaces(o);
+                await this.writeSteamApiInterfaces(oo);
                 await this.addGame(data);
               } else {
                 this.console(`${this.paths.steamRetrieverAppIdInfoPath} was not found!`);
@@ -144,7 +171,7 @@ class SteamRetriever {
           }
         }
 
-        i++;
+        index++;
       }
     } else {
       this.console(
@@ -153,13 +180,16 @@ class SteamRetriever {
     }
   }
 
-  private async addGame(data: Record<string, string>) {
-    const inputs: StoreGameDataType = Object.assign({}, this.inputs, data);
+  private async addGame (data: Record<string, string>) {
+    const inputs: StoreGameDataType = {
+      ...this.inputs,
+      ...data,
+    };
     storage.set('games.' + inputs.appId, inputs);
     this.consoleHide();
   }
 
-  private async writeSteamApiInterfaces(dll: string) {
+  private async writeSteamApiInterfaces (dll: string) {
     if (await pathExists(this.paths.appIdSteamInterfacesPath)) {
       this.console('Skip, steam_interfaces.txt already exists!');
       return;
@@ -193,20 +223,23 @@ class SteamRetriever {
       });
   }
 
-  private async writeStats() {
+  private async writeStats () {
     readJson(this.paths.steamRetrieverStatsPath)
       .then(async (statsInfoParse: SteamRetrieverStats) => {
         const out = [];
-        for (const o in statsInfoParse) {
-          if (Object.prototype.hasOwnProperty.call(statsInfoParse, o)) {
-            const stat = statsInfoParse[o];
-            const name = stat.name;
-            const typeValue = 'int'; // NOTE: ..., float, avgrate but where can I find this data?
+        for (const oo in statsInfoParse) {
+          if (Object.prototype.hasOwnProperty.call(statsInfoParse, oo)) {
+            const stat = statsInfoParse[oo];
+            const {
+              name,
+            } = stat;
+            // NOTE: ..., float, avgrate but where can I find this data?
+            const typeValue = 'int';
             const defaultValue = stat.defaultvalue;
 
             out.push(name + '=' + typeValue + '=' + defaultValue.toString());
 
-            if ((Object.keys(statsInfoParse).length - 1).toString() === o) {
+            if ((Object.keys(statsInfoParse).length - 1).toString() === oo) {
               writeFile(this.paths.appIdStatsInfoPath, out.join('\n'))
                 .then(() => {
                   this.console(this.paths.appIdStatsInfoPath + ' was written successfully!');
@@ -223,21 +256,23 @@ class SteamRetriever {
       });
   }
 
-  private async writeItems() {
+  private async writeItems () {
     readJson(this.paths.steamRetrieverItemsPath)
       .then(async (itemsInfoParse: SteamRetrieverItems) => {
         const out: SteamRetrieverItems = {};
         const outArray = [];
-        for (const o in itemsInfoParse) {
-          if (Object.prototype.hasOwnProperty.call(itemsInfoParse, o)) {
-            const stat = itemsInfoParse[o];
+        for (const oo in itemsInfoParse) {
+          if (Object.prototype.hasOwnProperty.call(itemsInfoParse, oo)) {
+            const stat = itemsInfoParse[oo];
             const appId = stat.appid;
             out[appId] = stat;
 
             outArray.push(out);
 
-            if ((Object.keys(itemsInfoParse).length - 1).toString() === o) {
-              writeJson(this.paths.appIdItemsInfoPath, outArray, {spaces: 2})
+            if ((Object.keys(itemsInfoParse).length - 1).toString() === oo) {
+              writeJson(this.paths.appIdItemsInfoPath, outArray, {
+                spaces: 2,
+              })
                 .then(() => {
                   this.console(this.paths.appIdItemsInfoPath + ' was written successfully!');
                 })
@@ -253,7 +288,7 @@ class SteamRetriever {
       });
   }
 
-  private async writeAchievements() {
+  private async writeAchievements () {
     let achievementsInfoPath = '';
 
     if (await pathExists(this.paths.steamRetrieverAchievementsInfoPath)) {
@@ -273,16 +308,18 @@ class SteamRetriever {
         .then(async (achievementsInfoParse: SteamRetrieverAchievements) => {
           await ensureDir(this.paths.appIdAchievementsPath);
 
-          for (const o in achievementsInfoParse) {
-            if (Object.prototype.hasOwnProperty.call(achievementsInfoParse, o)) {
-              const achievement = achievementsInfoParse[o];
+          for (const oo in achievementsInfoParse) {
+            if (Object.prototype.hasOwnProperty.call(achievementsInfoParse, oo)) {
+              const achievement = achievementsInfoParse[oo];
               achievement.icon = 'achievements/' + achievement.name + '.jpg';
               achievement.icongray = 'achievements/' + achievement.name + '_gray.jpg';
 
-              achievementsInfoParse[o] = achievement;
+              achievementsInfoParse[oo] = achievement;
 
-              if ((Object.keys(achievementsInfoParse).length - 1).toString() === o) {
-                writeJson(this.paths.appIdAchievementsInfoPath, achievementsInfoParse, {spaces: 2})
+              if ((Object.keys(achievementsInfoParse).length - 1).toString() === oo) {
+                writeJson(this.paths.appIdAchievementsInfoPath, achievementsInfoParse, {
+                  spaces: 2,
+                })
                   .then(() => {
                     this.console(
                       this.paths.appIdAchievementsInfoPath + ' was written successfully!',
@@ -314,20 +351,25 @@ class SteamRetriever {
     }
   }
 
-  private spawn() {
+  private spawn () {
     const filePath = paths.steamRetrieverBin;
     const args = [
-      '-k', // SteamApi web key
+      // SteamApi web key
+      '-k',
       this.steamWebApiKey,
-      '-o', // OutputPath
+      // OutputPath
+      '-o',
       this.paths.steamRetrieverPath,
-      '-l', // Language
+      // Language
+      '-l',
       this.language,
-      '-i', // Download images
+      // Download images
+      '-i',
     ];
 
+    // Force only in production mode
     if (environments.PROD) {
-      args.push('-f'); // Force only in production mode
+      args.push('-f');
     }
 
     args.push(this.appId);
@@ -337,6 +379,8 @@ class SteamRetriever {
     } catch (error: unknown) {
       this.console(error as string);
     }
+
+    return false;
   }
 }
 

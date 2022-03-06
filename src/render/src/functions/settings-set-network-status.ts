@@ -1,26 +1,26 @@
-const settingsSetNetworkStatus = (to: string | boolean, updateStatus = false) => {
-  const $dom = $("button[data-sk='set-network']");
-  const _to = typeof to === 'string' ? to === 'online' : to;
-  if (_to) {
-    $dom.attr({
+const settingsSetNetworkStatus = (to: boolean | string, updateStatus = false) => {
+  const dom = $('button[data-sk="set-network"]');
+  const too = typeof to === 'string' ? to === 'online' : to;
+  if (too) {
+    dom.attr({
       'data-sk-to': 'offline',
       title: 'Go offline',
     });
   } else {
-    $dom.attr({
+    dom.attr({
       'data-sk-to': 'online',
       title: 'Go online',
     });
   }
 
   if (updateStatus) {
-    if (_to) {
-      $.snack('You are online!', 'success');
+    if (too) {
+      window.api.app.notify('You are online!');
     } else {
-      $.snack('You are offline!', 'warning');
+      window.api.app.notify('You are offline!');
     }
 
-    window.api.settings.setNetworkStatus(_to);
+    window.api.settings.setNetworkStatus(too);
   }
 };
 

@@ -1,6 +1,9 @@
-import {fileURLToPath} from 'node:url';
-import createConfig from '../../vite.config.js';
+import {
+  fileURLToPath,
+} from 'node:url';
+// eslint-disable-next-line import/extensions
+import createConfig from '../../vite.config';
 
-const _dirname = fileURLToPath(new URL('.', import.meta.url));
+const path = fileURLToPath(new URL('.', import.meta.url));
 
-export default createConfig(_dirname);
+export default createConfig(path);
